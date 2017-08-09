@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Report Ikantam'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,6 +55,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Main Domain
+    |--------------------------------------------------------------------------
+    |
+    | for set cookies
+    |
+    */
+    'main_domain' => env('MAIN_DOMAIN', 'localhost'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auth Url
+    |--------------------------------------------------------------------------
+    |
+    */
+    'auth_url' => env('AUTH_URL', 'http://localhost'),
+
+
+    'auth_api_key' => env('AUTH_API_KEY', ''),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
@@ -64,7 +85,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Minsk',
 
     /*
     |--------------------------------------------------------------------------
@@ -77,7 +98,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -167,6 +188,10 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        Spatie\Menu\Laravel\MenuServiceProvider::class,
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -176,6 +201,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
+        App\Providers\DataCleanerServiceProvider::class,
+        App\Providers\MenuServiceProvider::class,
+        App\Providers\JWTServiceProvider::class,
+        App\Providers\AuthApiClientServiceProvider::class,
+        App\Providers\UserCreatorServiceProvider::class,
 
     ],
 
@@ -226,6 +257,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
+        'Menu' => Spatie\Menu\Laravel\MenuFacade::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 
 ];
