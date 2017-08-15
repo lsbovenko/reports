@@ -23,6 +23,6 @@ class Project extends Model
      */
     public function reports()
     {
-        return $this->hasMany('App\Report');
+        return $this->hasMany('App\Models\Report');
     }
 }

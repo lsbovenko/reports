@@ -87,6 +87,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
 
             return asObject ? { hours: hours, minutes: minutes } : hours + 'H ' + minutes + 'M';
+        },
+        destroy: function destroy() {
+            var $input = $(this);
+            $input.off();
         }
     };
 

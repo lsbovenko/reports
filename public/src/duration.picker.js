@@ -81,6 +81,10 @@
                 }
 
                 return asObject ? { hours, minutes } : ( hours + 'H ' + minutes + 'M' );
+            },
+            destroy(){
+                let $input = $(this);
+                $input.off();
             }
         };
 

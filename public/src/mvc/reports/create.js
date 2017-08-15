@@ -2,11 +2,13 @@
 
     const $date = $('#date'),
         $form = $('#report-form'),
-        emptyRecord = () => { return {name: '', description: '', workedTime: {hours: 0, minutes: 0}} },
+        emptyRecord = (isTracked = false) => {
+            return {name: '', description: '', workedTime: {hours: 0, minutes: 0}, isTracked}
+        },
         datepicker = $date.datepicker({
             onSelect(dateStr, date, inst) {
                 inst.hide();
-            }
+            } 
         }).data('datepicker');
 
     let formData = {
@@ -16,13 +18,13 @@
             untracked: []
         },
         durationPickerOptions: {
-          onUpdate(duration) {
-              $(this)
-                  .parent()
-                  .parent()
-                  .find('label').text('Время (' + duration.hours + 'ч:' + duration.minutes + 'м)');
+            onUpdate(duration) {
+                $(this)
+                    .parent()
+                    .parent()
+                    .find('label').text('Время (' + duration.hours + 'ч:' + duration.minutes + 'м)');
 
-          }
+            }
         },
         select2Options: {
             tags: true,
@@ -32,7 +34,7 @@
         },
         controller: {
             addMoreTracked() {
-                formData.reports.tracked.push(emptyRecord());
+                formData.reports.tracked.push(emptyRecord(true));
             },
             addMoreUntracked() {
                 formData.reports.untracked.push(emptyRecord());
@@ -40,17 +42,26 @@
             updateTime(e, scope) {
                 scope.report.workedTime = $(this).duration('getFormatted', true);
             },
+            removeReport(e, scope){
+                let report = scope.report,
+                    ref = report.isTracked ? scope.reports.tracked : scope.reports.untracked,
+                    updated = [];
+
+                $(this).closest('.report-container').remove();
+
+                ref.splice(scope.index, 1); //suddenly it is buggy :(
+            },
             sendNewReport() {
 
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
 
-                    return ;
+                    return;
                 }
 
-                let sendData = { reports: [] };
+                let sendData = {reports: []};
 
-                formData.reports.tracked.forEach(function(r){
+                formData.reports.tracked.forEach(function (r) {
                     sendData.reports.push({
                         name: r.name,
                         time: r.workedTime,
@@ -59,7 +70,7 @@
                     });
                 });
 
-                formData.reports.untracked.forEach(function(r){
+                formData.reports.untracked.forEach(function (r) {
                     sendData.reports.push({
                         name: r.name,
                         time: r.workedTime,
@@ -77,8 +88,8 @@
                         formData.reports.untracked = [];
 
                         $.amaran({
-                            'message'   :'Данные были отпралвены.',
-                            'position'  :'bottom right'
+                            'message': 'Данные были отпралвены.',
+                            'position': 'bottom right'
                         });
                     }
                 });
@@ -86,7 +97,7 @@
         }
     };
 
-
+    window.tracked = formData.reports.tracked;
     rv.bind($form, formData);
     datepicker.selectDate(new Date()); //select current date by default
 
