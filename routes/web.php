@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,12 +13,18 @@
 |
 */
 
+Route::get('/test', 'Test@test')->name('test');
+
 /**
  * only auth users
  */
 Route::group(['middleware' => ['jwt']], function () {
     Route::group(['middleware' => ['auth', 'check_user', 'refresh_jwt']], function () {
         Route::get('/', 'IndexController@index')->name('main');
+
+        /* Reports resource */
+        Route::get('/reports/create', 'Reports@create')->name('reports.create');
+        Route::post('/reports/store', 'Reports@store')->name('reports.store');
 
         Route::get('/view', 'BrowseIdeasController@priorityBoard')->name('view');
         Route::post('/view/add-time/{date}', 'IndexController@createIdea');

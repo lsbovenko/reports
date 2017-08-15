@@ -5,8 +5,6 @@ namespace App\Models\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
-use App\Models\Idea;
-use App\Models\Categories\Status;
 
 /**
  * Class User

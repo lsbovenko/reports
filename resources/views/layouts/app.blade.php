@@ -10,7 +10,10 @@
     <title>{{ config('app.name', 'Ikantam') }}</title>
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    @yield('page_css')
+
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -70,7 +73,12 @@
 </nav>
 
 <!-- Page Content -->
-<div class="container">
+
+<div id="overlay">
+    <div id="loading-bar-spinner" class="spinner"><div class="spinner-icon"></div></div>
+</div>
+<div class="container" id="content">
+
     @yield('content')
 
     <!-- Footer -->
@@ -87,6 +95,9 @@
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
+<script src="{{ asset('js/rivets.bundled.min.js') }}"></script>
+
+@yield('page_js')
 
 </body>
 </html>
