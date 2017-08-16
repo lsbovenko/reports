@@ -84,3 +84,7 @@ footer {
 .font-red {
     color: #ce1200;
 }
+
+.cur-pointer {
+    cursor: pointer;
+}

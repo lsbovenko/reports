@@ -40,6 +40,8 @@ class Reports extends Controller
         foreach ($request->input('reports') as $item) {
             $nameOrTask = $item['name'];
 
+            if (!$nameOrTask) continue;
+
             $project = Project::where('name', $nameOrTask)->first();
 
             if (null !== $project) {

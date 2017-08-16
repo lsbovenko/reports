@@ -1,5 +1,9 @@
 ;(function ($, rv) {
 
+    rv.formatters.not = function (value) {
+        return !value;
+    };
+
     const $date = $('#date'),
         $form = $('#report-form'),
         emptyRecord = (isTracked = false) => {
@@ -8,7 +12,7 @@
         datepicker = $date.datepicker({
             onSelect(dateStr, date, inst) {
                 inst.hide();
-            } 
+            }
         }).data('datepicker');
 
     let formData = {
@@ -43,13 +47,7 @@
                 scope.report.workedTime = $(this).duration('getFormatted', true);
             },
             removeReport(e, scope){
-                let report = scope.report,
-                    ref = report.isTracked ? scope.reports.tracked : scope.reports.untracked,
-                    updated = [];
-
-                $(this).closest('.report-container').remove();
-
-                ref.splice(scope.index, 1); //suddenly it is buggy :(
+                scope.report.deleted = true;
             },
             sendNewReport() {
 
@@ -62,6 +60,8 @@
                 let sendData = {reports: []};
 
                 formData.reports.tracked.forEach(function (r) {
+                    if (r.deleted) return ;
+
                     sendData.reports.push({
                         name: r.name,
                         time: r.workedTime,
@@ -71,6 +71,8 @@
                 });
 
                 formData.reports.untracked.forEach(function (r) {
+                    if (r.deleted) return ;
+
                     sendData.reports.push({
                         name: r.name,
                         time: r.workedTime,

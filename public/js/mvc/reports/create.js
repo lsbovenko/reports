@@ -2,6 +2,10 @@
 
 ;(function ($, rv) {
 
+    rv.formatters.not = function (value) {
+        return !value;
+    };
+
     var $date = $('#date'),
         $form = $('#report-form'),
         emptyRecord = function emptyRecord() {
@@ -43,13 +47,7 @@
                 scope.report.workedTime = $(this).duration('getFormatted', true);
             },
             removeReport: function removeReport(e, scope) {
-                var report = scope.report,
-                    ref = report.isTracked ? scope.reports.tracked : scope.reports.untracked,
-                    updated = [];
-
-                $(this).closest('.report-container').remove();
-
-                ref.splice(scope.index, 1); //suddenly it is buggy :(
+                scope.report.deleted = true;
             },
             sendNewReport: function sendNewReport() {
 
@@ -62,6 +60,8 @@
                 var sendData = { reports: [] };
 
                 formData.reports.tracked.forEach(function (r) {
+                    if (r.deleted) return;
+
                     sendData.reports.push({
                         name: r.name,
                         time: r.workedTime,
@@ -71,6 +71,8 @@
                 });
 
                 formData.reports.untracked.forEach(function (r) {
+                    if (r.deleted) return;
+
                     sendData.reports.push({
                         name: r.name,
                         time: r.workedTime,

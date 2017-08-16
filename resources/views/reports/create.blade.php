@@ -43,40 +43,28 @@
                     </div>
                 </div>
 
-                <div rv-each-item="items">
-                    <div class="form-group">
-                        <div class="col-sm-2">
-                            <input rv-value="item.count" class="form-control">
-                        </div>
-                        <div class="col-sm-2">
-                            <i rv-on-click="removeThis" title="Удалить" class="fa fa-window-close"
-                               aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div rv-each-report="reports.tracked">
+                <div rv-each-report="reports.tracked" rv-class-hidden="report.deleted" class="root">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Проект</label>
                         <div class="col-md-2">
-                            <select data-parsley-required="true" rv-value="report.name"
+                            <select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
                                     class="form-control chosen-rtl select-project">
                                 <option></option>
                                 @foreach($projects as $project)
-                                    <option value="{{$project->id}}">{{$project->name}}</option>
+                                    <option value="{{$project->name}}">{{$project->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div>
                             <label class="col-sm-2 control-label">Время (ЧЧММ)</label>
                             <div class="col-md-2">
-                                <input data-parsley-required="true" class="form-control"
+                                <input rv-parsley-required="report.deleted | not" class="form-control"
                                        rv-on-change="controller.updateTime"
                                        rv-jquery-plugin-duration="durationPickerOptions" type="text">
                             </div>
                             <div class="col-sm-1 font-red">
-                                <i rv-on-click="controller.removeReport" title="Удалить" class="fa fa-window-close"
+                                <i rv-on-click="controller.removeReport" title="Удалить" class="fa fa-window-close cur-pointer"
                                    aria-hidden="true"></i>
                             </div>
                         </div>
@@ -85,7 +73,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Заметки</label>
                         <div class="col-md-6">
-                            <textarea data-parsley-required="true" rv-value="report.description" class="form-control"
+                            <textarea rv-parsley-required="report.deleted | not" rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
                         </div>
 
@@ -109,23 +97,23 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Проект или задание</label>
                         <div class="col-md-2">
-                            <select data-parsley-required="true" rv-value="report.name"
+                            <select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
                                     class="form-control chosen-rtl select-project">
                                 <option></option>
                                 @foreach($projects as $project)
-                                    <option id="{{$project->id}}">{{$project->name}}</option>
+                                    <option id="{{$project->name}}">{{$project->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div>
                             <label class="col-sm-2 control-label">Время (ЧЧММ)</label>
                             <div class="col-md-2">
-                                <input data-parsley-required="true" rv-jquery-plugin-duration="durationPickerOptions"
-                                       type="text">
+                                <input rv-parsley-required="report.deleted | not" rv-jquery-plugin-duration="durationPickerOptions"
+                                       type="text" class="form-control">
                             </div>
                             <div class="col-sm-1 font-red">
-                                <i rv-on-click="controller.removeReport" title="Удалить" class="fa fa-window-close"
+                                <i rv-on-click="controller.removeReport" title="Удалить" class="fa fa-window-close cur-pointer"
                                    aria-hidden="true"></i>
                             </div>
                         </div>
@@ -134,7 +122,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Заметки</label>
                         <div class="col-md-6">
-                            <textarea data-parsley-required="true" rv-value="report.description" class="form-control"
+                            <textarea rv-parsley-required="report.deleted | not" rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
                         </div>
 
