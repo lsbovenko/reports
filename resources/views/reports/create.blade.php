@@ -110,6 +110,7 @@
                             <label class="col-sm-2 control-label">Время (ЧЧММ)</label>
                             <div class="col-md-2">
                                 <input rv-parsley-required="report.deleted | not" rv-jquery-plugin-duration="durationPickerOptions"
+                                       rv-on-change="controller.updateTime"
                                        type="text" class="form-control">
                             </div>
                             <div class="col-sm-1 font-red">

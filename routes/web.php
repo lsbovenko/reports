@@ -13,20 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', 'Test@test')->name('test');
+//Route::get('/test', 'Test@test')->name('test');
 
 /**
  * only auth users
  */
 Route::group(['middleware' => ['jwt']], function () {
     Route::group(['middleware' => ['auth', 'check_user', 'refresh_jwt']], function () {
-        Route::get('/', 'IndexController@index')->name('main');
+
+        Route::get('/', 'Reports@create')->name('main');
 
         /* Reports resource */
         Route::get('/reports/create', 'Reports@create')->name('reports.create');
         Route::post('/reports/store', 'Reports@store')->name('reports.store');
 
-        Route::get('/view', 'BrowseIdeasController@priorityBoard')->name('view');
+        /*Route::get('/view', 'BrowseIdeasController@priorityBoard')->name('view');
         Route::post('/view/add-time/{date}', 'IndexController@createIdea');
 
         Route::get('/view-statistics', 'BrowseIdeasController@priorityBoard')->name('view-statistics');
@@ -51,6 +52,6 @@ Route::group(['middleware' => ['jwt']], function () {
             ], function () {
                 Route::get('/', 'UsersController@index')->name('index');
             });
-        });
+        });*/
     });
 });
