@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Report;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,12 @@ class Reports extends Controller
      */
     public function store(Request $request)
     {
+        $date = Carbon::parse($request->input('date'));
+
+        if ($date->greaterThan(Carbon::today())) {
+            return response()->json(['error' => 'Date can\'t be greater than today'], 400);
+        }
+
         foreach ($request->input('reports') as $item) {
             $nameOrTask = $item['name'];
 
@@ -64,7 +71,7 @@ class Reports extends Controller
                     'user_id' => Auth::id(),
                     'project_id' => $project ? $project->id : null,
                     'task' => !$project ? $nameOrTask : null,
-                    'date' => date('Y-m-d'),
+                    'date' => $date->format('Y-m-d'),
                     'worked_minutes' => $hours * 60 + $minutes,
                     'description' => $item['description'],
                     'is_tracked' => $item['isTracked'],

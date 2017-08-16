@@ -10,6 +10,7 @@
             return {name: '', description: '', workedTime: {hours: 0, minutes: 0}, isTracked}
         },
         datepicker = $date.datepicker({
+            maxDate: new Date(),
             onSelect(dateStr, date, inst) {
                 inst.hide();
             }
@@ -57,7 +58,7 @@
                     return;
                 }
 
-                let sendData = {reports: []};
+                let sendData = {reports: [], date: $date.val()};
 
                 formData.reports.tracked.forEach(function (r) {
                     if (r.deleted) return ;
@@ -99,7 +100,6 @@
         }
     };
 
-    window.tracked = formData.reports.tracked;
     rv.bind($form, formData);
     datepicker.selectDate(new Date()); //select current date by default
 

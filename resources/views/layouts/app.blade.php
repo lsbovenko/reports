@@ -95,7 +95,6 @@
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
-<script src="{{ asset('js/rivets.bundled.min.js') }}"></script>
 
 @yield('page_js')
 

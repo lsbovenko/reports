@@ -8,6 +8,7 @@
 @endsection
 
 @section('page_js')
+    <script src="{{ asset('js/rivets.bundled.min.js') }}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
     <script src="{{URL::asset('js/select2.min.js')}}"></script>
     <script src="{{URL::asset('js/duration.picker.js')}}"></script>
@@ -73,7 +74,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Заметки</label>
                         <div class="col-md-6">
-                            <textarea rv-parsley-required="report.deleted | not" rv-value="report.description" class="form-control"
+                            <textarea rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
                         </div>
 
@@ -123,7 +124,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Заметки</label>
                         <div class="col-md-6">
-                            <textarea rv-parsley-required="report.deleted | not" rv-value="report.description" class="form-control"
+                            <textarea rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
                         </div>
 

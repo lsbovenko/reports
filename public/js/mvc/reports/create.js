@@ -14,6 +14,7 @@
         return { name: '', description: '', workedTime: { hours: 0, minutes: 0 }, isTracked: isTracked };
     },
         datepicker = $date.datepicker({
+        maxDate: new Date(),
         onSelect: function onSelect(dateStr, date, inst) {
             inst.hide();
         }
@@ -57,7 +58,7 @@
                     return;
                 }
 
-                var sendData = { reports: [] };
+                var sendData = { reports: [], date: $date.val() };
 
                 formData.reports.tracked.forEach(function (r) {
                     if (r.deleted) return;
@@ -99,7 +100,6 @@
         }
     };
 
-    window.tracked = formData.reports.tracked;
     rv.bind($form, formData);
     datepicker.selectDate(new Date()); //select current date by default
 })(jQuery, rivets);

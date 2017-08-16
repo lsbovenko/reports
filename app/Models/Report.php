@@ -22,7 +22,7 @@ class Report extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'project_id', 'date', 'worked_minutes', 'description', 'is_tracked'];
+    protected $fillable = ['user_id', 'project_id', 'task', 'date', 'worked_minutes', 'description', 'is_tracked'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

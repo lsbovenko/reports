@@ -36,7 +36,7 @@ class CreateProjectsReports extends Migration
 
             $table->date('date');
             $table->unsignedSmallInteger('worked_minutes');
-            $table->string('description', 1024);
+            $table->string('description', 1024)->nullable();
             $table->unsignedTinyInteger('is_tracked')->default(0);
 
         });
