@@ -6,6 +6,7 @@ use App\Models\Auth\{
     User,
     Role
 };
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class UserCreator
@@ -30,8 +31,13 @@ class UserCreator
 
         $role = $this->getRole($userData);
 
-        $user = User::create($userData);
-        $user->attachRole($role);
+        try {
+            $user = User::create($userData);
+            $user->attachRole($role);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            throw $exception;
+        }
 
         return $user;
     }
