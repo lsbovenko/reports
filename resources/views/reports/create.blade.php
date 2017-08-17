@@ -50,7 +50,7 @@
                         <div class="col-md-2">
                             <select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
-                                    class="form-control chosen-rtl select-project">
+                                    class="form-control chosen-rtl select-project tracked">
                                 <option></option>
                                 @foreach($projects as $project)
                                     <option value="{{$project->name}}">{{$project->name}}</option>
@@ -62,7 +62,9 @@
                             <div class="col-md-2">
                                 <input rv-parsley-required="report.deleted | not" class="form-control"
                                        rv-on-change="controller.updateTime"
-                                       rv-jquery-plugin-duration="durationPickerOptions" type="text">
+                                       rv-jquery-plugin-tooltip="durationTooltip"
+                                       rv-jquery-plugin-duration="durationPickerOptions"
+                                       rv-value="report._time" type="text">
                             </div>
                             <div class="col-sm-1 font-red">
                                 <i rv-on-click="controller.removeReport" title="Удалить" class="fa fa-window-close cur-pointer"
@@ -94,7 +96,7 @@
                     </div>
                 </div>
 
-                <div rv-each-report="reports.untracked">
+                <div rv-each-report="reports.untracked" rv-class-hidden="report.deleted" class="root">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Проект или задание</label>
                         <div class="col-md-2">
@@ -112,6 +114,8 @@
                             <div class="col-md-2">
                                 <input rv-parsley-required="report.deleted | not" rv-jquery-plugin-duration="durationPickerOptions"
                                        rv-on-change="controller.updateTime"
+                                       rv-jquery-plugin-tooltip="durationTooltip"
+                                       rv-value="report._time"
                                        type="text" class="form-control">
                             </div>
                             <div class="col-sm-1 font-red">

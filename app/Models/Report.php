@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 /**
  * @property int $id
@@ -38,5 +39,28 @@ class Report extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    /**
+     * @param User $user
+     * @param bool $groupByProject
+     * @return $this
+     */
+    public static function findLatestTracked(User $user, bool $groupByProject = true)
+    {
+        $query = static::where('is_tracked', 1)
+            ->where('user_id', $user->id)
+            ->where('created_at', function(Builder $query) use($user){
+                $query->selectRaw('MAX(created_at)')
+                    ->from('reports')
+                    ->where('is_tracked', 1)
+                    ->where('user_id', $user->id);
+            });
+
+        if ($groupByProject) {
+            $query->groupBy('project_id');
+        }
+
+        return $query;
     }
 }

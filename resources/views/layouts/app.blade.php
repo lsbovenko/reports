@@ -92,6 +92,10 @@
 </div>
 <!-- /.container -->
 
+@if (isset($js))
+    <script>window._globals = {!! json_encode($js) !!}</script>
+@endif
+
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>

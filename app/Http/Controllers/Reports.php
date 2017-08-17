@@ -27,7 +27,17 @@ class Reports extends Controller
      */
     public function create()
     {
-        return view('reports.create', ['projects' => Project::all()]);
+        return view(
+            'reports.create',
+            [
+                'projects' => Project::all(),
+                'js' => [
+                    'latestProjects' => Project::select('name')
+                        ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->get())
+                        ->get(),
+                ]
+            ]
+        );
     }
 
     /**

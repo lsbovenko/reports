@@ -1,4 +1,4 @@
-;(function ($, rv) {
+;(function ($, rv, G) {
 
     rv.formatters.not = function (value) {
         return !value;
@@ -17,7 +17,17 @@
         }).data('datepicker');
 
     let formData = {
-        test: true,
+        durationTooltip: {
+            placement: 'top',
+            html: true,
+            title: `<ul class="list-unstyled text-justify">
+                        <li><b>1 5</b> = 1 час 5 минут</li>
+                        <li><b>0105</b> = 1 час 5 минут</li>
+                        <li><b>1h5m</b> = 1 час 5 минут</li>
+                        <li><b>5m</b> = 5 минут</li>
+                        <li><b>0 5</b> = 5 минут</li>                        
+                    </ul>`
+        },
         reports: {
             tracked: [],
             untracked: []
@@ -87,7 +97,12 @@
                     method: 'POST',
                     data: sendData,
                     success() {
-                        formData.reports.tracked = [];
+                        formData.reports.tracked.forEach(function(report){
+                            report.time = {hours:0, minutes: 0};
+                            report._time = '';
+                            report.description = '';
+                        });
+
                         formData.reports.untracked = [];
 
                         $.amaran({
@@ -103,4 +118,12 @@
     rv.bind($form, formData);
     datepicker.selectDate(new Date()); //select current date by default
 
-})(jQuery, rivets);
+    /* Select default projects if exist */
+    if (G.latestProjects && G.latestProjects.length) {
+        G.latestProjects.forEach(function(project){
+            formData.reports.tracked.push(emptyRecord(true));
+            $('select.tracked').last().val(project.name).trigger('change');
+        });
+    }
+
+})(jQuery, rivets, _globals || {});

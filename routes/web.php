@@ -27,16 +27,19 @@ Route::group(['middleware' => ['jwt']], function () {
         Route::get('/reports/create', 'Reports@create')->name('reports.create');
         Route::post('/reports/store', 'Reports@store')->name('reports.store');
 
+        /* Admin */
+
+        //superadmin or admin
+        Route::group(['middleware' => ['role:admin|superadmin']], function() {
+            Route::get('/admin/statistics', 'Admin\Statistics@index')->name('admin.statistics.index');
+        });
+
         /*Route::get('/view', 'BrowseIdeasController@priorityBoard')->name('view');
         Route::post('/view/add-time/{date}', 'IndexController@createIdea');
 
         Route::get('/view-statistics', 'BrowseIdeasController@priorityBoard')->name('view-statistics');
 
-        //superadmin or admin
-        Route::group(['middleware' => ['role:admin|superadmin']], function() {
-            Route::post('/pin-priority/{id}', 'ReviewIdeaController@pinToPriority')->where('id', '[0-9]+')->name('pin-priority');
 
-        });
 
         //superadmin
         Route::group(['middleware' => ['role:superadmin']], function() {

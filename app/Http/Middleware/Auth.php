@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Auth as AuthFacad;
+use Illuminate\Support\Facades\Auth as AuthFacade;
 
 /**
  * Class CheckActiveUser
@@ -22,7 +22,7 @@ class Auth
     public function handle($request, Closure $next)
     {
         if (!$request->user() || !JWTAuth::getToken()) {
-            AuthFacad::logout();
+            AuthFacade::logout();
             return redirect(config('app.auth_url'));
         }
 
