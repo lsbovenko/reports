@@ -207,6 +207,11 @@ return [
         App\Providers\JWTServiceProvider::class,
         App\Providers\AuthApiClientServiceProvider::class,
         App\Providers\UserCreatorServiceProvider::class,
+        App\Providers\StatisticsServiceProvider::class,
+
+        /*
+         * Development service providers
+         */
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],

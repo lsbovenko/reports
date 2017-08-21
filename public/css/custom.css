@@ -85,6 +85,14 @@ footer {
     color: #ce1200;
 }
 
+.font-blue {
+    color: #337ab7;
+}
+
 .cur-pointer {
     cursor: pointer;
+}
+
+.table-fixed {
+    table-layout: fixed;
 }
