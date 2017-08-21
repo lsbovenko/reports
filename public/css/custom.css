@@ -96,3 +96,7 @@ footer {
 .table-fixed {
     table-layout: fixed;
 }
+
+[v-cloak] {
+    display: none;
+}

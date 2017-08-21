@@ -40,7 +40,7 @@
         </div>
     </div>
     @verbatim
-        <div id="app">
+        <div id="app" v-cloak>
             <div class="row" v-if="!statistics.length">
                 <div class="col-md-4 col-md-offset-6">
                     <h3 class="text-muted">Нет данных</h3>
