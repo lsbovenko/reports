@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Статистика')
+
 @section('page_css')
     <link rel="stylesheet" href="{{URL::asset('css/datepicker.min.css')}}">
 @endsection
