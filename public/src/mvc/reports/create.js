@@ -106,7 +106,7 @@
                         formData.reports.untracked = [];
 
                         $.amaran({
-                            'message': 'Данные были отпралвены.',
+                            'message': 'Данные были отправлены.',
                             'position': 'bottom right'
                         });
                     }

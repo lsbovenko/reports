@@ -20,6 +20,7 @@ class Statistics extends Controller
             [
                 'js' => [
                     'users' => User::select(['id', 'name', 'last_name', 'is_active'])
+                        ->where('is_report_required', 1)
                         ->where('is_active', 1)
                         ->orderBy('last_name')
                         ->get(),
