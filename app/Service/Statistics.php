@@ -47,10 +47,13 @@ class Statistics
         $format = 'Y-m-d';
         if (null !== $endDate) {
             $query->whereBetween('date', [$date->format($format), $endDate->format($format)]);
-            $query->orderBy('date');
+            $query
+                ->orderBy('date', 'desc')
+                ->orderBy('created_at', 'desc');
 
         } else {
             $query->where('date', $date->format($format));
+            $query->orderBy('created_at', 'desc');
         }
 
         return $this->composeReports(...$query->get()->all());
@@ -132,6 +135,7 @@ class Statistics
                 $item['tracked'][] = [
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
                     'project_name' => $report->project()->first()->name,
+                    'descirption' => $report->description,
                     'total_minutes' => $report->worked_minutes,
                     'minutes' => $report->worked_minutes % 60,
                     'hours' => (int)($report->worked_minutes / 60),
@@ -141,6 +145,7 @@ class Statistics
                 $item['untracked'][] = [
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
                     'task' => $report->task,
+                    'descirption' => $report->description,
                     'total_minutes' => $report->worked_minutes,
                     'minutes' => $report->worked_minutes % 60,
                     'hours' => (int)($report->worked_minutes / 60),

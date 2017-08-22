@@ -88,6 +88,7 @@
                                                 <th>Проект</th>
                                                 <th>Дата добавления</th>
                                                 <th>Продолжительность</th>
+                                                <th>Заметки</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -95,6 +96,7 @@
                                                 <td>{{tracked.project_name}}</td>
                                                 <td>{{tracked.created}}</td>
                                                 <td><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
+                                                <td><small class="font-extra-small">{{tracked.descirption}}</small></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -112,6 +114,7 @@
                                                 <th>Задача</th>
                                                 <th>Дата добавления</th>
                                                 <th>Продолжительность</th>
+                                                <th>Заметки</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -126,6 +129,7 @@
                                                 </td>
                                                 <td>{{activity.created}}</td>
                                                 <td><span class="label label-success">{{activity.total_minutes | formatMinutes}}</span></td>
+                                                <td><small class="font-extra-small">{{activity.descirption}}</small></td>
                                             </tr>
                                             </tbody>
                                         </table>

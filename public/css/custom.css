@@ -97,6 +97,10 @@ footer {
     table-layout: fixed;
 }
 
+.font-extra-small {
+    font-size: 9px;
+}
+
 [v-cloak] {
     display: none;
 }

@@ -119,5 +119,11 @@
             $('select.tracked').last().val(project.name).trigger('change');
         });
     }
+
+    $('.readmore').readmore({
+        maxHeight: 0,
+        moreLink: '<a href="#">Показать</a>',
+        lessLink: '<a href="#">Скрыть</a>'
+    });
 })(jQuery, rivets, _globals || {});
 //# sourceMappingURL=create.js.map

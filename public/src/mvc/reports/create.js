@@ -126,4 +126,10 @@
         });
     }
 
+    $('.readmore').readmore({
+        maxHeight: 0,
+        moreLink: '<a href="#">Показать</a>',
+        lessLink: '<a href="#">Скрыть</a>'
+    });
+
 })(jQuery, rivets, _globals || {});

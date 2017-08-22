@@ -10,7 +10,7 @@ class Statistics extends Controller
 {
     public function index(\App\Service\Statistics $service)
     {
-        $date = Carbon::yesterday();
+        $date = Carbon::today();
         if ($date->isSaturday() || $date->isSunday()) {
             $date = Carbon::parse('last friday');
         }

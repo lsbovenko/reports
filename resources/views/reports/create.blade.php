@@ -18,18 +18,45 @@
     <script src="{{URL::asset('js/i18n/parsley.ru.js')}}"></script>
     <script src="{{URL::asset('js/jquery.amaran.min.js')}}"></script>
     <script src="{{URL::asset('js/rivets.binders.js')}}"></script>
+    <script src="{{URL::asset('js/readmore.js')}}"></script>
     <script src="{{URL::asset('js/mvc/reports/create.js')}}"></script>
 @endsection
 
 @section('content')
-
     <div class="row">
 
         <div class="col-md-12">
             <div class="m-b30">
                 <h2 class="text-muted">Новый Отчёт</h2>
             </div>
+
             <form rv-class-hidden="0" class="form-horizontal hidden" id="report-form">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <div class="well">
+                            <h5 class="text-muted">Как вносить время</h5>
+
+                            <div class="readmore">
+                                <p>
+                                    "С трекером" - зафиксированное время, часы оплачиваемые
+                                    в соответсвии с условиями проекта.
+                                    Обычно это время потраченное на задачу в рамках
+                                    оценки задания, зафиксированное при помощи ПО для отслеживания времени,
+                                    аднако условия могут отличатся - пожалуйста уточняйте у своего менеджера
+                                    проекта если вы не уверены.
+                                </p>
+
+                                <p>
+                                    Время потраченное на наши внутренние проекты,
+                                    огранизацию рабочего пространства, события компании и неоплачиваемые часы на
+                                    проекте должны быть класифицированы как "Другая авктивность(Без трекера)"
+                                    и внесены отдельно.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="date" class="col-sm-2 control-label">Дата</label>
                     <div class="col-sm-3">
