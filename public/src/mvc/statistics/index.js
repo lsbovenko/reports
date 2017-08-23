@@ -4,6 +4,7 @@
         $datepickerRange = $('#datepicker-range'),
         datepicker = $date.datepicker({
             maxDate: new Date(),
+            minDate: new Date(G.minDate),
             inline: true,
             onSelect(dateStr, datesArray, inst) {
 

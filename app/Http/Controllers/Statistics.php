@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auth\User;
+use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,7 @@ class Statistics extends Controller
 
                     'statistics' => $service->getReportsSummary(null, $date),
                     'selectedDate' => $date->toIso8601String(),
+                    'minDate' => Carbon::parse(Report::orderBy('id', 'asc')->first()->date)->toIso8601String(),
                 ]
             ]
         );
