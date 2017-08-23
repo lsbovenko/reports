@@ -30,7 +30,7 @@ class Reports extends Controller
         return view(
             'reports.create',
             [
-                'projects' => Project::all(),
+                'projects' => Project::allRelatedToUser(\Auth::user())->get(),
                 'js' => [
                     'latestProjects' => Project::select('name')
                         ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->get())

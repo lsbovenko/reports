@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,5 +25,17 @@ class Project extends Model
     public function reports()
     {
         return $this->hasMany('App\Models\Report');
+    }
+
+    public static function allRelatedToUser(User $user)
+    {
+        $query = static::query();
+        $query
+            ->select('projects.*')
+            ->join('reports', 'reports.project_id', '=', 'projects.id')
+            ->where('reports.user_id', $user->id)
+            ->groupBy('projects.id');
+
+        return $query;
     }
 }

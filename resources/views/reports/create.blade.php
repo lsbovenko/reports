@@ -125,14 +125,15 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Проект или задание</label>
                         <div class="col-md-2">
-                            <select rv-parsley-required="report.deleted | not" rv-value="report.name"
+                            <input class="form-control" type="text" rv-parsley-required="report.deleted | not" rv-value="report.name">
+                            {{--<select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
                                     class="form-control chosen-rtl select-project">
                                 <option></option>
                                 @foreach($projects as $project)
                                     <option id="{{$project->name}}">{{$project->name}}</option>
                                 @endforeach
-                            </select>
+                            </select>--}}
                         </div>
                         <div>
                             <label class="col-sm-2 control-label">Время (ЧЧММ)</label>
