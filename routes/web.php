@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Route::get('/test', 'Test@test')->name('test');
 Route::get('/test', 'Test@test')->name('test');
+
+Route::post('/webhook/receive', 'Webhook@receive')->name('webhook.receive');
 
 /**
  * only auth users
