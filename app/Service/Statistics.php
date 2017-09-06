@@ -141,10 +141,11 @@ class Statistics
                     'hours' => (int)($report->worked_minutes / 60),
                 ];
             } else {
+                $project = $report->project()->first();
                 $item['untracked_logged_minutes'] += $report->worked_minutes;
                 $item['untracked'][] = [
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
-                    'task' => $report->task,
+                    'task' => $project ? $project->name : $report->task,
                     'descirption' => $report->description,
                     'total_minutes' => $report->worked_minutes,
                     'minutes' => $report->worked_minutes % 60,
