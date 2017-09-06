@@ -31,7 +31,7 @@ return [
 
     'lifetime' => 1440,//1 day
 
-    'expire_on_close' => false,
+    'expire_on_close' => true,
 
     /*
     |--------------------------------------------------------------------------
