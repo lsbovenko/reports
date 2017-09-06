@@ -78,7 +78,7 @@ class Statistics
         ];
 
         // we have to show all dates for concrete period
-        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate);
+        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate->copy()->modify('+1 day'));
         foreach ($period as $date) {
             $key = $date->format('m/d');
 
