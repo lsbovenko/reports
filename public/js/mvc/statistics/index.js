@@ -58,7 +58,6 @@
     var app = new Vue({
         el: '#app',
         data: {
-            test: false,
             users: G.users || [],
             statistics: G.statistics || [],
             filterParams: {
@@ -88,6 +87,22 @@
                 return this.filterParams.dates.map(function (d) {
                     return d.toString();
                 });
+            },
+            totalInRange: function totalInRange() {
+                var result = { tracked: 0, untracked: 0 };
+
+                this.statistics.forEach(function (stats) {
+                    stats.forEach(function (stat) {
+                        result.tracked += stat.tracked_logged_minutes;
+                        result.untracked += stat.untracked_logged_minutes;
+                    });
+                });
+
+                return {
+                    tracked: formatMinutes(result.tracked),
+                    untracked: formatMinutes(result.untracked),
+                    total: formatMinutes(result.tracked + result.untracked)
+                };
             }
         },
         watch: {

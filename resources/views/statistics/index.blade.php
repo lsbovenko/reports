@@ -65,7 +65,14 @@
                 </div>
 
                 <div class="col-md-9">
-
+                    <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1">
+                        <div class="panel-heading">
+                            <small>Всего за текущий диаппазон</small>
+                            <span class="label label-success">оплачиваемое {{totalInRange.tracked}}</span>
+                            <span class="label label-info">остальное {{totalInRange.untracked}}</span>
+                            <span class="label label-primary">суммарно {{totalInRange.total}}</span>
+                        </div>
+                    </div>
                     <div v-for="userStatistics in statistics">
                         <div class="panel panel-info" v-for="item in userStatistics">
                             <div class="panel-heading">

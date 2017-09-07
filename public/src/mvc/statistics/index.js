@@ -63,7 +63,6 @@
     let app = new Vue({
             el: '#app',
             data: {
-                test: false,
                 users: G.users || [],
                 statistics: G.statistics || [],
                 filterParams: {
@@ -91,6 +90,23 @@
             computed: {
                 selectedDates(){
                     return this.filterParams.dates.map(d => d.toString());
+                },
+                totalInRange(){
+                    let result = {tracked: 0, untracked: 0};
+
+                    this.statistics.forEach(stats => {
+                        stats.forEach(stat => {
+                            result.tracked += stat.tracked_logged_minutes;
+                            result.untracked += stat.untracked_logged_minutes;
+                        });
+
+                    });
+
+                    return {
+                        tracked: formatMinutes(result.tracked),
+                        untracked: formatMinutes(result.untracked),
+                        total: formatMinutes(result.tracked + result.untracked)
+                    };
                 }
             },
             watch: {
@@ -114,6 +130,7 @@
                             data: sendData,
                             success(statistics) {
                                 that.statistics = statistics;
+
                             }
                         });
 
