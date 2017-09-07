@@ -24,6 +24,7 @@ class Statistics extends Controller
                         ->where('is_report_required', 1)
                         ->where('is_active', 1)
                         ->orderBy('last_name')
+                        ->orderBy('name')
                         ->get(),
 
                     'statistics' => $service->getReportsSummary(null, $date),
