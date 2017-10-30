@@ -19,9 +19,9 @@ use Carbon\Carbon;
  */
 class Statistics
 {
-    const TRACKED_COLOR = 'rgb(217, 237, 247)';
+    const TRACKED_COLOR = 'rgb(92, 184, 92)';
 
-    const UNTRACKED_COLOR = 'rgb(225, 217, 247)';
+    const UNTRACKED_COLOR = 'rgb(91, 192, 222)';
 
     /**
      * Compose summary report

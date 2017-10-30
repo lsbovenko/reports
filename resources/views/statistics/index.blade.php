@@ -69,8 +69,8 @@
                         <div class="panel-heading">
                             <small>Всего за текущий диаппазон</small>
                             <span class="label label-primary">суммарно {{totalInRange.total}}</span>
-                            <span class="label label-success">оплачиваемое {{totalInRange.tracked}}</span>
-                            <span class="label label-info">остальное {{totalInRange.untracked}}</span>
+                            <span class="label label-success">зафиксированное время {{totalInRange.tracked}}</span>
+                            <span class="label label-info">другая активность {{totalInRange.untracked}}</span>
                         </div>
                     </div>
                     <div v-for="userStatistics in statistics">
@@ -78,8 +78,8 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <span class="label label-warning">{{item.date}}</span>
-                                    <span class="label label-primary">{{fullName(item.user)}}</span>
-                                    <span class="label label-success">{{item.total_logged_minutes | formatMinutes}}</span>
+                                    <span class="label label-warning">{{fullName(item.user)}}</span>
+                                    <span class="label label-primary">{{item.total_logged_minutes | formatMinutes}}</span>
                                 </h4>
                             </div>
                             <div class="panel-body">
@@ -135,7 +135,7 @@
                                                     </span>
                                                 </td>
                                                 <td>{{activity.created}}</td>
-                                                <td><span class="label label-success">{{activity.total_minutes | formatMinutes}}</span></td>
+                                                <td><span class="label label-info">{{activity.total_minutes | formatMinutes}}</span></td>
                                                 <td><small class="font-extra-small">{{activity.descirption}}</small></td>
                                             </tr>
                                             </tbody>
