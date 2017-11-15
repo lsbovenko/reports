@@ -17,9 +17,7 @@
 
 @section('content')
 <style>
-    table {
-        table-layout: fixed;
-    }
+
 </style>
     <div class="row m-b30">
         <div class="col-md-3">
@@ -95,15 +93,19 @@
                                                 <th>Проект</th>
                                                 <th>Дата добавления</th>
                                                 <th>Продолжительность</th>
-                                                <th>Заметки</th>
+                                                <th style="width: 30%">Заметки</th>
+                                                <th style="width: 10%"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-for="tracked in item.tracked">
+                                            <tr v-if="!tracked.deleted" v-for="tracked in item.tracked">
                                                 <td>{{tracked.project_name}}</td>
                                                 <td>{{tracked.created}}</td>
                                                 <td><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
                                                 <td><small class="font-extra-small">{{tracked.descirption}}</small></td>
+                                                <td class="font-red">
+                                                    <i v-if="item.editable" v-on:click="deleteReport(tracked)" title="Удалить" class="fa fa-window-close cur-pointer pull-right"
+                                                       aria-hidden="true"></i></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -121,11 +123,12 @@
                                                 <th>Задача</th>
                                                 <th>Дата добавления</th>
                                                 <th>Продолжительность</th>
-                                                <th>Заметки</th>
+                                                <th style="width: 30%">Заметки</th>
+                                                <th style="width: 10%"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-for="activity in item.untracked">
+                                            <tr v-if="!activity.deleted" v-for="activity in item.untracked">
                                                 <td>
                                                     <span v-if="activity.project_name">
                                                         {{activity.project_name}}
@@ -137,6 +140,9 @@
                                                 <td>{{activity.created}}</td>
                                                 <td><span class="label label-info">{{activity.total_minutes | formatMinutes}}</span></td>
                                                 <td><small class="font-extra-small">{{activity.descirption}}</small></td>
+                                                <td class="font-red">
+                                                    <i v-if="item.editable" v-on:click="deleteReport(activity)" title="Удалить" class="fa fa-window-close cur-pointer pull-right"
+                                                                        aria-hidden="true"></i></td>
                                             </tr>
                                             </tbody>
                                         </table>

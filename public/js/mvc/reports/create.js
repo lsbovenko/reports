@@ -32,7 +32,11 @@
         },
         durationPickerOptions: {
             onUpdate: function onUpdate(duration) {
-                $(this).parent().parent().find('label').text('Время (' + duration.hours + 'ч:' + duration.minutes + 'м)');
+                var label = $(this).parent().parent().find('label');
+
+                //make it red if time greater than 8 hours
+                label.toggleClass('font-red', duration.hours * 60 + duration.minutes > 480);
+                label.text('Время (' + duration.hours + 'ч:' + duration.minutes + 'м)');
             }
         },
         select2Options: {
@@ -103,6 +107,12 @@
                             'message': 'Данные были отправлены.',
                             'position': 'bottom right'
                         });
+                    },
+                    error: function error(xhr) {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data && data.error) {
+                            window.alert(data.error);
+                        }
                     }
                 });
             }

@@ -9,6 +9,7 @@
 namespace App\Service;
 
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Auth\User;
 use App\Models\Report;
 use Carbon\Carbon;
@@ -59,6 +60,18 @@ class Statistics
         return $this->composeReports(...$query->get()->all());
     }
 
+    public function getTotalLoggedMinutes(User $user = null, Carbon $date = null, Carbon $endDate = null)
+    {
+        $total = 0;
+        foreach ($this->getReportsSummary($user, $date, $endDate) as $personReport) {
+            foreach ($personReport as $reportItem) {
+                $total += $reportItem['total_logged_minutes'];
+            }
+        }
+
+        return $total;
+    }
+
     public function getStackedDatasets(User $user, Carbon $startDate, Carbon $endDate)
     {
         $summary = $this->getReportsSummary($user, $startDate, $endDate);
@@ -106,6 +119,7 @@ class Statistics
     private function composeReports(Report ...$reports)
     {
         $result = [];
+        $currentUser = Auth::user();
 
         /** @var Report $report */
         foreach ($reports as $report) {
@@ -125,6 +139,7 @@ class Statistics
                 $item['tracked'] = $item['untracked'] = [];
                 $item['tracked_logged_minutes'] = 0;
                 $item['untracked_logged_minutes'] = 0;
+                $item['editable'] = $user->id === $currentUser->id;
             }
 
             $item = &$result[$report->user_id][$report->date];
@@ -133,6 +148,7 @@ class Statistics
             if ($report->is_tracked) {
                 $item['tracked_logged_minutes'] += $report->worked_minutes;
                 $item['tracked'][] = [
+                    'id' => $report->id,
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
                     'project_name' => $report->project()->first()->name,
                     'descirption' => $report->description,
@@ -144,6 +160,7 @@ class Statistics
                 $project = $report->project()->first();
                 $item['untracked_logged_minutes'] += $report->worked_minutes;
                 $item['untracked'][] = [
+                    'id' => $report->id,
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
                     'task' => $project ? $project->name : $report->task,
                     'descirption' => $report->description,

@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class Reports extends Controller
 {
+    const MAX_ALLOWED_MINUTES = 720; //12 hours
+    private $stats;
+
+    public function __construct(\App\Service\Statistics $statistics)
+    {
+        $this->stats = $statistics;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -54,6 +62,10 @@ class Reports extends Controller
             return response()->json(['error' => 'Date can\'t be greater than today'], 400);
         }
 
+        $delayed = [];
+
+        $totalMinutes = $this->stats->getTotalLoggedMinutes(Auth::user(), $date);
+
         foreach ($request->input('reports') as $item) {
             $nameOrTask = $item['name'];
 
@@ -68,6 +80,22 @@ class Reports extends Controller
 
             $hours = abs(+$item['time']['hours']);
             $minutes = abs(+$item['time']['minutes']);
+
+            $totalMinutes += $hours * 60 + $minutes;
+
+            if ($totalMinutes >= static::MAX_ALLOWED_MINUTES) {
+                $msg = 'Невозможно добавить время: ' . $date->format('Y-m-d') . ' - превышено максимальное значение.';
+                $msg .= ' Убедитесь в правильности введённых данных.';
+                return response()->json(['error' => $msg], 400);
+            }
+
+            // we will handle this later b/c we have to ensure
+            // that total time is not exceeded max allowed value prior to save
+            $delayed[] = compact('hours', 'minutes', 'project', 'nameOrTask', 'item', 'date');
+        }
+
+        foreach ($delayed as $payload) {
+            extract($payload);
 
             if (null === $project && $item['isTracked']) {
                 $project = Project::create([
@@ -134,6 +162,12 @@ class Reports extends Controller
      */
     public function destroy(Report $report)
     {
-        //
+        if ($report->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
+        $report->delete();
+
+        return response()->json(['success' => 'Report has been deleted.'], 200);
     }
 }

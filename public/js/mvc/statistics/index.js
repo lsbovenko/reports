@@ -55,11 +55,12 @@
         });
     }
 
+    var stats = void 0;
     var app = new Vue({
         el: '#app',
         data: {
             users: G.users || [],
-            statistics: G.statistics || [],
+            statistics: stats = G.statistics || [],
             filterParams: {
                 user_id: null,
                 dates: ['']
@@ -80,6 +81,29 @@
                 user.isActive = true;
                 this.previousActiveUser = user;
                 this.filterParams.user_id = user.id;
+            },
+            deleteReport: function deleteReport(report) {
+                $.ajax({
+                    url: '/reports/' + report.id,
+                    method: 'DELETE',
+                    success: function success(r) {
+                        stats.forEach(function (stat, i) {
+                            if (!stat[i]) {
+                                return;
+                            }
+                            stat[i].tracked.forEach(function (item, index) {
+                                if (item.id === report.id) {
+                                    stat[i].tracked.splice(index, 1);
+                                }
+                            });
+                            stat[i].untracked.forEach(function (item, index) {
+                                if (item.id === report.id) {
+                                    stat[i].untracked.splice(index, 1);
+                                }
+                            });
+                        });
+                    }
+                });
             }
         },
         computed: {

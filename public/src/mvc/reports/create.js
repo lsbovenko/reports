@@ -34,11 +34,14 @@
         },
         durationPickerOptions: {
             onUpdate(duration) {
-                $(this)
+                let label = $(this)
                     .parent()
                     .parent()
-                    .find('label').text('Время (' + duration.hours + 'ч:' + duration.minutes + 'м)');
+                    .find('label');
 
+                //make it red if time greater than 8 hours
+                label.toggleClass('font-red', (duration.hours * 60 + duration.minutes) > 480);
+                label.text('Время (' + duration.hours + 'ч:' + duration.minutes + 'м)');
             }
         },
         select2Options: {
@@ -57,7 +60,7 @@
             updateTime(e, scope) {
                 scope.report.workedTime = $(this).duration('getFormatted', true);
             },
-            removeReport(e, scope){
+            removeReport(e, scope) {
                 scope.report.deleted = true;
             },
             sendNewReport() {
@@ -71,7 +74,7 @@
                 let sendData = {reports: [], date: $date.val()};
 
                 formData.reports.tracked.forEach(function (r) {
-                    if (r.deleted) return ;
+                    if (r.deleted) return;
 
                     sendData.reports.push({
                         name: r.name,
@@ -82,7 +85,7 @@
                 });
 
                 formData.reports.untracked.forEach(function (r) {
-                    if (r.deleted) return ;
+                    if (r.deleted) return;
 
                     sendData.reports.push({
                         name: r.name,
@@ -97,8 +100,8 @@
                     method: 'POST',
                     data: sendData,
                     success() {
-                        formData.reports.tracked.forEach(function(report){
-                            report.time = {hours:0, minutes: 0};
+                        formData.reports.tracked.forEach(function (report) {
+                            report.time = {hours: 0, minutes: 0};
                             report._time = '';
                             report.description = '';
                         });
@@ -109,6 +112,13 @@
                             'message': 'Данные были отправлены.',
                             'position': 'bottom right'
                         });
+                    },
+
+                    error(xhr) {
+                        const data = JSON.parse(xhr.responseText);
+                        if (data && data.error) {
+                            window.alert(data.error);
+                        }
                     }
                 });
             }
@@ -120,7 +130,7 @@
 
     /* Select default projects if exist */
     if (G.latestProjects && G.latestProjects.length) {
-        G.latestProjects.forEach(function(project){
+        G.latestProjects.forEach(function (project) {
             formData.reports.tracked.push(emptyRecord(true));
             $('select.tracked').last().val(project.name).trigger('change');
         });

@@ -29,6 +29,7 @@ Route::group(['middleware' => ['jwt']], function () {
         /* Reports resource */
         Route::get('/reports/create', 'Reports@create')->name('reports.create');
         Route::post('/reports/store', 'Reports@store')->name('reports.store');
+        Route::delete('reports/{report}', 'Reports@destroy')->name('reports.delete');
 
         /* Statistics */
         Route::get('/statistics', 'Statistics@index')->name('statistics.index');

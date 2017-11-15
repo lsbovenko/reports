@@ -60,11 +60,13 @@
         G.users.forEach(u => u.isActive = false);
     }
 
+
+    let stats;
     let app = new Vue({
             el: '#app',
             data: {
                 users: G.users || [],
-                statistics: G.statistics || [],
+                statistics: stats = G.statistics || [],
                 filterParams: {
                     user_id: null,
                     dates: ['']
@@ -85,6 +87,30 @@
                     user.isActive = true;
                     this.previousActiveUser = user;
                     this.filterParams.user_id = user.id;
+                },
+                deleteReport(report)
+                {
+                    $.ajax({
+                        url: '/reports/' + report.id,
+                        method: 'DELETE',
+                        success(r) {
+                            stats.forEach((stat, i) => {
+                                if (!stat[i]) {
+                                    return ;
+                                }
+                                stat[i].tracked.forEach((item, index) => {
+                                    if (item.id === report.id) {
+                                        stat[i].tracked.splice(index, 1);
+                                    }
+                                });
+                                stat[i].untracked.forEach((item, index) => {
+                                    if (item.id === report.id) {
+                                        stat[i].untracked.splice(index, 1);
+                                    }
+                                });
+                            });
+                        }
+                    });
                 }
             },
             computed: {
