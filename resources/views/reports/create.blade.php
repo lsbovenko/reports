@@ -19,7 +19,7 @@
     <script src="{{URL::asset('js/jquery.amaran.min.js')}}"></script>
     <script src="{{URL::asset('js/rivets.binders.js')}}"></script>
     <script src="{{URL::asset('js/readmore.js')}}"></script>
-    <script src="{{URL::asset('js/mvc/reports/create.js')}}"></script>
+    <script src="{{URL::asset('js/mvc/reports/create.js?v=' . time())}}"></script>
 @endsection
 
 @section('content')
