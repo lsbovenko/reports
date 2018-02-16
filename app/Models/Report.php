@@ -51,6 +51,7 @@ class Report extends Model
         $query = static::where('is_tracked', 1)
             ->where('user_id', $user->id)
             ->where('created_at', function(Builder $query) use($user){
+                // we don't use limit because there can be more 1 items
                 $query->selectRaw('MAX(created_at)')
                     ->from('reports')
                     ->where('is_tracked', 1)

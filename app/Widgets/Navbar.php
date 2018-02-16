@@ -26,6 +26,8 @@ class Navbar
                 $menu
                     ->route('main', 'Новый отчёт')
                     ->route('statistics.index', 'Статистика');
+
+                $menu->route('projects.index', 'Проекты');
             }
 
             $menu->setActive(\url()->current());

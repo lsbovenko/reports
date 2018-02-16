@@ -150,7 +150,7 @@ class Statistics
                 $item['tracked'][] = [
                     'id' => $report->id,
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
-                    'project_name' => $report->project()->first()->name,
+                    'project_name' => $report->project()->first()->getFullName(),
                     'descirption' => $report->description,
                     'total_minutes' => $report->worked_minutes,
                     'minutes' => $report->worked_minutes % 60,

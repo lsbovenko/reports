@@ -77,9 +77,9 @@
                                     rv-jquery-plugin-select2="select2Options"
                                     class="form-control chosen-rtl select-project tracked">
                                 <option></option>
-                                @foreach($projects as $project)
-                                    <option value="{{$project->name}}">{{$project->name}}</option>
-                                @endforeach
+                                @if($latestProject)
+                                    <option value="{{$latestProject['id']}}">{{$latestProject['fullName']}}</option>
+                                @endif
                             </select>
                         </div>
                         <div>
