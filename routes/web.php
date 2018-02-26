@@ -40,8 +40,17 @@ Route::group(['middleware' => ['jwt']], function () {
 
         //superadmin or admin
         Route::group(['middleware' => ['role:admin|superadmin']], function() {
-
+            Route::group([
+                'as' => 'projects.',
+                'prefix' => 'projects'
+            ], function () {
+                Route::get('/', 'Projects@index')->name('index');
+                Route::get('/create', 'Projects@create')->name('create');
+                Route::post('/create', 'Projects@save')->name('save');
+                Route::get('/edit/{id}', 'Projects@edit')->where('id', '[0-9]+')->name('edit');
+                Route::post('/edit/{id}', 'Projects@update')->where('id', '[0-9]+')->name('update');
+                Route::get('/search', 'Projects@search')->name('search');
+            });
         });
-
     });
 });

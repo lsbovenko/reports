@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property string $name
+ * @property int $is_active
+ * @property int $parent_id
+ * @property int $rate
+ * @property Project $parent
  * @property Report[] $reports
  */
 class Project extends Model
@@ -17,7 +21,7 @@ class Project extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'last_used'];
+    protected $fillable = ['name', 'last_used', 'rate', 'is_active', 'parent_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -25,6 +29,22 @@ class Project extends Model
     public function reports()
     {
         return $this->hasMany('App\Models\Report');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany('App\Models\Project', 'parent_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parent()
+    {
+        return $this->belongsTo('App\Models\Project', 'parent_id', 'id');
     }
 
     public static function allRelatedToUser(User $user)
@@ -37,5 +57,16 @@ class Project extends Model
             ->groupBy('projects.id');
 
         return $query;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        if ($this->parent_id) {
+            return $this->parent->name . ' - ' . $this->name;
+        }
+        return $this->name;
     }
 }

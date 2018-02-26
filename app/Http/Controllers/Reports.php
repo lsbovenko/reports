@@ -7,6 +7,7 @@ use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Transformers\Project as ProjectTransformer;
 
 class Reports extends Controller
 {
@@ -31,18 +32,28 @@ class Reports extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param ProjectTransformer $projectTransformer
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(ProjectTransformer $projectTransformer)
     {
+        $latestProject = Project::select()
+            ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->take(1)->get())
+            ->take(1)
+            ->get()
+            ->first();
+
+        if ($latestProject) {
+            $latestProject = $projectTransformer->transform($latestProject);
+        }
+
         return view(
             'reports.create',
             [
-                'projects' => Project::allRelatedToUser(\Auth::user())->get(),
+                'latestProject' => $latestProject,
                 'js' => [
-                    'latestProjects' => Project::select('name')
-                        ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->get())
-                        ->get(),
+                    'searchProjectUrl' => route('projects.search'),
+                    'latestProject' => $latestProject,
                 ]
             ]
         );
@@ -67,15 +78,28 @@ class Reports extends Controller
         $totalMinutes = $this->stats->getTotalLoggedMinutes(Auth::user(), $date);
 
         foreach ($request->input('reports') as $item) {
-            $nameOrTask = $item['name'];
+            if ($item['isTracked']) {
+                $projectId = (int)$item['name'];
+            } else {
+                $taskName = htmlspecialchars($item['name']);
+            }
 
-            if (!$nameOrTask) continue;
+            if (!(isset($projectId) || isset($taskName))) {
+                continue;
+            }
 
-            $project = Project::where('name', $nameOrTask)->first();
-
-            if (null !== $project) {
-                $project->last_used = time();
-                $project->save();
+            if (isset($projectId)) {
+                $project = Project::where('id', $projectId)->first();
+                if (isset($project)) {
+                    $project->last_used = time();
+                    $project->save();
+                } else {
+                    return response()->json(['error' => 'Выберите проект из списка'], 400);
+                }
+                $isProjectHasChildren =  !$project->parent_id && $project->children()->count();
+                if ($isProjectHasChildren || !$project->is_active) {
+                    return response()->json(['error' => 'Выберите проект из списка'], 400);
+                }
             }
 
             $hours = abs(+$item['time']['hours']);
@@ -91,24 +115,17 @@ class Reports extends Controller
 
             // we will handle this later b/c we have to ensure
             // that total time is not exceeded max allowed value prior to save
-            $delayed[] = compact('hours', 'minutes', 'project', 'nameOrTask', 'item', 'date');
+            $delayed[] = compact('hours', 'minutes', 'project', 'taskName', 'item', 'date');
         }
 
         foreach ($delayed as $payload) {
             extract($payload);
 
-            if (null === $project && $item['isTracked']) {
-                $project = Project::create([
-                    'name' => $nameOrTask,
-                    'last_used' => time(),
-                ]);
-            }
-
             if ($hours > 0 || $minutes > 0) {
                 Report::create([
                     'user_id' => Auth::id(),
-                    'project_id' => $project ? $project->id : null,
-                    'task' => !$project ? $nameOrTask : null,
+                    'project_id' => isset($project) ? $project->id : null,
+                    'task' => !isset($project) ? $taskName : null,
                     'date' => $date->format('Y-m-d'),
                     'worked_minutes' => $hours * 60 + $minutes,
                     'description' => $item['description'],

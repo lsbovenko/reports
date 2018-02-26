@@ -16,6 +16,7 @@ class Statistics extends Controller
             $date = Carbon::parse('last friday');
         }
 
+        $firstReport = Report::orderBy('date', 'asc')->first();
         return view(
             'statistics.index',
             [
@@ -29,7 +30,7 @@ class Statistics extends Controller
 
                     'statistics' => $service->getReportsSummary(null, $date),
                     'selectedDate' => $date->toIso8601String(),
-                    'minDate' => Carbon::parse(Report::orderBy('date', 'asc')->first()->date)->toIso8601String(),
+                    'minDate' => $firstReport ? Carbon::parse($firstReport->date)->toIso8601String() : '',
                 ]
             ]
         );
