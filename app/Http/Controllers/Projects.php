@@ -29,7 +29,7 @@ class Projects extends Controller
                 ->get();
             $resultProjects = $projectTransformer->removeParentIfExistsChildren($projects);
         } else {
-            $resultProjects = Project::allRelatedToUser(\Auth::user())->get();
+            $resultProjects = Project::allActiveRelatedToUser(\Auth::user())->get();
         }
 
         return response()->json(['items' => $projectTransformer->transformCollection($resultProjects)]);

@@ -28,6 +28,7 @@ class Navbar
                     ->route('statistics.index', 'Статистика');
 
                 $menu->route('projects.index', 'Проекты');
+                $menu->route('hours.index', 'Часы');
             }
 
             $menu->setActive(\url()->current());

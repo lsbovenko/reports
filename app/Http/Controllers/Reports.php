@@ -39,6 +39,7 @@ class Reports extends Controller
     {
         $latestProject = Project::select()
             ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->take(1)->get())
+            ->where('is_active', '=', 1)
             ->take(1)
             ->get()
             ->first();

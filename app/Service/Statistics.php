@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Auth\User;
 use App\Models\Report;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Statistics

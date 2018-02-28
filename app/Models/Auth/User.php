@@ -24,7 +24,8 @@ class User extends Authenticatable
         'name',
         'last_name',
         'email',
-        'is_active'
+        'is_active',
+        'is_revenue_required'
     ];
 
     /**

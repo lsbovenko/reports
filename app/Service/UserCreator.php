@@ -29,9 +29,9 @@ class UserCreator
             throw new \Exception('Payload is empty');
         }
 
-        $role = $this->getRole($userData);
-
         try {
+            $role = $this->getRole($userData);
+            $userData['is_revenue_required'] = $this->isNeedRevenue($userData);
             $user = User::create($userData);
             $user->attachRole($role);
         } catch (\Exception $exception) {
@@ -56,5 +56,21 @@ class UserCreator
         }
 
         return $role;
+    }
+
+
+    /**
+     * @param array $userData
+     * @return bool
+     */
+    private function isNeedRevenue(array $userData): bool
+    {
+        $departmentsWithoutRevenue = [
+            'Маркетинга и продаж',
+            'Кадров',
+            'Другой'
+        ];
+
+        return !in_array($userData['department'], $departmentsWithoutRevenue);
     }
 }

@@ -51,8 +51,11 @@ class Project
         $resultProjects = [];
         foreach ($projects as $project) {
             if (!$project->parent_id && $project->children()->count()) {
+                /** @var \App\Models\Project $child */
                 foreach ($project->children as $child) {
-                    $resultProjects[] = $child;
+                    if ($child->is_active) {
+                        $resultProjects[] = $child;
+                    }
                 }
             } else {
                 $resultProjects[] = $project;
