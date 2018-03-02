@@ -5,6 +5,7 @@ namespace App\Widgets;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Menu\Laravel\MenuFacade as Menu;
+use App\Models\Auth\Role;
 
 /**
  * Class Navbar
@@ -27,8 +28,12 @@ class Navbar
                     ->route('main', 'Новый отчёт')
                     ->route('statistics.index', 'Статистика');
 
-                $menu->route('projects.index', 'Проекты');
-                $menu->route('hours.index', 'Часы');
+                if ($user->hasRole(Role::ROLE_SUPERADMIN) || $user->hasRole(Role::ROLE_ADMIN)) {
+                    $menu
+                        ->route('projects.index', 'Проекты')
+                        ->route('hours.index', 'Часы')
+                        ->route('revenues.index', 'Доход');
+                }
             }
 
             $menu->setActive(\url()->current());

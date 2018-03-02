@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Project as ProjectModel;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class Project

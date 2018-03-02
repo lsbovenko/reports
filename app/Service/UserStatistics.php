@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class Statistics
+ * Class UserStatistics
  * @package App\Service
  */
 class UserStatistics

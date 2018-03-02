@@ -14,6 +14,8 @@ return [
 
     'name' => env('APP_NAME', 'Report Ikantam'),
 
+    'version' => '2.02.2018',// used as stamp for asset files
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

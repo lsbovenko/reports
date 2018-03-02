@@ -25,7 +25,7 @@ Route::group(['middleware' => ['jwt']], function () {
     Route::group(['middleware' => ['auth', 'check_user', 'refresh_jwt']], function () {
 
         Route::get('/', 'Reports@create')->name('main');
-        Route::get('projects/search', 'Projects@search')->name('projects.search');
+        Route::get('/projects/search', 'Projects@search')->name('projects.search');
 
         /* Reports resource */
         Route::get('/reports/create', 'Reports@create')->name('reports.create');
@@ -54,6 +54,9 @@ Route::group(['middleware' => ['jwt']], function () {
 
             Route::get('/hours', 'Hours@index')->name('hours.index');
             Route::get('/hours/filter', 'Hours@filter')->name('hours.filter');
+
+            Route::get('/revenues', 'Revenues@index')->name('revenues.index');
+            Route::get('/revenues/filter', 'Revenues@filter')->name('revenues.filter');
 
         });
     });

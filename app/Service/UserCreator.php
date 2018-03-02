@@ -68,7 +68,6 @@ class UserCreator
         $departmentsWithoutRevenue = [
             'Маркетинга и продаж',
             'Кадров',
-            'Другой'
         ];
 
         return !in_array($userData['department'], $departmentsWithoutRevenue);

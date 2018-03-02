@@ -9,10 +9,9 @@
 @section('page_js')
     <script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
-    <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
-    <script src="{{asset('js/mvc/hours/index.js?v=' . time() )}}"></script>
+    <script src="{{asset('js/mvc/hours/index.js?v=' . Config::get('app.version'))}}"></script>
 @endsection
 
 @section('content')
