@@ -45,10 +45,21 @@
             }
         },
         select2Options: {
-            tags: true,
             width: '100%',
-            placeholder: "Выбрать/Добавить",
-            allowClear: true
+            placeholder: "Выбрать",
+            allowClear: true,
+            ajax: {
+                url: G.searchProjectUrl,
+                processResults: function (data) {
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: false
+                        }
+                    };
+                },
+                delay: 450,
+            },
         },
         controller: {
             addMoreTracked() {
@@ -129,11 +140,9 @@
     datepicker.selectDate(new Date()); //select current date by default
 
     /* Select default projects if exist */
-    if (G.latestProjects && G.latestProjects.length) {
-        G.latestProjects.forEach(function (project) {
-            formData.reports.tracked.push(emptyRecord(true));
-            $('select.tracked').last().val(project.name).trigger('change');
-        });
+    if (G.latestProject) {
+        formData.reports.tracked.push(emptyRecord(true));
+        $('select.tracked').last().val(G.latestProject.id).trigger('change');
     }
 
     $('.readmore').readmore({

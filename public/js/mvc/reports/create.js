@@ -45,7 +45,7 @@
             allowClear: true,
             ajax: {
                 url: G.searchProjectUrl,
-                processResults: function (data) {
+                processResults: function processResults(data) {
                     return {
                         results: data.items,
                         pagination: {
@@ -53,8 +53,8 @@
                         }
                     };
                 },
-                delay: 450,
-            },
+                delay: 450
+            }
         },
         controller: {
             addMoreTracked: function addMoreTracked() {
