@@ -134,9 +134,11 @@
     datepicker.selectDate(new Date()); //select current date by default
 
     /* Select default projects if exist */
-    if (G.latestProject) {
-        formData.reports.tracked.push(emptyRecord(true));
-        $('select.tracked').last().val(G.latestProject.id).trigger('change');
+    if (G.latestProjects && G.latestProjects.length) {
+        G.latestProjects.forEach(function (project) {
+            formData.reports.tracked.push(emptyRecord(true));
+            $('select.tracked').last().val(project.id).trigger('change');
+        });
     }
 
     $('.readmore').readmore({

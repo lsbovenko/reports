@@ -7,6 +7,7 @@ use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Service\RevenueStatistics;
+use App\Helpers\Carbon as CarbonHelper;
 
 /**
  * Class Revenues
@@ -21,12 +22,13 @@ class Revenues extends Controller
     public function index(RevenueStatistics $service)
     {
         $date = Carbon::today();
-        if ($this->isDayOff($date)) {
+        if (CarbonHelper::isDayOff($date)) {
             $date = Carbon::parse('last friday');
         }
 
         $projects = Project::whereNull('parent_id')
             ->orderBy('name', 'ASC')
+            ->with('children')
             ->get();
 
         $firstReport = Report::orderBy('date', 'asc')->first();
@@ -66,14 +68,5 @@ class Revenues extends Controller
     {
         $dates = $request->get('dates');
         return [Carbon::parse($dates[0]), isset($dates[1]) ? Carbon::parse($dates[1])->endOfDay() : null];
-    }
-
-    /**
-     * @param Carbon $date
-     * @return bool
-     */
-    private function isDayOff(Carbon $date)
-    {
-        return $date->isSaturday() || $date->isSunday();
     }
 }

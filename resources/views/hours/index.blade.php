@@ -11,6 +11,7 @@
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
+    <script src="{{asset('js/utils.js?v=' . Config::get('app.version'))}}"></script>
     <script src="{{asset('js/mvc/hours/index.js?v=' . Config::get('app.version'))}}"></script>
 @endsection
 

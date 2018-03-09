@@ -25,6 +25,7 @@ class Projects extends Controller
             $projects = Project::where('name', 'like', '%' . $searchQuery . '%')
                 ->where('is_active', '=' ,1)
                 ->whereNull('parent_id')
+                ->with('children')
                 ->take(10)
                 ->get();
             $resultProjects = $projectTransformer->removeParentIfExistsChildren($projects);

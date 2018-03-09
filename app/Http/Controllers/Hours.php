@@ -7,6 +7,7 @@ use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Service\UserStatistics;
+use App\Helpers\Carbon as CarbonHelper;
 
 /**
  * Class Hours
@@ -21,7 +22,7 @@ class Hours extends Controller
     public function index(UserStatistics $service)
     {
         $date = Carbon::today();
-        if ($this->isDayOff($date)) {
+        if (CarbonHelper::isDayOff($date)) {
             $date = Carbon::parse('last friday');
         }
 
@@ -55,7 +56,7 @@ class Hours extends Controller
         list($date, $endDate) = $this->retrieveDates($request);
 
         return response()->json([
-            'quantityWorkedDays' => $endDate ? $endDate->diffInWeekdays($date) : (int)!$this->isDayOff($date),
+            'quantityWorkedDays' => $endDate ? $endDate->diffInWeekdays($date) : (int)!CarbonHelper::isDayOff($date),
             'usersAndLoggedMinutes' => $service->getUsersAndLoggedMinutes($user, $date, $endDate)
         ]);
     }
@@ -68,14 +69,5 @@ class Hours extends Controller
     {
         $dates = $request->get('dates');
         return [Carbon::parse($dates[0]), isset($dates[1]) ? Carbon::parse($dates[1])->endOfDay() : null];
-    }
-
-    /**
-     * @param Carbon $date
-     * @return bool
-     */
-    private function isDayOff(Carbon $date)
-    {
-        return $date->isSaturday() || $date->isSunday();
     }
 }
