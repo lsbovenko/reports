@@ -47,13 +47,14 @@ class Project extends Model
         return $this->belongsTo('App\Models\Project', 'parent_id', 'id');
     }
 
-    public static function allRelatedToUser(User $user)
+    public static function allActiveRelatedToUser(User $user)
     {
         $query = static::query();
         $query
             ->select('projects.*')
             ->join('reports', 'reports.project_id', '=', 'projects.id')
             ->where('reports.user_id', $user->id)
+            ->where('projects.is_active', 1)
             ->groupBy('projects.id');
 
         return $query;

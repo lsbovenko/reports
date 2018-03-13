@@ -19,7 +19,7 @@
     <script src="{{URL::asset('js/jquery.amaran.min.js')}}"></script>
     <script src="{{URL::asset('js/rivets.binders.js')}}"></script>
     <script src="{{URL::asset('js/readmore.js')}}"></script>
-    <script src="{{URL::asset('js/mvc/reports/create.js?v=' . time())}}"></script>
+    <script src="{{URL::asset('js/mvc/reports/create.js?v=' . Config::get('app.version'))}}"></script>
 @endsection
 
 @section('content')
@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-3 col-md-offset-2">
+                    <div class="col-md-4 col-md-offset-2">
                         <h3 class="text-muted">Оплачиваемое время</h3>
                     </div>
                 </div>
@@ -77,9 +77,9 @@
                                     rv-jquery-plugin-select2="select2Options"
                                     class="form-control chosen-rtl select-project tracked">
                                 <option></option>
-                                @if($latestProject)
+                                @foreach($latestProjects as $latestProject)
                                     <option value="{{$latestProject['id']}}">{{$latestProject['fullName']}}</option>
-                                @endif
+                                @endforeach
                             </select>
                         </div>
                         <div>
@@ -173,6 +173,11 @@
                     <div class="col-sm-offset-2 col-sm-10">
                         <button rv-on-click="controller.sendNewReport" type="button" class="btn btn-default">Отправить
                         </button>
+                    </div>
+                </div>
+                <div class="col-md-offset-2 col-md-6">
+                    <div class="form-group alert alert-warning alert-dismissable">
+                        Если Вы не можете найти свой проект, обратитесь к вашему менеджеру проектов.
                     </div>
                 </div>
             </form>

@@ -1,26 +1,26 @@
 'use strict';
 
 ;(function ($, Vue, G) {
-    var application = new Vue({
+    let application = new Vue({
         el: '#app',
         data: {
-            project: G.project || { name: '', rate: '', is_active: 1 },
+            project: G.project || {name: '', rate: '', is_active: 1},
             childProjects: G.project ? G.project.children : [],
             submitUrl: G.submitUrl,
             error: '',
             disableSubmitButton: false
         },
         methods: {
-            addChildProject: function addChildProject() {
-                this.childProjects.push({ id: '', rate: '', is_active: 1, name: '' });
+            addChildProject: function () {
+                this.childProjects.push({id:'', rate: '', is_active: 1, name: ''});
             },
-            removeChildProject: function removeChildProject(indexOfItem) {
-                this.childProjects.splice(indexOfItem, 1);
+            removeChildProject: function (indexOfItem) {
+                this.childProjects.splice(indexOfItem, 1)
             },
-            submit: function submit() {
+            submit: function () {
                 this.error = '';
                 this.disableSubmitButton = true;
-                var app = this;
+                let app = this;
                 $.ajax({
                     url: this.submitUrl,
                     method: 'POST',
@@ -34,9 +34,9 @@
                     }
                 });
             },
-            getChildInputName: function getChildInputName(name, index) {
+            getChildInputName: function (name, index) {
                 return 'child[' + index + '][' + name + ']';
-            }
+            },
         }
     });
 })(jQuery, Vue, window._globals || {});

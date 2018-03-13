@@ -4,7 +4,7 @@
 
 @section('page_js')
     <script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
-    <script src="{{asset('js/mvc/projects/edit.js?v=' . time() )}}"></script>
+    <script src="{{asset('js/mvc/projects/edit.js?v=' . Config::get('app.version'))}}"></script>
 @endsection
 
 @section('content')

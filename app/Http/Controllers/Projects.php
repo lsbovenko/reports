@@ -25,11 +25,12 @@ class Projects extends Controller
             $projects = Project::where('name', 'like', '%' . $searchQuery . '%')
                 ->where('is_active', '=' ,1)
                 ->whereNull('parent_id')
+                ->with('children')
                 ->take(10)
                 ->get();
             $resultProjects = $projectTransformer->removeParentIfExistsChildren($projects);
         } else {
-            $resultProjects = Project::allRelatedToUser(\Auth::user())->get();
+            $resultProjects = Project::allActiveRelatedToUser(\Auth::user())->get();
         }
 
         return response()->json(['items' => $projectTransformer->transformCollection($resultProjects)]);

@@ -11,7 +11,7 @@
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css?v=' . Config::get('app.version')) }}" rel="stylesheet">
     @yield('page_css')
 
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />

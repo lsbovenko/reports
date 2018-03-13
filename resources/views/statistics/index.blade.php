@@ -12,7 +12,8 @@
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
-    <script src="{{asset('js/mvc/statistics/index.js?v=' . time() )}}"></script>
+    <script src="{{asset('js/utils.js?v=' . Config::get('app.version'))}}"></script>
+    <script src="{{asset('js/mvc/statistics/index.js?v=' . Config::get('app.version'))}}"></script>
 @endsection
 
 @section('content')

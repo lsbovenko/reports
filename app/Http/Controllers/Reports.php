@@ -37,23 +37,20 @@ class Reports extends Controller
      */
     public function create(ProjectTransformer $projectTransformer)
     {
-        $latestProject = Project::select()
-            ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->take(1)->get())
-            ->take(1)
-            ->get()
-            ->first();
+        $latestProjects = Project::select()
+            ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->get())
+            ->where('is_active', '=', 1)
+            ->get();
 
-        if ($latestProject) {
-            $latestProject = $projectTransformer->transform($latestProject);
-        }
+        $latestProjects = $projectTransformer->transformCollection($latestProjects);
 
         return view(
             'reports.create',
             [
-                'latestProject' => $latestProject,
+                'latestProjects' => $latestProjects,
                 'js' => [
                     'searchProjectUrl' => route('projects.search'),
-                    'latestProject' => $latestProject,
+                    'latestProjects' => $latestProjects,
                 ]
             ]
         );

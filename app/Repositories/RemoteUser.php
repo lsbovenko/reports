@@ -56,6 +56,24 @@ class RemoteUser
         return $this->getAuthApiClient()->getUsers($query);
     }
 
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getAll()
+    {
+        $query = [
+            'criteria' => [
+                [
+                    'field' => 'is_active',
+                    'condition' => '=',
+                    'value' => '1'
+                ],
+            ],
+        ];
+
+        return $this->getAuthApiClient()->getUsers($query);
+    }
 
     /**
      * @return \App\Service\AuthApiClient
