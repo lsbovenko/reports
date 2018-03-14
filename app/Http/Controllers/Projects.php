@@ -25,7 +25,6 @@ class Projects extends Controller
             $projects = Project::where('name', 'like', '%' . $searchQuery . '%')
                 ->where('is_active', '=' ,1)
                 ->whereNull('parent_id')
-                ->with('children')
                 ->take(10)
                 ->get();
             $resultProjects = $projectTransformer->removeParentIfExistsChildren($projects);
@@ -156,7 +155,7 @@ class Projects extends Controller
         $rules = [
             'name' => 'required|max:255',
         ];
-        if (!$project || $request->get('name') != $project->name) {
+        if (!$project || mb_strtolower($request->get('name')) != mb_strtolower($project->name)) {
             $rules['name'] .='|unique:projects';
         }
         if (empty($request->get('child'))) {

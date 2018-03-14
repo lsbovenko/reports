@@ -54,6 +54,9 @@
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-7" style="top: -250px;">
+                    <div class="form-group alert alert-warning alert-dismissable">
+                        Время праздников и больничных дней, а также отпуска, системой не исключаются.
+                    </div>
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <ul class="list-unstyled">
