@@ -26,6 +26,8 @@ class UserStatistics
         $query = DB::table('users')
             ->select(DB::raw('users.*, SUM(reports.worked_minutes) as total_worked_minutes'))
             ->join('reports', 'reports.user_id', '=', 'users.id')
+            ->where('reports.is_tracked', 1)
+            ->where('users.is_revenue_required', 1)
             ->orderBy('total_worked_minutes', 'ASC')
             ->groupBy('users.id');
 
