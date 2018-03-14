@@ -172,7 +172,7 @@ class Projects extends Controller
     {
         $rules = [
             'child.' . $index . '.name' => 'required|max:255',
-            'child.' . $index . '.rate' => 'required|integer|max:1000',
+            'child.' . $index . '.rate' => 'required|numeric|max:1000',
         ];
         return $rules;
     }
