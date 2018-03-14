@@ -155,7 +155,7 @@ class Projects extends Controller
         $rules = [
             'name' => 'required|max:255',
         ];
-        if (!$project || $request->get('name') != $project->name) {
+        if (!$project || mb_strtolower($request->get('name')) != mb_strtolower($project->name)) {
             $rules['name'] .='|unique:projects';
         }
         if (empty($request->get('child'))) {
