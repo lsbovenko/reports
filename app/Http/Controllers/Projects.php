@@ -159,7 +159,7 @@ class Projects extends Controller
             $rules['name'] .='|unique:projects';
         }
         if (empty($request->get('child'))) {
-            $rules['rate'] = 'required|integer';
+            $rules['rate'] = 'required|numeric';
         }
         return $rules;
     }
