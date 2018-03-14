@@ -75,8 +75,13 @@
                         <a href="#">Добавить</a>
                     </div>
 
+                    <div class="form-group alert alert-warning alert-dismissable">
+                        <div>
+                            Имя главное проекта должно быть уникальным, дочерние проекты могут иметь любые имена.
+                        </div>
+                    </div>
                     <div class="form-group alert alert-warning alert-dismissable" v-show="project.id">
-                        <div class="">
+                        <div>
                             Если Вы добавляете дочерний проект, и родительский проект уже имеет созданные отчеты,
                             то все отчеты будут перемещены в первый дочерний проект.
                         </div>
