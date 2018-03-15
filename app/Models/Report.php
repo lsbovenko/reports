@@ -10,9 +10,11 @@ use Illuminate\Database\Query\Builder;
  * @property int $id
  * @property int $user_id
  * @property int $project_id
+ * @property int $is_tracked
  * @property string $created_at
  * @property string $updated_at
  * @property string $date
+ * @property string $task
  * @property integer $worked_minutes
  * @property string $description
  * @property Project $project
