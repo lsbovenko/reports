@@ -75,6 +75,7 @@ class Reports extends Controller
         $totalMinutes = $this->stats->getTotalLoggedMinutes(Auth::user(), $date);
 
         foreach ($request->input('reports') as $item) {
+            $projectId = $taskName = $project = null;
             if ($item['isTracked']) {
                 $projectId = (int)$item['name'];
             } else {
