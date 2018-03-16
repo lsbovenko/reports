@@ -20,6 +20,7 @@ class ProjectUpdater
         $checkReportsForParentProject = true;
         $project->name = $request->get('name');
         $project->is_active = (bool)$request->get('is_active');
+        $project->is_fixed_price = (bool)$request->get('is_fixed_price');
         $project->save();
         if (!empty($request->get('child'))) {
             foreach ($request->get('child') as $childData) {
@@ -32,6 +33,7 @@ class ProjectUpdater
                 $childProject->name = $childData['name'];
                 $childProject->is_active = (bool)$childData['is_active'];
                 $childProject->parent_id = $project->id;
+                $childProject->is_fixed_price = $project->is_fixed_price;
                 $childProject->save();
 
                 if ($checkReportsForParentProject && $project->reports()->count()) {

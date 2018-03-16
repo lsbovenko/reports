@@ -62,7 +62,13 @@
                                 <div class="col-md-6">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <span class="font-blue">Approximate revenue: </span>$ {{revenue}}
+                                            <span class="font-blue">Approximate fixed price revenue: </span>$ {{fixedPriceRevenue}}
+                                        </li>
+                                        <li>
+                                            <span class="font-blue">Approximate not fixed price revenue: </span>$ {{notFixedPriceRevenue}}
+                                        </li>
+                                        <li>
+                                            <span class="font-blue">Total approximate revenue: </span>$ {{totalRevenue}}
                                         </li>
                                     </ul>
                                 </div>

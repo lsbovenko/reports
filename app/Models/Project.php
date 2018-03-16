@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $updated_at
  * @property string $name
  * @property int $is_active
+ * @property int $is_fixed_price
  * @property int $parent_id
  * @property int $rate
  * @property Project $parent
@@ -21,7 +22,7 @@ class Project extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'last_used', 'rate', 'is_active', 'parent_id'];
+    protected $fillable = ['name', 'last_used', 'rate', 'is_active', 'parent_id', 'is_fixed_price'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
