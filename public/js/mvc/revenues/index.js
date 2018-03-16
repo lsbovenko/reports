@@ -29,10 +29,16 @@
     var app = new Vue({
         el: '#app',
         data: {
-            revenue: G.revenue,
+            fixedPriceRevenue: G.fixedPriceRevenue,
+            notFixedPriceRevenue: G.notFixedPriceRevenue,
             filterParams: {
                 project_id: '',
                 dates: ['']
+            }
+        },
+        computed: {
+            totalRevenue: function totalRevenue() {
+                return this.fixedPriceRevenue + this.notFixedPriceRevenue;
             }
         },
         watch: {
@@ -57,7 +63,8 @@
                         url: '/revenues/filter',
                         data: sendData,
                         success: function success(response) {
-                            that.revenue = response.revenue;
+                            that.fixedPriceRevenue = response.fixedPriceRevenue;
+                            that.notFixedPriceRevenue = response.notFixedPriceRevenue;
                         }
                     });
                 }

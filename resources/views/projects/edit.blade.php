@@ -41,6 +41,15 @@
                             </label>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input name="is_fixed_price" type="hidden" value="0">
+                                <input checked="checked" name="is_fixed_price" type="checkbox" v-model="project.is_fixed_price">
+                                Fixed price
+                            </label>
+                        </div>
+                    </div>
                     <hr>
                     <div class="form-group">
                         <h3>Дочерние проекты</h3>

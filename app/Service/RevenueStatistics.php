@@ -17,9 +17,15 @@ class RevenueStatistics
      * @param Carbon|null $date
      * @param Carbon|null $endDate
      * @param Project|null $project
+     * @param bool $isFixedPrice
      * @return float
      */
-    public function getRevenue(Carbon $date = null, Carbon $endDate = null, Project $project = null)
+    public function getRevenue(
+        Carbon $date = null,
+        Carbon $endDate = null,
+        Project $project = null,
+        $isFixedPrice = false
+    )
     {
         $query = DB::table('reports')
             ->select(DB::raw('reports.project_id, projects.rate, SUM(reports.worked_minutes) as total_worked_minutes'))
@@ -32,6 +38,10 @@ class RevenueStatistics
             } else {
                 $query->where('reports.project_id', '=', $project->id);
             }
+        }
+
+        if (isset($isFixedPrice)) {
+            $query->where('projects.is_fixed_price', '=', (int)$isFixedPrice);
         }
 
         $query->groupBy('projects.id');

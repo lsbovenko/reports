@@ -37,7 +37,8 @@ class Revenues extends Controller
             [
                 'projects' => $projects,
                 'js' => [
-                    'revenue' => $service->getRevenue($date),
+                    'fixedPriceRevenue' => $service->getRevenue($date, null, null, true),
+                    'notFixedPriceRevenue' => $service->getRevenue($date),
                     'selectedDate' => $date->toIso8601String(),
                     'minDate' => $firstReport ? Carbon::parse($firstReport->date)->toIso8601String() : '',
                 ]
@@ -56,7 +57,8 @@ class Revenues extends Controller
         list($date, $endDate) = $this->retrieveDates($request);
 
         return response()->json([
-            'revenue' => $service->getRevenue($date, $endDate, $project),
+            'fixedPriceRevenue' => $service->getRevenue($date, $endDate, $project, true),
+            'notFixedPriceRevenue' => $service->getRevenue($date, $endDate, $project),
         ]);
     }
 
