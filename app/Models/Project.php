@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $rate
  * @property Project $parent
  * @property Report[] $reports
+ * @property Project[] $children
  */
 class Project extends Model
 {
