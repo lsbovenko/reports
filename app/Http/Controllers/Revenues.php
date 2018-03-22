@@ -28,7 +28,6 @@ class Revenues extends Controller
 
         $projects = Project::whereNull('parent_id')
             ->orderBy('name', 'ASC')
-            ->with('children')
             ->get();
 
         $firstReport = Report::orderBy('date', 'asc')->first();

@@ -43,11 +43,6 @@
                                 <option value="">--Все--</option>
                                 @foreach ($projects as $project)
                                     <option value="{{$project->id}}">{{$project->getFullName()}}</option>
-                                    @if($project->children->count())
-                                        @foreach ($project->children as $childProject)
-                                            <option value="{{$childProject->id}}">{{$childProject->getFullName()}}</option>
-                                        @endforeach
-                                    @endif
                                 @endforeach
                             </select>
                         </div>
