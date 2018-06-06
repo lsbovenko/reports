@@ -1,13 +1,25 @@
-;(function ($, Vue, Utils, G) {
+;(function ($, Vue, Utils, H, W, G) {
+
+
 
     const $date = $('#date'),
+        strToDate = (str) => {
+            let [y,m,d] = str.split('-'),
+                date = new Date();
+            date.setFullYear(y);
+            date.setMonth(m - 1);
+            date.setDate(d);
+            return date;
+        },
         $datepickerRange = $('#datepicker-range'),
         datepicker = $date.datepicker({
             maxDate: new Date(),
             minDate: new Date(G.minDate),
             inline: true,
             onSelect(dateStr, datesArray, inst) {
-
+                if (inst.opts._ignoreOnSelect) {
+                    return;
+                }
                 if (inst.opts.range && inst.selectedDates.length === 2) {
                     app.filterParams.dates = inst.selectedDates;
                 } else if (!inst.opts.range) {
@@ -101,17 +113,44 @@
                 filterParams: {
                     deep: true,
                     handler() {
+                        let sendData = {},
+                            that = this;
                         //prevent from very first run
                         if (!this._filterParamsWathcerInit) {
                             this._filterParamsWathcerInit = true;
-                            return;
+                            sendData = $.deparam(W.location.search.replace('?',''));
+                            if (sendData.user_id) {
+                                this.users.forEach(user => {
+                                    if (+sendData.user_id === user.id) {
+                                        user.isActive = true;
+                                        this.previousActiveUser = user;
+                                        this.filterParams.user_id = user.id;
+                                    }
+                                })
+                            }
+                            if (sendData.dates && sendData.dates.length > 0) {
+                                datepicker.opts.range = sendData.dates.length > 1;
+                                $datepickerRange.prop('checked', true);
+                                datepicker.opts._ignoreOnSelect = true;
+
+                                let dates = sendData.dates.map(strToDate);
+                                datepicker.selectedDates = dates;
+                                dates.forEach(date => {
+                                    datepicker.selectDate(date);
+
+                                });
+                                this.filterParams.dates = dates;
+                                datepicker.opts._ignoreOnSelect = false;
+                            }
+                            return
                         }
 
-                        let that = this,
-                            sendData = {
-                                user_id: this.filterParams.user_id,
-                                dates: this.filterParams.dates.map(d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate())
-                            };
+                        sendData = {
+                            user_id: this.filterParams.user_id,
+                            dates: this.filterParams.dates.map(d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate())
+                        };
+                        H.pushState(sendData, $(document).prop('title'), '?' + $.param(sendData));
+
 
                         $.ajax({
                             url: '/statistics/filter',
@@ -124,7 +163,7 @@
 
                         // if user is selected then we have to visualize data with chart
                         // thus we need to obtain corresponding data
-                        if (this.filterParams.user_id) {
+                        if (sendData.user_id) {
                             $.ajax({
                                 url: '/statistics/chart-data',
                                 data: sendData,
@@ -189,4 +228,4 @@
         datepicker.update('range', $(this).is(':checked'));
     });
 
-})(jQuery, Vue, Utils, window._globals || {});
+})(jQuery, Vue, Utils, History, window, window._globals || {});

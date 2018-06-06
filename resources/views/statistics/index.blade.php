@@ -8,6 +8,8 @@
 
 @section('page_js')
     <script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
+    <script src="{{URL::asset('js/jquery.history.js')}}"></script>
+    <script src="{{URL::asset('js/jquery-deparam.js')}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>

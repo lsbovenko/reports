@@ -105,4 +105,3 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         }
     };
 })(jQuery);
-//# sourceMappingURL=duration.picker.js.map
