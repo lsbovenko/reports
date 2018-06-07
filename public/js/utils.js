@@ -23,11 +23,13 @@ var Utils =  {
         }
         return ending;
     },
-    formatMinutes: function formatMinutes(minutes) {
-        var hours = parseInt(minutes / 60);
+    formatMinutes: function formatMinutes(minutes, short) {
+        var hours = parseInt(minutes / 60).toString();
+        minutes = (minutes % 60).toString();
 
-        minutes = minutes % 60;
-
+        if (short) {
+            return "00".substring(0, 2 - hours.length) + hours + ':' + "00".substring(0, 2 - minutes.length) + minutes;
+        }
         return hours + ' ' + this.nounEnding(hours, ['час', 'часа', 'часов']) + ' ' + minutes + ' ' + this.nounEnding(minutes, ['минута', 'минуты', 'минут']);
     }
 };

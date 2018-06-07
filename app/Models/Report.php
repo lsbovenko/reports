@@ -11,6 +11,7 @@ use Illuminate\Database\Query\Builder;
  * @property int $user_id
  * @property int $project_id
  * @property int $is_tracked
+ * * @property int $is_overtime
  * @property string $created_at
  * @property string $updated_at
  * @property string $date
@@ -25,7 +26,16 @@ class Report extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'project_id', 'task', 'date', 'worked_minutes', 'description', 'is_tracked'];
+    protected $fillable = [
+        'user_id',
+        'project_id',
+        'task',
+        'date',
+        'worked_minutes',
+        'description',
+        'is_tracked',
+        'is_overtime',
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

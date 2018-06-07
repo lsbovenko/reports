@@ -106,7 +106,8 @@ class Reports extends Controller
             $totalMinutes += $hours * 60 + $minutes;
 
             if ($totalMinutes >= static::MAX_ALLOWED_MINUTES) {
-                $msg = 'Невозможно добавить время: ' . $date->format('Y-m-d') . ' - превышено максимальное значение.';
+                $msg = 'Невозможно добавить время: ' . $date->format('Y-m-d') .
+                        ' - превышено максимальное время за отчётноый день.';
                 $msg .= ' Убедитесь в правильности введённых данных.';
                 return response()->json(['error' => $msg], 400);
             }
@@ -128,6 +129,7 @@ class Reports extends Controller
                     'worked_minutes' => $hours * 60 + $minutes,
                     'description' => $item['description'],
                     'is_tracked' => $item['isTracked'],
+                    'is_overtime' => $item['isOvertime'],
                 ]);
             }
         }

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendReportOvertime;
 use App\Console\Commands\SendReportReminder;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -14,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        SendReportReminder::class
+        SendReportReminder::class,
+        SendReportOvertime::class,
     ];
 
     /**
@@ -29,6 +31,11 @@ class Kernel extends ConsoleKernel
             ->command('mail:send-reminder')
             ->weekdays()
             ->at('9:00')
+            ->appendOutputTo(storage_path('logs/schedule.log'));
+
+        $schedule
+            ->command('mail:send-overtime')
+            ->monthlyOn(1, '15:00')
             ->appendOutputTo(storage_path('logs/schedule.log'));
     }
 

@@ -92,6 +92,10 @@ footer {
     color: #337ab7;
 }
 
+.bg-highlight {
+    background-color: #f8c153 !important;
+}
+
 .cur-pointer {
     cursor: pointer;
 }

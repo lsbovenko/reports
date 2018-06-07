@@ -130,6 +130,7 @@ class Statistics
                 $item = &$result[$report->user_id][$report->date];
                 $item['date'] = $report->date;
                 $item['total_logged_minutes'] = 0;
+                $item['total_overtime_minutes'] = 0;
 
                 $user = $report->user()->first();
                 $item['user'] = [
@@ -140,11 +141,14 @@ class Statistics
                 $item['tracked'] = $item['untracked'] = [];
                 $item['tracked_logged_minutes'] = 0;
                 $item['untracked_logged_minutes'] = 0;
-                $item['editable'] = $user->id === $currentUser->id;
+                $item['editable'] = $currentUser && $user->id === $currentUser->id;
             }
 
             $item = &$result[$report->user_id][$report->date];
             $item['total_logged_minutes'] += $report->worked_minutes;
+            if ($report->is_overtime) {
+                $item['total_overtime_minutes'] += $report->worked_minutes;
+            }
 
             if ($report->is_tracked) {
                 $item['tracked_logged_minutes'] += $report->worked_minutes;
@@ -153,6 +157,7 @@ class Statistics
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
                     'project_name' => $report->project()->first()->getFullName(),
                     'descirption' => $report->description,
+                    'overtime' => $report->is_overtime,
                     'total_minutes' => $report->worked_minutes,
                     'minutes' => $report->worked_minutes % 60,
                     'hours' => (int)($report->worked_minutes / 60),
@@ -165,6 +170,7 @@ class Statistics
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
                     'task' => $project ? $project->name : $report->task,
                     'descirption' => $report->description,
+                    'overtime' => $report->is_overtime,
                     'total_minutes' => $report->worked_minutes,
                     'minutes' => $report->worked_minutes % 60,
                     'hours' => (int)($report->worked_minutes / 60),

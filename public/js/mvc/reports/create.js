@@ -11,7 +11,7 @@
         emptyRecord = function emptyRecord() {
         var isTracked = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-        return { name: '', description: '', workedTime: { hours: 0, minutes: 0 }, isTracked: isTracked };
+        return { name: '', description: '', workedTime: { hours: 0, minutes: 0 }, isTracked: isTracked, overtime: false };
     },
         datepicker = $date.datepicker({
         maxDate: new Date(),
@@ -86,6 +86,7 @@
                         name: r.name,
                         time: r.workedTime,
                         description: r.description,
+                        isOvertime: +r.overtime,
                         isTracked: 1
                     });
                 });
@@ -97,6 +98,7 @@
                         name: r.name,
                         time: r.workedTime,
                         description: r.description,
+                        isOvertime: +r.overtime,
                         isTracked: 0
                     });
                 });

@@ -92,20 +92,22 @@
                     return this.filterParams.dates.map(d => d.toString());
                 },
                 totalInRange(){
-                    let result = {tracked: 0, untracked: 0};
+                    let result = {tracked: 0, untracked: 0, overtime: 0};
 
                     this.statistics.forEach(stats => {
                         stats.forEach(stat => {
                             result.tracked += stat.tracked_logged_minutes;
                             result.untracked += stat.untracked_logged_minutes;
+                            result.overtime += stat.total_overtime_minutes;
                         });
 
                     });
 
                     return {
-                        tracked: Utils.formatMinutes(result.tracked),
-                        untracked: Utils.formatMinutes(result.untracked),
-                        total: Utils.formatMinutes(result.tracked + result.untracked)
+                        tracked: Utils.formatMinutes(result.tracked, true),
+                        untracked: Utils.formatMinutes(result.untracked, true),
+                        total: Utils.formatMinutes(result.tracked + result.untracked, true),
+                        total_overtime: Utils.formatMinutes(result.overtime, true),
                     };
                 }
             },

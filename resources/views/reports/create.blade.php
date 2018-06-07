@@ -106,6 +106,16 @@
                         </div>
 
                     </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-md-6">
+                            <div class="checkbox">
+                                <label>
+                                    <input rv-checked="report.overtime" type="checkbox"> Отметить время как сверхурочное
+                                    &nbsp<i title="Время будет отмечено как сверхурочное. Записи с такой отметкой будут отправлены в отчёте руководству в начале каждого месяца. ВАЖНО: например вы отработали 10 часов (2 часа сверхурочно). Для того, чтобы отметить 2 часа, создайте отдельную запись и активируйте чекбокс. " class="fa fa-question-circle"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -158,6 +168,16 @@
                                       rows="3"></textarea>
                         </div>
 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-md-6">
+                            <div class="checkbox">
+                                <label>
+                                    <input rv-checked="report.overtime" type="checkbox"> Отметить время как сверхурочное
+                                    &nbsp<i title="Время будет отмечено как сверхурочное. Записи с такой отметкой будут отправлены в отчёте руководству в начале каждого месяца. ВАЖНО: например вы отработали 10 часов (2 часа сверхурочно). Для того, чтобы отметить 2 часа, создайте отдельную запись и активируйте чекбокс. " class="fa fa-question-circle"></i>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

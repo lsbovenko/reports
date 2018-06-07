@@ -72,6 +72,7 @@
                             <span class="label label-primary">суммарно {{totalInRange.total}}</span>
                             <span class="label label-success">зафиксированное время {{totalInRange.tracked}}</span>
                             <span class="label label-info">другая активность {{totalInRange.untracked}}</span>
+                            <span class="label label-warning">сверхурочно {{totalInRange.total_overtime}}</span>
                         </div>
                     </div>
                     <div v-for="userStatistics in statistics">
@@ -101,7 +102,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-if="!tracked.deleted" v-for="tracked in item.tracked">
+                                            <tr v-bind:title="tracked.overtime && 'Отмечено как сверхурочное время'"  v-bind:class="{'bg-highlight': tracked.overtime}" v-if="!tracked.deleted" v-for="tracked in item.tracked">
                                                 <td>{{tracked.project_name}}</td>
                                                 <td>{{tracked.created}}</td>
                                                 <td><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
@@ -131,7 +132,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-if="!activity.deleted" v-for="activity in item.untracked">
+                                            <tr v-bind:title="activity.overtime && 'Отмечено как сверхурочное время'" v-bind:class="{'bg-highlight': activity.overtime}" v-if="!activity.deleted" v-for="activity in item.untracked">
                                                 <td>
                                                     <span v-if="activity.project_name">
                                                         {{activity.project_name}}
