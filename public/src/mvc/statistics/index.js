@@ -130,7 +130,7 @@
                             }
                             if (sendData.dates && sendData.dates.length > 0) {
                                 datepicker.opts.range = sendData.dates.length > 1;
-                                $datepickerRange.prop('checked', true);
+                                $datepickerRange.prop('checked', datepicker.opts.range);
                                 datepicker.opts._ignoreOnSelect = true;
 
                                 let dates = sendData.dates.map(strToDate);

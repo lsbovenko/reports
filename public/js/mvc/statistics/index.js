@@ -139,7 +139,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                         }
                         if (sendData.dates && sendData.dates.length > 0) {
                             datepicker.opts.range = sendData.dates.length > 1;
-                            $datepickerRange.prop('checked', true);
+                            $datepickerRange.prop('checked', datepicker.opts.range);
                             datepicker.opts._ignoreOnSelect = true;
 
                             var dates = sendData.dates.map(strToDate);
