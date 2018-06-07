@@ -26,7 +26,8 @@ class Navbar
             if (isset($user)) {
                 $menu
                     ->route('main', 'Новый отчёт')
-                    ->route('statistics.index', 'Статистика');
+                    ->route('statistics.index', 'Статистика')
+                    ->route('statistics.index', 'Моя Статистика', ['user_id' => $user->id]);
 
                 if ($user->hasRole(Role::ROLE_SUPERADMIN) || $user->hasRole(Role::ROLE_ADMIN)) {
                     $menu
