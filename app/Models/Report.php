@@ -19,7 +19,7 @@ use Illuminate\Database\Query\Builder;
  * @property integer $worked_minutes
  * @property string $description
  * @property Project $project
- * @property User $user
+ * @property Auth\User $user
  */
 class Report extends Model
 {
