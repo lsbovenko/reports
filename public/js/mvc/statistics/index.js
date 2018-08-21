@@ -114,7 +114,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     tracked: Utils.formatMinutes(result.tracked, true),
                     untracked: Utils.formatMinutes(result.untracked, true),
                     total: Utils.formatMinutes(result.tracked + result.untracked, true),
-                    total_overtime: Utils.formatMinutes(result.overtime, true)
+                    total_overtime: Utils.formatMinutes(result.overtime, true),
+                    planned: Utils.formatMinutes(result.tracked + result.untracked - result.overtime, true)
                 };
             }
         },

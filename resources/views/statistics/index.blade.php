@@ -73,6 +73,7 @@
                             <span class="label label-success">зафиксированное время {{totalInRange.tracked}}</span>
                             <span class="label label-info">другая активность {{totalInRange.untracked}}</span>
                             <span class="label label-warning">сверхурочно {{totalInRange.total_overtime}}</span>
+                            <span title="время отработанное в пределах рабочего дня" class="label label-default">планово {{totalInRange.planned}}</span>
                         </div>
                     </div>
                     <div v-for="userStatistics in statistics">

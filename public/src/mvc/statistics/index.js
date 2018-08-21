@@ -108,6 +108,7 @@
                         untracked: Utils.formatMinutes(result.untracked, true),
                         total: Utils.formatMinutes(result.tracked + result.untracked, true),
                         total_overtime: Utils.formatMinutes(result.overtime, true),
+                        planned: Utils.formatMinutes(result.tracked + result.untracked - result.overtime, true)
                     };
                 }
             },
