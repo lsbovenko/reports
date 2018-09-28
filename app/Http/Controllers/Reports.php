@@ -60,9 +60,10 @@ class Reports extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
+     * @param \App\Service\Skills $skillsService
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, \App\Service\Skills $skillsService)
     {
         $date = Carbon::parse($request->input('date'));
 
@@ -121,7 +122,7 @@ class Reports extends Controller
             extract($payload);
 
             if ($hours > 0 || $minutes > 0) {
-                Report::create([
+                $report = Report::create([
                     'user_id' => Auth::id(),
                     'project_id' => isset($project) ? $project->id : null,
                     'task' => !isset($project) ? $taskName : null,
@@ -131,6 +132,9 @@ class Reports extends Controller
                     'is_tracked' => $item['isTracked'],
                     'is_overtime' => $item['isOvertime'],
                 ]);
+                if ($report->is_tracked && $report->user->is_revenue_required) {
+                    $skillsService->addProjectToSkillsService($report);
+                }
             }
         }
 

@@ -73,6 +73,14 @@ return [
     */
     'auth_url' => env('AUTH_URL', 'http://localhost'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Ikantam skills service
+    |--------------------------------------------------------------------------
+    |
+    */
+    'skills_url' => env('SKILLS_URL', ''),
+    'skills_receive_project_path_receiver' => env('SKILLS_PROJECTS_PATH_RECEIVER', ''),
 
     'auth_api_key' => env('AUTH_API_KEY', ''),
 
@@ -217,6 +225,7 @@ return [
          */
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        App\Providers\SkillsServiceProvider::class,
     ],
 
     /*
