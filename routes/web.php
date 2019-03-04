@@ -34,6 +34,7 @@ Route::group(['middleware' => ['jwt']], function () {
 
         /* Statistics */
         Route::get('/statistics', 'Statistics@index')->name('statistics.index');
+        Route::get('/my-stats', 'Statistics@index')->name('my-stats');
         Route::get('/statistics/filter', 'Statistics@filter')->name('statistics.filter');
         Route::get('/statistics/chart-data', 'Statistics@chartData')->name('statistics.chart-data');
 
