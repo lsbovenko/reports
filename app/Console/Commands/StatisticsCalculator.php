@@ -89,14 +89,14 @@ class StatisticsCalculator extends Command
                 if (!$this->isExistsWorkingDay($daysWithReports, $day) && !$reportDay->isWeekend()) {
                     $daysWithReports[] = $day;
                     //At the weekend can not be fixed as a worker. We can only mark time as spent
-                    //f the user is on vacation or is sick, the working days for him are not taken
+                    //If the user is on vacation or is sick, the working days for him are not taken
                     // into account and are not entered ['max_available_time']
                     $result[$user->id]['max_available_time'] += self::WORK_HOURS;
                 }
             }
         }
 
-        return $result;
+        return json_encode($result);
     }
 
     /**
