@@ -81,6 +81,7 @@ return [
     */
     'skills_url' => env('SKILLS_URL', ''),
     'skills_receive_project_path_receiver' => env('SKILLS_PROJECTS_PATH_RECEIVER', ''),
+    'skills_receive_statistics_path_receiver' => env('SKILLS_STATISTICS_PATH_RECEIVER', ''),
 
     'auth_api_key' => env('AUTH_API_KEY', ''),
 

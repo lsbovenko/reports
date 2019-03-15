@@ -12,6 +12,8 @@ use App\Models\Auth\User;
 use Carbon\Carbon;
 use App\Models\Report;
 use Illuminate\Console\Command;
+use GuzzleHttp\Client;
+use Illuminate\Encryption\Encrypter;
 
 class StatisticsCalculator extends Command
 {
@@ -46,12 +48,34 @@ class StatisticsCalculator extends Command
     protected $description = 'Send statistics';
 
     /**
+     * @var Client
+     */
+    protected $client;
+
+    /**
+     * @var Encrypter
+     */
+    protected $encrypter;
+
+    /**
+     * StatisticsCalculator constructor.
+     * @param Client $client
+     */
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+        $this->encrypter = new Encrypter(config('app.webhook.' . env('APP_ENV') . '.secret_key'), 'AES-256-CBC');
+        parent::__construct();
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
+        $this->info('*** Starting command "' . $this->signature . '" at ' . Carbon::now()->toIso8601String() . " ***");
         $format = 'Y-m-d';
         /** Get the current day last week */
         $previousWeek = Carbon::now()->subDays(self::SUB_DAYS);
@@ -96,7 +120,9 @@ class StatisticsCalculator extends Command
             }
         }
 
-        return json_encode($result);
+        if (!empty($result)) {
+            $this->sendData($result);
+        }
     }
 
     /**
@@ -121,5 +147,15 @@ class StatisticsCalculator extends Command
         $trackKey = $tracked ? 'tracked_time' : 'un_tracked_time';
         $result[$trackKey] += $workTime;
         return $result;
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function sendData(array $data)
+    {
+        $body = $this->encrypter->encrypt($data);
+        $url = config('app.skills_url') . config('app.skills_receive_statistics_path_receiver');
+        $this->client->post($url, ['body' => $body]);
     }
 }
