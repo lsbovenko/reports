@@ -19,6 +19,7 @@
     <script src="{{URL::asset('js/jquery.amaran.min.js')}}"></script>
     <script src="{{URL::asset('js/rivets.binders.js')}}"></script>
     <script src="{{URL::asset('js/readmore.js')}}"></script>
+    <script src="{{asset('js/utils.js?v=' . Config::get('app.version'))}}"></script>
     <script src="{{URL::asset('js/mvc/reports/create.js?v=' . Config::get('app.version'))}}"></script>
 @endsection
 
@@ -61,6 +62,7 @@
                             <input readonly="readonly" placeholder="date" id="date" type="text" class="form-control"/>
                         </div>
                     </div>
+                    <label class="col-sm-3 control-label">Общее время: <span id="totalTime" rv-text="totalTime">00:00</span></label>
                 </div>
 
                 <div class="form-group">

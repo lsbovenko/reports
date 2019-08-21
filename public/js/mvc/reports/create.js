@@ -56,6 +56,19 @@
                 delay: 450
             }
         },
+        totalTime: '00:00',
+        countTotalTime: function (){
+            var time =0;
+            formData.reports.tracked.forEach(function (r) {
+                if (r.deleted) return;
+                time += r.workedTime.hours * 60 + r.workedTime.minutes;
+            });
+            formData.reports.untracked.forEach(function (r) {
+                if (r.deleted) return;
+                time += r.workedTime.hours * 60 + r.workedTime.minutes;
+            });
+            formData.totalTime = Utils.formatMinutes(time,true);
+        },
         controller: {
             addMoreTracked: function addMoreTracked() {
                 formData.reports.tracked.push(emptyRecord(true));
@@ -65,9 +78,11 @@
             },
             updateTime: function updateTime(e, scope) {
                 scope.report.workedTime = $(this).duration('getFormatted', true);
+                formData.countTotalTime();
             },
             removeReport: function removeReport(e, scope) {
                 scope.report.deleted = true;
+                formData.countTotalTime();
             },
             sendNewReport: function sendNewReport() {
 
