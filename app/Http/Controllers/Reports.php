@@ -11,7 +11,7 @@ use App\Transformers\Project as ProjectTransformer;
 
 class Reports extends Controller
 {
-    const MAX_ALLOWED_MINUTES = 720; //12 hours
+    const MAX_ALLOWED_MINUTES = 900; //15 hours
     private $stats;
 
     public function __construct(\App\Service\Statistics $statistics)
