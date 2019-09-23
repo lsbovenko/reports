@@ -8,6 +8,8 @@
 
     var $date = $('#date'),
         $form = $('#report-form'),
+        $totaltime = $('#totalTime'),
+        totalLoggedMinutes = 0,
         emptyRecord = function emptyRecord() {
         var isTracked = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
@@ -17,8 +19,19 @@
         maxDate: new Date(),
         onSelect: function onSelect(dateStr, date, inst) {
             inst.hide();
+            var data = {date: $date.val()};
+            $.ajax({
+                url: '/statistics/logged-minutes',
+                method: 'GET',
+                data: data,
+                success: function success(datas) {
+                    totalLoggedMinutes = datas.totalLoggedMinutes;
+                    formData.countTotalTime();
+                },
+            });
         }
     }).data('datepicker');
+
 
     var formData = {
         durationTooltip: {
@@ -56,9 +69,9 @@
                 delay: 450
             }
         },
-        totalTime: '00:00',
+        totalTime: Utils.formatMinutes(totalLoggedMinutes,true),
         countTotalTime: function (){
-            var time =0;
+            var time = totalLoggedMinutes;
             formData.reports.tracked.forEach(function (r) {
                 if (r.deleted) return;
                 time += r.workedTime.hours * 60 + r.workedTime.minutes;
@@ -68,6 +81,7 @@
                 time += r.workedTime.hours * 60 + r.workedTime.minutes;
             });
             formData.totalTime = Utils.formatMinutes(time,true);
+            $totaltime.parent().toggleClass('font-red',  time > 900);
         },
         controller: {
             addMoreTracked: function addMoreTracked() {
@@ -147,8 +161,9 @@
         }
     };
 
-    rv.bind($form, formData);
+    //rv.bind($form, formData);
     datepicker.selectDate(new Date()); //select current date by default
+    rv.bind($form, formData);
 
     /* Select default projects if exist */
     if (G.latestProjects && G.latestProjects.length) {

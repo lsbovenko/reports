@@ -62,7 +62,7 @@
                             <input readonly="readonly" placeholder="date" id="date" type="text" class="form-control"/>
                         </div>
                     </div>
-                    <label class="col-sm-3 control-label">Общее время: <span id="totalTime" rv-text="totalTime">00:00</span></label>
+                    <label class="col-sm-3 control-label">Общее время: <span id="totalTime" rv-text="totalTime"></span></label>
                 </div>
 
                 <div class="form-group">

@@ -6,6 +6,7 @@ use App\Models\Auth\User;
 use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Statistics extends Controller
 {
@@ -62,6 +63,13 @@ class Statistics extends Controller
 
         return response()
             ->json($service->getStackedDatasets($user, $startDate, $endDate));
+    }
+
+    public function loggedTime (Request $request, \App\Service\Statistics $service)
+    {
+        $date = Carbon::parse($request->get('date'));
+        $totalLoggedMinutes = $service->getTotalLoggedMinutes($request->user(), $date);
+        return response()->json(['totalLoggedMinutes' => $totalLoggedMinutes], 200);
     }
 
     private function retrieveDates(Request $request)
