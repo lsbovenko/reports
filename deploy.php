@@ -72,7 +72,7 @@ after('deploy:lock', 'artisan:down');
 after('deploy:symlink', 'crontab:install');
 
 // Generate Assets
-before('cleanup', 'asset:dist');
+//before('cleanup', 'asset:dist');
 
 // Set maintenance mode OFF
 after('cleanup', 'artisan:up');
