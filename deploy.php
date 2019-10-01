@@ -25,7 +25,7 @@ set('default_stage', 'dev');
 
 // Hosts
 
-host('reports.ikantam.com')
+host('reports.velmie.com')
   ->stage('prod')
   ->set('branch', 'master')
   ->set('deploy_path', '/var/www')

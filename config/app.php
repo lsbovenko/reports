@@ -225,7 +225,7 @@ return [
          * Development service providers
          */
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        //Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         App\Providers\SkillsServiceProvider::class,
     ],
 
