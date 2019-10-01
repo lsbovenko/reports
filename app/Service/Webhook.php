@@ -41,6 +41,6 @@ class Webhook
 
     private function config($key, $default = null)
     {
-        return config('app.webhook.' . env('APP_ENV') . '.' . $key, $default);
+        return config('app.webhook.' . config('app.env') . '.' . $key, $default);
     }
 }

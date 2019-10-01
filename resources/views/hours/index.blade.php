@@ -7,7 +7,7 @@
 @endsection
 
 @section('page_js')
-    <script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
+    <script src="{{asset('js/vue' . (config('app.env') !== 'local' ? '.min' : '') . '.js' )}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 

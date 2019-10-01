@@ -64,7 +64,7 @@ class StatisticsCalculator extends Command
     public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->encrypter = new Encrypter(config('app.webhook.' . env('APP_ENV') . '.secret_key'), 'AES-256-CBC');
+        $this->encrypter = new Encrypter(config('app.webhook.' . config('app.env') . '.secret_key'), 'AES-256-CBC');
         parent::__construct();
     }
 

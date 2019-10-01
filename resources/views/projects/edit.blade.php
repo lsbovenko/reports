@@ -3,7 +3,7 @@
 @section('title', $title)
 
 @section('page_js')
-    <script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
+    <script src="{{asset('js/vue' . (config('app.env') !== 'local' ? '.min' : '') . '.js' )}}"></script>
     <script src="{{asset('js/mvc/projects/edit.js?v=' . Config::get('app.version'))}}"></script>
 @endsection
 

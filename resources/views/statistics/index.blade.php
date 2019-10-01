@@ -7,7 +7,7 @@
 @endsection
 
 @section('page_js')
-    <script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
+    <script src="{{asset('js/vue' . (config('app.env') !== 'local' ? '.min' : '') . '.js' )}}"></script>
     <script src="{{URL::asset('js/jquery.history.js')}}"></script>
     <script src="{{URL::asset('js/jquery-deparam.js')}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
