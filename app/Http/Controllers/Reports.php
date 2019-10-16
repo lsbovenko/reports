@@ -107,9 +107,7 @@ class Reports extends Controller
             $totalMinutes += $hours * 60 + $minutes;
 
             if ($totalMinutes >= static::MAX_ALLOWED_MINUTES) {
-                $msg = 'Невозможно добавить время: ' . $date->format('Y-m-d') .
-                        ' - превышено максимальное время за отчётный день.';
-                $msg .= ' Убедитесь в правильности введённых данных.';
+                $msg = trans('reports.unable_to_add_time', ['date' => $date->format('Y-m-d')]);
                 return response()->json(['error' => $msg], 400);
             }
 

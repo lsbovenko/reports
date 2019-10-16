@@ -52,7 +52,7 @@ class Projects extends Controller
     public function create()
     {
         return view('projects.edit', [
-            'title' => 'Создать проект',
+            'title' => trans('reports.create_project'),
             'js' => [
                 'project' => null,
                 'submitUrl' => route('projects.save'),
@@ -86,7 +86,7 @@ class Projects extends Controller
 
         $project->children;//it loads children to the Model
         return view('projects.edit', [
-            'title' => 'Редактировать проект',
+            'title' => trans('reports.edit_project'),
             'js' => [
                 'project' => $project,
                 'submitUrl' => route('projects.edit', ['id' => $project->id]),

@@ -30,6 +30,17 @@ var Utils =  {
         if (short) {
             return "00".substring(0, 2 - hours.length) + hours + ':' + "00".substring(0, 2 - minutes.length) + minutes;
         }
-        return hours + ' ' + this.nounEnding(hours, ['час', 'часа', 'часов']) + ' ' + minutes + ' ' + this.nounEnding(minutes, ['минута', 'минуты', 'минут']);
+
+        var hoursFormat;
+        var minutesFormat;
+        if ($.trim($('#lang').text()) == 'English') {
+            hoursFormat = ['hour', 'hour', 'hours'];
+            minutesFormat = ['minute', 'minutes', 'minutes'];
+        } else {
+            hoursFormat = ['час', 'часа', 'часов'];
+            minutesFormat = ['минута', 'минуты', 'минут'];
+        }
+
+        return hours + ' ' + this.nounEnding(hours, hoursFormat) + ' ' + minutes + ' ' + this.nounEnding(minutes, minutesFormat);
     }
 };

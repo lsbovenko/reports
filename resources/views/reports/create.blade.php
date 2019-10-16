@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Новый Отчёт')
+@section('title', trans('reports.new_report'))
 
 @section('page_css')
     <link rel="stylesheet" href="{{URL::asset('css/datepicker.min.css')}}">
@@ -12,6 +12,7 @@
 @section('page_js')
     <script src="{{ asset('js/rivets.bundled.min.js') }}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
+    <script src="{{ asset('js/i18n/datepicker.en.js') }}"></script>
     <script src="{{URL::asset('js/select2.min.js')}}"></script>
     <script src="{{URL::asset('js/duration.picker.js')}}"></script>
     <script src="{{URL::asset('js/parsley.min.js')}}"></script>
@@ -28,26 +29,22 @@
 
         <div class="col-md-12">
             <div class="m-b30">
-                <h2 class="text-muted">Новый Отчёт</h2>
+                <h2 class="text-muted">{{ trans('reports.new_report') }}</h2>
             </div>
 
             <form rv-class-hidden="0" class="form-horizontal hidden" id="report-form">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-6">
                         <div class="well">
-                            <h5 class="text-muted">Как указывать время в отчете</h5>
+                            <h5 class="text-muted">{{ trans('reports.indicate_time') }}</h5>
 
                             <div class="readmore">
                                 <p>
-                                    Оплачиваемое время - часы работы над проектом, которые оплачиваются заказчиком.
-                                    Это может быть как время по трэкеру, так и часы в Jira,
-                                    которые входят в оценку задачи. Если у вас есть сомнения в том,
-                                    как классифицировать свое время - обратитесь, пожалуйста, к менеджеру.
+                                    {{ trans('reports.paid_time_description') }}
                                 </p>
 
                                 <p>
-                                    Остальное время - время, потраченное на самообразование, внутренние проекты либо
-                                    время, потраченное на задачу сверх оценки и не подлежащее оплате клиентом.
+                                    {{ trans('reports.rest_of_the_time_description') }}
                                 </p>
                             </div>
 
@@ -55,25 +52,25 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="date" class="col-sm-2 control-label">Дата</label>
+                    <label for="date" class="col-sm-2 control-label">{{ trans('reports.date') }}</label>
                     <div class="col-sm-3">
                         <div class="inner-addon right-addon">
                             <i class="fa fa-calendar"></i>
                             <input readonly="readonly" placeholder="date" id="date" type="text" class="form-control"/>
                         </div>
                     </div>
-                    <label class="col-sm-3 control-label">Общее время: <span id="totalTime" rv-text="totalTime"></span></label>
+                    <label class="col-sm-3 control-label">{{ trans('reports.total_time') }}: <span id="totalTime" rv-text="totalTime"></span></label>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-4 col-md-offset-2">
-                        <h3 class="text-muted">Оплачиваемое время</h3>
+                        <h3 class="text-muted">{{ trans('reports.billable_time') }}</h3>
                     </div>
                 </div>
 
                 <div rv-each-report="reports.tracked" rv-class-hidden="report.deleted" class="root">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Проект</label>
+                        <label class="col-sm-2 control-label">{{ trans('reports.project') }}</label>
                         <div class="col-md-2">
                             <select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
@@ -85,7 +82,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="col-sm-2 control-label">Время (ЧЧММ)</label>
+                            <label class="col-sm-2 control-label">{{ trans('reports.time') }}</label>
                             <div class="col-md-2">
                                 <input rv-parsley-required="report.deleted | not" class="form-control"
                                        rv-on-change="controller.updateTime"
@@ -94,14 +91,14 @@
                                        rv-value="report._time" type="text">
                             </div>
                             <div class="col-sm-1 font-red">
-                                <i rv-on-click="controller.removeReport" title="Удалить" class="fa fa-window-close cur-pointer"
+                                <i rv-on-click="controller.removeReport" title="{{ trans('reports.remove') }}" class="fa fa-window-close cur-pointer"
                                    aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Заметки</label>
+                        <label class="col-sm-2 control-label">{{ trans('reports.notes') }}</label>
                         <div class="col-md-6">
                             <textarea rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
@@ -112,8 +109,8 @@
                         <div class="col-lg-offset-2 col-md-6">
                             <div class="checkbox">
                                 <label>
-                                    <input rv-checked="report.overtime" type="checkbox"> Отметить время как сверхурочное
-                                    &nbsp<i title="Время будет отмечено как сверхурочное. Записи с такой отметкой будут отправлены в отчёте руководству в начале каждого месяца. ВАЖНО: например вы отработали 10 часов (2 часа сверхурочно). Для того, чтобы отметить 2 часа, создайте отдельную запись и активируйте чекбокс. " class="fa fa-question-circle"></i>
+                                    <input rv-checked="report.overtime" type="checkbox"> {{ trans('reports.mark_as_overtime') }}
+                                    &nbsp<i title="{{ trans('reports.overtime_description') }} " class="fa fa-question-circle"></i>
                                 </label>
                             </div>
                         </div>
@@ -122,20 +119,20 @@
 
                 <div class="form-group">
                     <div class="col-md-2 col-md-offset-2">
-                        <button rv-on-click="controller.addMoreTracked" type="button" class="btn btn-link">добавить+
+                        <button rv-on-click="controller.addMoreTracked" type="button" class="btn btn-link">{{ trans('reports.add_low') }}+
                         </button>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-3 col-md-offset-2">
-                        <h3 class="text-muted">Остальное время</h3>
+                        <h3 class="text-muted">{{ trans('reports.rest_of_the_time') }}</h3>
                     </div>
                 </div>
 
                 <div rv-each-report="reports.untracked" rv-class-hidden="report.deleted" class="root">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Проект или задание</label>
+                        <label class="col-sm-2 control-label">{{ trans('reports.project_or_task') }}</label>
                         <div class="col-md-2">
                             <input class="form-control" type="text" rv-parsley-required="report.deleted | not" rv-value="report.name">
                             {{--<select rv-parsley-required="report.deleted | not" rv-value="report.name"
@@ -148,7 +145,7 @@
                             </select>--}}
                         </div>
                         <div>
-                            <label class="col-sm-2 control-label">Время (ЧЧММ)</label>
+                            <label class="col-sm-2 control-label">{{ trans('reports.time') }}</label>
                             <div class="col-md-2">
                                 <input rv-parsley-required="report.deleted | not" rv-jquery-plugin-duration="durationPickerOptions"
                                        rv-on-change="controller.updateTime"
@@ -157,14 +154,14 @@
                                        type="text" class="form-control">
                             </div>
                             <div class="col-sm-1 font-red">
-                                <i rv-on-click="controller.removeReport" title="Удалить" class="fa fa-window-close cur-pointer"
+                                <i rv-on-click="controller.removeReport" title="{{ trans('reports.remove') }}" class="fa fa-window-close cur-pointer"
                                    aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Заметки</label>
+                        <label class="col-sm-2 control-label">{{ trans('reports.notes') }}</label>
                         <div class="col-md-6">
                             <textarea rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
@@ -175,8 +172,8 @@
                         <div class="col-lg-offset-2 col-md-6">
                             <div class="checkbox">
                                 <label>
-                                    <input rv-checked="report.overtime" type="checkbox"> Отметить время как сверхурочное
-                                    &nbsp<i title="Время будет отмечено как сверхурочное. Записи с такой отметкой будут отправлены в отчёте руководству в начале каждого месяца. ВАЖНО: например вы отработали 10 часов (2 часа сверхурочно). Для того, чтобы отметить 2 часа, создайте отдельную запись и активируйте чекбокс. " class="fa fa-question-circle"></i>
+                                    <input rv-checked="report.overtime" type="checkbox"> {{ trans('reports.mark_as_overtime') }}
+                                    &nbsp<i title="{{ trans('reports.overtime_description') }} " class="fa fa-question-circle"></i>
                                 </label>
                             </div>
                         </div>
@@ -185,7 +182,7 @@
 
                 <div class="form-group">
                     <div class="col-md-2 col-md-offset-2">
-                        <button rv-on-click="controller.addMoreUntracked" type="button" class="btn btn-link">добавить+
+                        <button rv-on-click="controller.addMoreUntracked" type="button" class="btn btn-link">{{ trans('reports.add_low') }}+
                         </button>
                     </div>
                 </div>
@@ -193,13 +190,13 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button rv-on-click="controller.sendNewReport" type="button" class="btn btn-default">Отправить
+                        <button rv-on-click="controller.sendNewReport" type="button" class="btn btn-default">{{ trans('reports.submit') }}
                         </button>
                     </div>
                 </div>
                 <div class="col-md-offset-2 col-md-6">
                     <div class="form-group alert alert-warning alert-dismissable">
-                        Если Вы не можете найти свой проект, обратитесь к вашему менеджеру проектов.
+                        {{ trans('reports.contact_your_manager') }}
                     </div>
                 </div>
             </form>

@@ -4,9 +4,9 @@
 <table>
     <thead>
         <tr>
-            <th>ФИО</th>
-            <th>Сверхурочное время</th>
-            <th>Детали</th>
+            <th>{{ trans('reports.full_name') }}</th>
+            <th>{{ trans('reports.overtime') }}</th>
+            <th>{{ trans('reports.details') }}</th>
         </tr>
     </thead>
     <tbody>

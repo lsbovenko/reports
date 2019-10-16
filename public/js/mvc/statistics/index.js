@@ -4,6 +4,13 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 ;(function ($, Vue, Utils, H, W, G) {
 
+    var lang;
+    if ($.trim($('#lang').text()) == 'English') {
+        lang = 'en';
+    } else {
+        lang = 'ru';
+    }
+
     var $date = $('#date'),
         strToDate = function strToDate(str) {
         var _str$split = str.split('-'),
@@ -23,6 +30,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         maxDate: new Date(),
         minDate: new Date(G.minDate),
         inline: true,
+        language: lang,
         onSelect: function onSelect(dateStr, datesArray, inst) {
             if (inst.opts._ignoreOnSelect) {
                 return;

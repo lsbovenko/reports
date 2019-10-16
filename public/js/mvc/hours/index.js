@@ -2,6 +2,13 @@
 
 ;(function ($, Vue, Utils, G) {
 
+    var lang;
+    if ($.trim($('#lang').text()) == 'English') {
+        lang = 'en';
+    } else {
+        lang = 'ru';
+    }
+
     var $date = $('#date'),
         hoursInDay = 8,
         minutsInHours = 60,
@@ -10,6 +17,7 @@
         maxDate: new Date(),
         minDate: new Date(G.minDate),
         inline: true,
+        language: lang,
         onSelect: function onSelect(dateStr, datesArray, inst) {
             if (inst.opts.range && inst.selectedDates.length === 2) {
                 app.filterParams.dates = inst.selectedDates;

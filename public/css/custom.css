@@ -111,3 +111,11 @@ footer {
 [v-cloak] {
     display: none;
 }
+
+.none-list-style {
+    list-style: none;
+}
+
+#lang {
+    color: #ffffff;
+}
