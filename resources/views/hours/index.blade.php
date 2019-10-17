@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Часы')
+@section('title', trans('reports.hours'))
 
 @section('page_css')
     <link rel="stylesheet" href="{{URL::asset('css/datepicker.min.css')}}">
@@ -9,6 +9,7 @@
 @section('page_js')
     <script src="{{asset('js/vue' . (config('app.env') !== 'local' ? '.min' : '') . '.js' )}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
+    <script src="{{ asset('js/i18n/datepicker.en.js') }}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
     <script src="{{asset('js/utils.js?v=' . Config::get('app.version'))}}"></script>
@@ -25,7 +26,7 @@
                 <div class="checkbox">
                     <label>
                         <input id="datepicker-range" type="checkbox" value="">
-                        выбрать диапазон дат
+                        {{ trans('reports.select_date_range') }}
                     </label>
                 </div>
             </div>
@@ -55,22 +56,22 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-7" style="top: -250px;">
                     <div class="form-group alert alert-warning alert-dismissable">
-                        Время праздников и больничных дней, а также отпуска, системой не исключаются.
+                        <?php echo trans('reports.holidays_and_sick_days_not_excluded'); ?>
                     </div>
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <ul class="list-unstyled">
                                 <li>
-                                    <span class="font-blue">Всего доcтупно:</span> {{totalAvailableMinutes | formatMinutes}}
+                                    <span class="font-blue"><?php echo trans('reports.total_available'); ?>:</span> {{totalAvailableMinutes | formatMinutes}}
                                 </li>
                                 <li>
-                                    <span class="font-blue">Зарегистрированные часы:</span> {{totalTrackedMinutes | formatMinutes}}
+                                    <span class="font-blue"><?php echo trans('reports.registered_hours'); ?>:</span> {{totalTrackedMinutes | formatMinutes}}
                                 </li>
                                 <li>
-                                    <span class="font-blue">% Зарегистрированных часов:</span> {{totalTrackedPercentByAvailable}} %
+                                    <span class="font-blue">% <?php echo trans('reports.percentage_of_registered_hours'); ?>:</span> {{totalTrackedPercentByAvailable}} %
                                 </li>
                                 <li v-show="!filterParams.user_id">
-                                    <span class="font-blue">Пользователи с минимальным временем:</span>
+                                    <span class="font-blue"><?php echo trans('reports.users_with_minimal_time'); ?>:</span>
                                     <ul class="list-unstyled m-l30">
                                         <li v-for="ratingUser in ratingUsers">
                                             <span class="font-blue">{{ fullName(ratingUser) }}</span>

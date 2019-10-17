@@ -26,6 +26,7 @@ class RemindAboutReport extends Mailable
     {
         $this->user = $user;
         $this->remindDate = $remindDate;
+        app()->setLocale(config('app.fallback_locale'));
     }
 
     /**
@@ -36,7 +37,7 @@ class RemindAboutReport extends Mailable
     public function build()
     {
         return $this
-            ->subject('Напоминание об отчёте за ' . $this->remindDate->format('m/d'))
+            ->subject(trans('reports.remind_about_report', ['day' => $this->remindDate->format('m/d')]))
             ->view('email.report_reminder')
             ->with([
                 'user' => $this->user,

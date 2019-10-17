@@ -30,7 +30,11 @@
                     },
                     error: function error(r) {
                         app.disableSubmitButton = false;
-                        app.error = 'Форма содержит ошибки. Заполните все поля. Поле Rate принимает только числа(разделитель точка, не более 2 знаков после разделителя).';
+                        if ($.trim($('#lang').text()) == 'English') {
+                            app.error = 'The form contains errors. Fill in all the fields. The Rate field accepts only numbers (dot separator, no more than 2 characters after the separator).';
+                        } else {
+                            app.error = 'Форма содержит ошибки. Заполните все поля. Поле Rate принимает только числа(разделитель точка, не более 2 знаков после разделителя).';
+                        }
                     }
                 });
             },

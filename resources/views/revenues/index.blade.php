@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Revenues')
+@section('title', trans('reports.revenue'))
 
 @section('page_css')
     <link rel="stylesheet" href="{{URL::asset('css/datepicker.min.css')}}">
@@ -10,6 +10,7 @@
 @section('page_js')
     <script src="{{asset('js/vue' . (config('app.env') !== 'local' ? '.min' : '') . '.js' )}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
+    <script src="{{ asset('js/i18n/datepicker.en.js') }}"></script>
     <script src="{{URL::asset('js/select2.min.js')}}"></script>
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
@@ -28,7 +29,7 @@
                 <div class="checkbox">
                     <label>
                         <input id="datepicker-range" type="checkbox" value="">
-                        выбрать диапазон дат
+                        {{ trans('reports.select_date_range') }}
                     </label>
                 </div>
             </div>
@@ -37,10 +38,10 @@
             <div class="panel panel-info">
                 <div class="panel-body">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Проект</label>
+                        <label class="col-sm-2 control-label">{{ trans('reports.project') }}</label>
                         <div class="col-md-6">
                             <select id="jquery-plugin-select1" style="display:none" class="form-control chosen-rtl select-project">
-                                <option value="">--Все--</option>
+                                <option value="">--{{ trans('reports.all') }}--</option>
                                 @foreach ($projects as $project)
                                     <option value="{{$project->id}}">{{$project->getFullName()}}</option>
                                 @endforeach
@@ -54,16 +55,16 @@
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="form-group">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <span class="font-blue">Approximate fixed price revenue: </span>$ {{fixedPriceRevenue}}
+                                            <span class="font-blue"><?php echo trans('reports.fixed_price_revenue'); ?>: </span>$ {{fixedPriceRevenue}}
                                         </li>
                                         <li>
-                                            <span class="font-blue">Approximate not fixed price revenue: </span>$ {{notFixedPriceRevenue}}
+                                            <span class="font-blue"><?php echo trans('reports.not_fixed_price_revenue'); ?>: </span>$ {{notFixedPriceRevenue}}
                                         </li>
                                         <li>
-                                            <span class="font-blue">Total approximate revenue: </span>$ {{totalRevenue}}
+                                            <span class="font-blue"><?php echo trans('reports.total_revenue'); ?>: </span>$ {{totalRevenue}}
                                         </li>
                                     </ul>
                                 </div>

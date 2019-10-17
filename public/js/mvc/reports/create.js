@@ -6,6 +6,25 @@
         return !value;
     };
 
+    var lang;
+    var time;
+    var placeholder;
+    var message;
+    var readMore;
+    if ($.trim($('#lang').text()) == 'English') {
+        lang = 'en';
+        time = ['Time', 'h', 'm'];
+        placeholder = 'Choose';
+        message = 'Data has been sent.';
+        readMore = ['Show', 'Hide'];
+    } else {
+        lang = 'ru';
+        time = ['Время', 'ч', 'м'];
+        placeholder = 'Выбрать';
+        message = 'Данные были отправлены.';
+        readMore = ['Показать', 'Скрыть'];
+    }
+
     var $date = $('#date'),
         $form = $('#report-form'),
         $totaltime = $('#totalTime'),
@@ -17,6 +36,7 @@
     },
         datepicker = $date.datepicker({
         maxDate: new Date(),
+        language: lang,
         onSelect: function onSelect(dateStr, date, inst) {
             inst.hide();
             var data = {date: $date.val()};
@@ -49,12 +69,12 @@
 
                 //make it red if time greater than 8 hours
                 label.toggleClass('font-red', duration.hours * 60 + duration.minutes > 480);
-                label.text('Время (' + duration.hours + 'ч:' + duration.minutes + 'м)');
+                label.text(time[0] + ' (' + duration.hours + time[1] + ':' + duration.minutes + time[2] + ')');
             }
         },
         select2Options: {
             width: '100%',
-            placeholder: "Выбрать",
+            placeholder: placeholder,
             allowClear: true,
             ajax: {
                 url: G.searchProjectUrl,
@@ -146,7 +166,7 @@
                         formData.reports.untracked = [];
 
                         $.amaran({
-                            'message': 'Данные были отправлены.',
+                            'message': message,
                             'position': 'bottom right'
                         });
                     },
@@ -175,7 +195,7 @@
 
     $('.readmore').readmore({
         maxHeight: 0,
-        moreLink: '<a href="#">Показать</a>',
-        lessLink: '<a href="#">Скрыть</a>'
+        moreLink: '<a href="#">' + readMore[0] + '</a>',
+        lessLink: '<a href="#">' + readMore[1] + '</a>'
     });
 })(jQuery, rivets, _globals || {});

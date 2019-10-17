@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Статистика')
+@section('title', trans('reports.statistics'))
 
 @section('page_css')
     <link rel="stylesheet" href="{{URL::asset('css/datepicker.min.css')}}">
@@ -11,6 +11,7 @@
     <script src="{{URL::asset('js/jquery.history.js')}}"></script>
     <script src="{{URL::asset('js/jquery-deparam.js')}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
+    <script src="{{ asset('js/i18n/datepicker.en.js') }}"></script>
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
@@ -31,7 +32,7 @@
                 <div class="checkbox">
                     <label>
                         <input id="datepicker-range" type="checkbox" value="">
-                        выбрать диапазон дат
+                        {{ trans('reports.select_date_range') }}
                     </label>
                 </div>
             </div>
@@ -44,7 +45,7 @@
         <div id="app" v-cloak>
             <div class="row" v-if="!statistics.length">
                 <div class="col-md-4 col-md-offset-6">
-                    <h3 class="text-muted">Нет данных</h3>
+                    <h3 class="text-muted"><?php echo trans('reports.no_data'); ?></h3>
                 </div>
             </div>
             <div class="row">
@@ -68,12 +69,12 @@
                 <div class="col-md-9">
                     <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1">
                         <div class="panel-heading">
-                            <small>Всего за текущий диаппазон</small>
-                            <span class="label label-primary">суммарно {{totalInRange.total}}</span>
-                            <span class="label label-success">зафиксированное время {{totalInRange.tracked}}</span>
-                            <span class="label label-info">другая активность {{totalInRange.untracked}}</span>
-                            <span class="label label-warning">сверхурочно {{totalInRange.total_overtime}}</span>
-                            <span title="время отработанное в пределах рабочего дня" class="label label-default">планово {{totalInRange.planned}}</span>
+                            <small><?php echo trans('reports.total_current_range'); ?></small>
+                            <span class="label label-primary"><?php echo trans('reports.in_total'); ?> {{totalInRange.total}}</span>
+                            <span class="label label-success"><?php echo trans('reports.fixed_time_low'); ?> {{totalInRange.tracked}}</span>
+                            <span class="label label-info"><?php echo trans('reports.other_activity_low'); ?> {{totalInRange.untracked}}</span>
+                            <span class="label label-warning"><?php echo trans('reports.overtime_low'); ?> {{totalInRange.total_overtime}}</span>
+                            <span title="<?php echo trans('reports.time_working_day'); ?>" class="label label-default"><?php echo trans('reports.as_planned'); ?> {{totalInRange.planned}}</span>
                         </div>
                     </div>
                     <div v-for="userStatistics in statistics">
@@ -89,27 +90,27 @@
 
                                 <div class="row"  v-if="item.tracked.length">
                                     <div class="col-md-4">
-                                        <h4 class="text-muted">Зафиксированное время</h4>
+                                        <h4 class="text-muted"><?php echo trans('reports.fixed_time'); ?></h4>
                                     </div>
                                     <div class="col-md-12">
                                         <table class="table table-striped table-fixed">
                                             <thead>
                                             <tr>
-                                                <th>Проект</th>
-                                                <th>Дата добавления</th>
-                                                <th>Продолжительность</th>
-                                                <th style="width: 30%">Заметки</th>
+                                                <th><?php echo trans('reports.project'); ?></th>
+                                                <th><?php echo trans('reports.date_added'); ?></th>
+                                                <th><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 30%"><?php echo trans('reports.notes'); ?></th>
                                                 <th style="width: 10%"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-bind:title="tracked.overtime && 'Отмечено как сверхурочное время'"  v-bind:class="{'bg-highlight': tracked.overtime}" v-if="!tracked.deleted" v-for="tracked in item.tracked">
+                                            <tr v-bind:title="tracked.overtime && '<?php echo trans('reports.marked_as_overtime'); ?>'"  v-bind:class="{'bg-highlight': tracked.overtime}" v-if="!tracked.deleted" v-for="tracked in item.tracked">
                                                 <td>{{tracked.project_name}}</td>
                                                 <td>{{tracked.created}}</td>
                                                 <td><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
                                                 <td><small class="font-extra-small">{{tracked.descirption}}</small></td>
                                                 <td class="font-red">
-                                                    <i v-if="item.editable" v-on:click="deleteReport(tracked)" title="Удалить" class="fa fa-window-close cur-pointer pull-right"
+                                                    <i v-if="item.editable" v-on:click="deleteReport(tracked)" title="<?php echo trans('reports.remove'); ?>" class="fa fa-window-close cur-pointer pull-right"
                                                        aria-hidden="true"></i></td>
                                             </tr>
                                             </tbody>
@@ -119,21 +120,21 @@
 
                                 <div class="row" v-if="item.untracked.length">
                                     <div class="col-md-4">
-                                        <h4 class="text-muted">Другая активность</h4>
+                                        <h4 class="text-muted"><?php echo trans('reports.other_activity'); ?></h4>
                                     </div>
                                     <div class="col-md-12">
                                         <table class="table table-striped table-fixed">
                                             <thead>
                                             <tr>
-                                                <th>Задача</th>
-                                                <th>Дата добавления</th>
-                                                <th>Продолжительность</th>
-                                                <th style="width: 30%">Заметки</th>
+                                                <th><?php echo trans('reports.task'); ?></th>
+                                                <th><?php echo trans('reports.date_added'); ?></th>
+                                                <th><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 30%"><?php echo trans('reports.notes'); ?></th>
                                                 <th style="width: 10%"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-bind:title="activity.overtime && 'Отмечено как сверхурочное время'" v-bind:class="{'bg-highlight': activity.overtime}" v-if="!activity.deleted" v-for="activity in item.untracked">
+                                            <tr v-bind:title="activity.overtime && '<?php echo trans('reports.marked_as_overtime'); ?>'" v-bind:class="{'bg-highlight': activity.overtime}" v-if="!activity.deleted" v-for="activity in item.untracked">
                                                 <td>
                                                     <span v-if="activity.project_name">
                                                         {{activity.project_name}}
@@ -146,7 +147,7 @@
                                                 <td><span class="label label-info">{{activity.total_minutes | formatMinutes}}</span></td>
                                                 <td><small class="font-extra-small">{{activity.descirption}}</small></td>
                                                 <td class="font-red">
-                                                    <i v-if="item.editable" v-on:click="deleteReport(activity)" title="Удалить" class="fa fa-window-close cur-pointer pull-right"
+                                                    <i v-if="item.editable" v-on:click="deleteReport(activity)" title="<?php echo trans('reports.remove'); ?>" class="fa fa-window-close cur-pointer pull-right"
                                                                         aria-hidden="true"></i></td>
                                             </tr>
                                             </tbody>

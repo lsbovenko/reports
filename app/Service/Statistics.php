@@ -80,12 +80,12 @@ class Statistics
         $labels = [];
         $datasets = [
             [
-                'label' => 'Зафиксированное время',
+                'label' => trans('reports.fixed_time'),
                 'backgroundColor' => static::TRACKED_COLOR,
                 'data' => [],
             ],
             [
-                'label' => 'Другая активность',
+                'label' => trans('reports.other_activity'),
                 'backgroundColor' => static::UNTRACKED_COLOR,
                 'data' => [],
             ]

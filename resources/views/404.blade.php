@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row page-header">
         <div class="col-sm-8">
-            <h1>Страницы не существует</h1>
+            <h1>{{ trans('reports.page_not_found') }}</h1>
         </div>
     </div>
     <div class="row">

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', 'Test@test')->name('test');
 
 Route::post('/webhook/receive', 'Webhook@receive')->name('webhook.receive');
+Route::get('lang/{lang}', 'IndexController@switchLanguage')->name('lang');
 
 /**
  * only auth users

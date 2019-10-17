@@ -25,6 +25,7 @@ class OvertimeReport extends Mailable
         $this->data = $data;
         $this->periodFrom = $from;
         $this->periodTill = $till;
+        app()->setLocale(config('app.fallback_locale'));
     }
 
     /**
@@ -38,7 +39,7 @@ class OvertimeReport extends Mailable
         $till = $this->periodTill;
         //print_r($this->data); exit;
         return $this
-            ->subject('Отчёт по овертаймам за период с ' . $from->format('Y-m-d') . ' по ' . $till->format('Y-m-d'))
+            ->subject(trans('reports.overtime_report', ['from' => $from->format('Y-m-d'), 'till' => $till->format('Y-m-d')]))
             ->view('email.report_overtime')
             ->with([
                 'data' => $this->data,

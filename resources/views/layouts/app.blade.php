@@ -48,6 +48,20 @@
             {!! Menu::main() !!}
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown none-list-style">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="lang">
+                        {{ config('languages')[app()->getLocale()] }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        @foreach (config('languages') as $lang => $language)
+                            @if ($lang != app()->getLocale())
+                                <li>
+                                    <a href="{{ route('lang', $lang) }}">{{ $language }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </li>
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <li><a href="{{ config('app.auth_url') }}">Login</a></li>
@@ -59,10 +73,10 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="{{ config('app.auth_url') }}/profile">Профиль</a>
+                                <a href="{{ config('app.auth_url') }}/profile">{{ trans('reports.profile') }}</a>
                             </li>
                             <li>
-                                <a href="{{ config('app.auth_url') }}/logout">Выйти</a>
+                                <a href="{{ config('app.auth_url') }}/logout">{{ trans('reports.logout') }}</a>
                             </li>
                         </ul>
                     </li>
