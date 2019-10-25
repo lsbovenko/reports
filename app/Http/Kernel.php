@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'jwt' => \App\Http\Middleware\AuthorizeByJWT::class,
         'refresh_jwt' => \App\Http\Middleware\RefreshJWT::class,
         'check_user' => \App\Http\Middleware\CheckUser::class,
+        'check_year' => \App\Http\Middleware\CheckYear::class,
     ];
 }

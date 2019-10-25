@@ -103,6 +103,11 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'planned_hours.*' => [
+            'required' => 'Planned hours are required.',
+            'integer' => 'Planned hours must be an integer.',
+            'between' => 'Planned hours must be between :min and :max.',
+        ]
     ],
 
     /*

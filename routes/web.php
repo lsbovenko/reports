@@ -61,6 +61,11 @@ Route::group(['middleware' => ['jwt']], function () {
             Route::get('/revenues', 'Revenues@index')->name('revenues.index');
             Route::get('/revenues/filter', 'Revenues@filter')->name('revenues.filter');
 
+            Route::get('/planned-hours', 'PlannedHours@index')->name('planned-hours.index');
+            Route::get('/planned-hours/edit/{year}', 'PlannedHours@edit')->where('year', '[0-9]+')->name('planned-hours.edit')
+                ->middleware('check_year');
+            Route::post('/planned-hours/edit/{year}', 'PlannedHours@update')->where('year', '[0-9]+')->name('planned-hours.update')
+                ->middleware('check_year');
         });
     });
 });

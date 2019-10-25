@@ -119,3 +119,9 @@ footer {
 #lang {
     color: #ffffff;
 }
+
+.required-star:after {
+    content: '*';
+    color: red;
+    padding-left: 5px;
+}
