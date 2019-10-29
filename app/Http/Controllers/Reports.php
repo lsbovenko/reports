@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Transformers\Project as ProjectTransformer;
+use App\Service\Reports as ReportsService;
 
 class Reports extends Controller
 {
@@ -188,5 +189,13 @@ class Reports extends Controller
         $report->delete();
 
         return response()->json(['success' => 'Report has been deleted.'], 200);
+    }
+
+    public function getMonthStats(Request $request, ReportsService $reportsService)
+    {
+        $date = new Carbon($request->get('date'));
+        $monthStatsDTO = $reportsService->getMonthStatsDTO($date);
+
+        return response()->json($monthStatsDTO);
     }
 }

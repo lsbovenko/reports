@@ -93,4 +93,6 @@ return [
         'Декабрь',
     ],
     'changes_planned_hours_success' => 'Изменения производственного календаря :year сохранены успешно',
+    'choose_month' => 'Выберите месяц',
+    'time_array' => ['ч', 'м'],
 ];

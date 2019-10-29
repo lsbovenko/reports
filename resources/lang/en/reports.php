@@ -93,4 +93,6 @@ return [
         'December',
     ],
     'changes_planned_hours_success' => 'Changes of production calendar :year saved successfully',
+    'choose_month' => 'Choose month',
+    'time_array' => ['h', 'm'],
 ];
