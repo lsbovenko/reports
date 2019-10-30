@@ -105,16 +105,6 @@
                         </div>
 
                     </div>
-                    <div class="form-group">
-                        <div class="col-lg-offset-2 col-md-6">
-                            <div class="checkbox">
-                                <label>
-                                    <input rv-checked="report.overtime" type="checkbox"> {{ trans('reports.mark_as_overtime') }}
-                                    &nbsp<i title="{{ trans('reports.overtime_description') }} " class="fa fa-question-circle"></i>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -168,16 +158,6 @@
                         </div>
 
                     </div>
-                    <div class="form-group">
-                        <div class="col-lg-offset-2 col-md-6">
-                            <div class="checkbox">
-                                <label>
-                                    <input rv-checked="report.overtime" type="checkbox"> {{ trans('reports.mark_as_overtime') }}
-                                    &nbsp<i title="{{ trans('reports.overtime_description') }} " class="fa fa-question-circle"></i>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -207,7 +187,7 @@
                 <label>{{ trans('reports.choose_month') }}</label>
                 <div class="form-group choose-month">
                     <button type="button" id="button-prev"></button>
-                    <input type="text" id="date_month" />
+                    <input type="text" id="date_month" readonly="readonly" />
                     <button type="button" id="button-next"></button>
                 </div>
             </div>
