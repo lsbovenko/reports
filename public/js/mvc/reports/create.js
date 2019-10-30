@@ -11,18 +11,24 @@
     var placeholder;
     var message;
     var readMore;
+    var leftToWork;
+    var overtime;
     if ($.trim($('#lang').text()) == 'English') {
         lang = 'en';
         time = ['Time', 'h', 'm'];
         placeholder = 'Choose';
         message = 'Data has been sent.';
         readMore = ['Show', 'Hide'];
+        leftToWork = 'Left';
+        overtime = 'Overtime';
     } else {
         lang = 'ru';
         time = ['Время', 'ч', 'м'];
         placeholder = 'Выбрать';
         message = 'Данные были отправлены.';
         readMore = ['Показать', 'Скрыть'];
+        leftToWork = 'Осталось';
+        overtime = 'Сверхурочные';
     }
 
     var $date = $('#date'),
@@ -49,9 +55,70 @@
                     formData.countTotalTime();
                 },
             });
+            datepickerMonth.date = date;
+            datepickerMonth.selectDate(date);
         }
     }).data('datepicker');
 
+    var $dateMonth = $('#date_month'),
+        defaultDate = new Date(),
+        $buttonNext = $('#button-next'),
+        $progressBarRight = $('#progress_bar_right'),
+        $remainTime = $('#remain_time'),
+        xhr,
+        datepickerMonth = $dateMonth.datepicker({
+            view: 'months',
+            minView: 'months',
+            dateFormat: 'MM, yyyy',
+            maxDate: defaultDate,
+            language: lang,
+            onSelect: function onSelect(dateStr, date, inst) {
+                inst.hide();
+                if (date.getFullYear() == defaultDate.getFullYear() && date.getMonth() == defaultDate.getMonth()) {
+                    $buttonNext.hide();
+                } else {
+                    $buttonNext.show();
+                }
+                if (xhr) {
+                    xhr.abort();
+                }
+                xhr = $.ajax({
+                    url: '/reports/month-stats',
+                    method: 'GET',
+                    data: {date: date.getFullYear() + '-' + (date.getMonth() + 1)},
+                    success: function success(result) {
+                        $('#progress_time').text(result.formattedWorkedTime + ' / ' + result.formattedPlannedTime);
+                        $('#progress_bar_left').attr('style', 'width:' + result.percent + '%');
+                        if (result.isExistsOvertime) {
+                            $progressBarRight.show();
+                            $progressBarRight.attr('style', 'width:' + (100 - result.percent) + '%');
+                            $remainTime.text(overtime + ': ' + result.formattedDifferenceTime);
+                        } else {
+                            $progressBarRight.hide();
+                            $remainTime.text(leftToWork + ': ' + result.formattedDifferenceTime);
+                        }
+                    },
+                });
+            }
+        }).data('datepicker');
+
+    $('#button-prev').on('click', function() {
+        var datepickerDate = datepickerMonth.selectedDates;
+        var currentDate = new Date(datepickerDate[0].getFullYear(), datepickerDate[0].getMonth() - 1);
+        datepickerMonth.date = currentDate;
+        datepickerMonth.selectDate(currentDate);
+        $buttonNext.show();
+    });
+
+    $buttonNext.on('click', function() {
+        var datepickerDate = datepickerMonth.selectedDates;
+        var currentDate = new Date(datepickerDate[0].getFullYear(), datepickerDate[0].getMonth() + 1);
+        datepickerMonth.date = currentDate;
+        datepickerMonth.selectDate(currentDate);
+        if (currentDate.getFullYear() == defaultDate.getFullYear() && currentDate.getMonth() == defaultDate.getMonth()) {
+            $buttonNext.hide();
+        }
+    });
 
     var formData = {
         durationTooltip: {

@@ -27,7 +27,7 @@
 @section('content')
     <div class="row">
 
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="m-b30">
                 <h2 class="text-muted">{{ trans('reports.new_report') }}</h2>
             </div>
@@ -201,6 +201,24 @@
                 </div>
             </form>
 
+        </div>
+        <div class="col-md-3">
+            <div class="m-t80">
+                <label>{{ trans('reports.choose_month') }}</label>
+                <div class="form-group choose-month">
+                    <button type="button" id="button-prev"></button>
+                    <input type="text" id="date_month" />
+                    <button type="button" id="button-next"></button>
+                </div>
+            </div>
+            <div class="progress" id="progress">
+                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" style="width:0" id="progress_bar_left">
+                    <span id="progress_time"></span>
+                </div>
+                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:0" id="progress_bar_right">
+                </div>
+            </div>
+            <div id="remain_time"></div>
         </div>
 
     </div>

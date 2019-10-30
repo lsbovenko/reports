@@ -125,3 +125,45 @@ footer {
     color: red;
     padding-left: 5px;
 }
+
+.m-t80 {
+    margin-top: 80px;
+}
+.choose-month {
+    width: 264px;
+    border: 1px solid #000;
+}
+#date_month {
+    width: 194px;
+    height: 30px;
+    border: none;
+    outline: none;
+    vertical-align: middle;
+    text-align: center;
+}
+#button-prev {
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+    vertical-align: middle;
+    background: url('/assets/images/prev.png') no-repeat;
+}
+#button-next {
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+    vertical-align: middle;
+    background: url('/assets/images/next.png') no-repeat;
+    display: none;
+}
+#progress {
+    position: relative;
+}
+#progress_time {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: black;
+}
