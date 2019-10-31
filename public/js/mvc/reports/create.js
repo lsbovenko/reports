@@ -236,6 +236,10 @@
                             'message': message,
                             'position': 'bottom right'
                         });
+
+                        var datepickerDate = datepickerMonth.selectedDates;
+                        var currentDate = new Date(datepickerDate[0].getFullYear(), datepickerDate[0].getMonth());
+                        datepickerMonth.selectDate(currentDate);
                     },
                     error: function error(xhr) {
                         var data = JSON.parse(xhr.responseText);
