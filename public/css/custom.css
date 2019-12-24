@@ -116,10 +116,6 @@ footer {
     list-style: none;
 }
 
-#lang {
-    color: #ffffff;
-}
-
 .required-star:after {
     content: '*';
     color: red;

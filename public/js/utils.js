@@ -31,15 +31,8 @@ var Utils =  {
             return "00".substring(0, 2 - hours.length) + hours + ':' + "00".substring(0, 2 - minutes.length) + minutes;
         }
 
-        var hoursFormat;
-        var minutesFormat;
-        if ($.trim($('#lang').text()) == 'English') {
-            hoursFormat = ['hour', 'hour', 'hours'];
-            minutesFormat = ['minute', 'minutes', 'minutes'];
-        } else {
-            hoursFormat = ['час', 'часа', 'часов'];
-            minutesFormat = ['минута', 'минуты', 'минут'];
-        }
+        var hoursFormat = ['hour', 'hour', 'hours'];
+        var minutesFormat = ['minute', 'minutes', 'minutes'];
 
         return hours + ' ' + this.nounEnding(hours, hoursFormat) + ' ' + minutes + ' ' + this.nounEnding(minutes, minutesFormat);
     }

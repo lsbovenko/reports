@@ -6,30 +6,8 @@
         return !value;
     };
 
-    var lang;
-    var time;
-    var placeholder;
-    var message;
-    var readMore;
-    var leftToWork;
-    var overtime;
-    if ($.trim($('#lang').text()) == 'English') {
-        lang = 'en';
-        time = ['Time', 'h', 'm'];
-        placeholder = 'Choose';
-        message = 'Data has been sent.';
-        readMore = ['Show', 'Hide'];
-        leftToWork = 'Left';
-        overtime = 'Overtime';
-    } else {
-        lang = 'ru';
-        time = ['Время', 'ч', 'м'];
-        placeholder = 'Выбрать';
-        message = 'Данные были отправлены.';
-        readMore = ['Показать', 'Скрыть'];
-        leftToWork = 'Осталось';
-        overtime = 'Сверхурочные';
-    }
+    var time = ['Time', 'h', 'm'];
+    var readMore = ['Show', 'Hide'];
 
     var $date = $('#date'),
         $form = $('#report-form'),
@@ -42,7 +20,7 @@
     },
         datepicker = $date.datepicker({
         maxDate: new Date(),
-        language: lang,
+        language: 'en',
         onSelect: function onSelect(dateStr, date, inst) {
             inst.hide();
             var data = {date: $date.val()};
@@ -71,7 +49,7 @@
             minView: 'months',
             dateFormat: 'MM, yyyy',
             maxDate: defaultDate,
-            language: lang,
+            language: 'en',
             onSelect: function onSelect(dateStr, date, inst) {
                 inst.hide();
                 if (date.getFullYear() == defaultDate.getFullYear() && date.getMonth() == defaultDate.getMonth()) {
@@ -92,10 +70,10 @@
                         if (result.isExistsOvertime) {
                             $progressBarRight.show();
                             $progressBarRight.attr('style', 'width:' + (100 - result.percent) + '%');
-                            $remainTime.text(overtime + ': ' + result.formattedDifferenceTime);
+                            $remainTime.text('Overtime: ' + result.formattedDifferenceTime);
                         } else {
                             $progressBarRight.hide();
-                            $remainTime.text(leftToWork + ': ' + result.formattedDifferenceTime);
+                            $remainTime.text('Left: ' + result.formattedDifferenceTime);
                         }
                     },
                 });
@@ -141,7 +119,7 @@
         },
         select2Options: {
             width: '100%',
-            placeholder: placeholder,
+            placeholder: 'Choose',
             allowClear: true,
             ajax: {
                 url: G.searchProjectUrl,
@@ -233,7 +211,7 @@
                         formData.reports.untracked = [];
 
                         $.amaran({
-                            'message': message,
+                            'message': 'Data has been sent.',
                             'position': 'bottom right'
                         });
 
