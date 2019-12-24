@@ -2,23 +2,13 @@
 
 ;(function ($, Vue, G) {
 
-    var lang;
-    var placeholder;
-    if ($.trim($('#lang').text()) == 'English') {
-        lang = 'en';
-        placeholder = 'Choose';
-    } else {
-        lang = 'ru';
-        placeholder = 'Выбрать';
-    }
-
     var $date = $('#date'),
         $datepickerRange = $('#datepicker-range'),
         datepicker = $date.datepicker({
         maxDate: new Date(),
         minDate: new Date(G.minDate),
         inline: true,
-        language: lang,
+        language: 'en',
         onSelect: function onSelect(dateStr, datesArray, inst) {
             if (inst.opts.range && inst.selectedDates.length === 2) {
                 app.filterParams.dates = inst.selectedDates;
@@ -30,7 +20,7 @@
 
     $("#jquery-plugin-select1").select2({
         width: '100%',
-        placeholder: placeholder
+        placeholder: 'Choose'
     });
 
     $('#jquery-plugin-select1').on('select2:select', function (e) {
