@@ -27,14 +27,14 @@
 @section('content')
     <div class="row">
 
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="m-b30">
                 <h2 class="text-muted">{{ trans('reports.new_report') }}</h2>
             </div>
 
             <form rv-class-hidden="0" class="form-horizontal hidden" id="report-form">
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-6">
+                    <div class="col-md-offset-2 col-md-8">
                         <div class="well">
                             <h5 class="text-muted">{{ trans('reports.indicate_time') }}</h5>
 
@@ -53,17 +53,17 @@
                 </div>
                 <div class="form-group">
                     <label for="date" class="col-sm-2 control-label">{{ trans('reports.date') }}</label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 col-md-4">
                         <div class="inner-addon right-addon">
                             <i class="fa fa-calendar"></i>
                             <input readonly="readonly" placeholder="date" id="date" type="text" class="form-control"/>
                         </div>
                     </div>
-                    <label class="col-sm-3 control-label">{{ trans('reports.total_time') }}: <span id="totalTime" rv-text="totalTime"></span></label>
+                    <label class="col-sm-3 control-label col-md-4">{{ trans('reports.total_time') }}: <span id="totalTime" rv-text="totalTime"></span></label>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-4 col-md-offset-2">
+                    <div class="col-md-8 col-md-offset-2">
                         <h3 class="text-muted">{{ trans('reports.billable_time') }}</h3>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <div rv-each-report="reports.tracked" rv-class-hidden="report.deleted" class="root">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.project') }}</label>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
                                     class="form-control chosen-rtl select-project tracked">
@@ -83,7 +83,7 @@
                         </div>
                         <div>
                             <label class="col-sm-2 control-label">{{ trans('reports.time') }}</label>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <input rv-parsley-required="report.deleted | not" class="form-control"
                                        rv-on-change="controller.updateTime"
                                        rv-jquery-plugin-tooltip="durationTooltip"
@@ -99,7 +99,7 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.notes') }}</label>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <textarea rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
                         </div>
@@ -115,7 +115,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-3 col-md-offset-2">
+                    <div class="col-md-8 col-md-offset-2">
                         <h3 class="text-muted">{{ trans('reports.rest_of_the_time') }}</h3>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                 <div rv-each-report="reports.untracked" rv-class-hidden="report.deleted" class="root">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.project_or_task') }}</label>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <input class="form-control" type="text" rv-parsley-required="report.deleted | not" rv-value="report.name">
                             {{--<select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
@@ -136,7 +136,7 @@
                         </div>
                         <div>
                             <label class="col-sm-2 control-label">{{ trans('reports.time') }}</label>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <input rv-parsley-required="report.deleted | not" rv-jquery-plugin-duration="durationPickerOptions"
                                        rv-on-change="controller.updateTime"
                                        rv-jquery-plugin-tooltip="durationTooltip"
@@ -152,7 +152,7 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.notes') }}</label>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <textarea rv-value="report.description" class="form-control"
                                       rows="3"></textarea>
                         </div>
@@ -174,7 +174,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-offset-2 col-md-6">
+                <div class="col-md-offset-2 col-md-8">
                     <div class="form-group alert alert-warning alert-dismissable">
                         {{ trans('reports.contact_your_manager') }}
                     </div>
@@ -182,7 +182,7 @@
             </form>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="m-t80">
                 <label>{{ trans('reports.choose_month') }}</label>
                 <div class="form-group choose-month">
@@ -199,6 +199,31 @@
                 </div>
             </div>
             <div id="remain_time"></div>
+            <div class="m-t80">
+                <table class="table table-bordered" id="report-table">
+                    <tbody>
+                    <tr rv-show="totalTime | != ''">
+                        <th colspan="3">Total time: { totalTime }</th>
+                    </tr>
+                    <tr rv-show="tableTracked | length != null">
+                        <th colspan="3">Fixed time</th>
+                    </tr>
+                    <tr class="success" rv-each-record-tracked="tableTracked">
+                        <td rv-text="record-tracked.project_name"></td>
+                        <td rv-text="record-tracked.descirption"></td>
+                        <td rv-text="record-tracked.formatted_time"></td>
+                    </tr>
+                    <tr rv-show="tableUntracked | length != null">
+                        <th colspan="3">Other activity</th>
+                    </tr>
+                    <tr class="info" rv-each-record-untracked="tableUntracked">
+                        <td rv-text="record-untracked.task"></td>
+                        <td rv-text="record-untracked.descirption"></td>
+                        <td rv-text="record-untracked.formatted_time"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>

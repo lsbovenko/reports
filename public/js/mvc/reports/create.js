@@ -11,6 +11,7 @@
 
     var $date = $('#date'),
         $form = $('#report-form'),
+        $table = $('#report-table'),
         $totaltime = $('#totalTime'),
         totalLoggedMinutes = 0,
         emptyRecord = function emptyRecord() {
@@ -29,7 +30,16 @@
                 method: 'GET',
                 data: data,
                 success: function success(datas) {
-                    totalLoggedMinutes = datas.totalLoggedMinutes;
+                    if (datas.statistics) {
+                        totalLoggedMinutes = datas.statistics.total_logged_minutes;
+                        tableData.totalTime = Utils.formatMinutes(totalLoggedMinutes,true);
+                        tableData.tableTracked = datas.statistics.tracked;
+                        tableData.tableUntracked = datas.statistics.untracked;
+                    } else {
+                        tableData.totalTime = '';
+                        tableData.tableTracked = [];
+                        tableData.tableUntracked = [];
+                    }
                     formData.countTotalTime();
                 },
             });
@@ -215,9 +225,8 @@
                             'position': 'bottom right'
                         });
 
-                        var datepickerDate = datepickerMonth.selectedDates;
-                        var currentDate = new Date(datepickerDate[0].getFullYear(), datepickerDate[0].getMonth());
-                        datepickerMonth.selectDate(currentDate);
+                        var datepickerDate = datepicker.selectedDates;
+                        datepicker.selectDate(datepickerDate[0]);
                     },
                     error: function error(xhr) {
                         var data = JSON.parse(xhr.responseText);
@@ -230,9 +239,20 @@
         }
     };
 
+    var tableData = {
+        totalTime: '',
+        tableTracked: [],
+        tableUntracked: [],
+    };
+
+    rv.formatters.length = function (value) {
+        return value.length;
+    };
+
     //rv.bind($form, formData);
     datepicker.selectDate(new Date()); //select current date by default
     rv.bind($form, formData);
+    rv.bind($table, tableData);
 
     /* Select default projects if exist */
     if (G.latestProjects && G.latestProjects.length) {
