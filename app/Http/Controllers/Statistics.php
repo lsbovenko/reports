@@ -68,8 +68,11 @@ class Statistics extends Controller
     public function loggedTime (Request $request, \App\Service\Statistics $service)
     {
         $date = Carbon::parse($request->get('date'));
-        $totalLoggedMinutes = $service->getTotalLoggedMinutes($request->user(), $date);
-        return response()->json(['totalLoggedMinutes' => $totalLoggedMinutes], 200);
+        $reportsSummary = $service->getReportsSummary($request->user(), $date);
+
+        return response()->json([
+            'statistics' => $reportsSummary ? current(current($reportsSummary)) : null,
+        ], 200);
     }
 
     private function retrieveDates(Request $request)

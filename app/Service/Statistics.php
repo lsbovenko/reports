@@ -152,6 +152,8 @@ class Statistics
 
             if ($report->is_tracked) {
                 $item['tracked_logged_minutes'] += $report->worked_minutes;
+                $workedMinutes = $report->worked_minutes % Carbon::MINUTES_PER_HOUR;
+                $workedHours = (int)($report->worked_minutes / Carbon::MINUTES_PER_HOUR);
                 $item['tracked'][] = [
                     'id' => $report->id,
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
@@ -159,12 +161,15 @@ class Statistics
                     'descirption' => $report->description,
                     'overtime' => $report->is_overtime,
                     'total_minutes' => $report->worked_minutes,
-                    'minutes' => $report->worked_minutes % 60,
-                    'hours' => (int)($report->worked_minutes / 60),
+                    'minutes' => $workedMinutes,
+                    'hours' => $workedHours,
+                    'formatted_time' => sprintf('%02d:%02d', $workedHours, $workedMinutes),
                 ];
             } else {
                 $project = $report->project()->first();
                 $item['untracked_logged_minutes'] += $report->worked_minutes;
+                $workedMinutes = $report->worked_minutes % Carbon::MINUTES_PER_HOUR;
+                $workedHours = (int)($report->worked_minutes / Carbon::MINUTES_PER_HOUR);
                 $item['untracked'][] = [
                     'id' => $report->id,
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
@@ -172,8 +177,9 @@ class Statistics
                     'descirption' => $report->description,
                     'overtime' => $report->is_overtime,
                     'total_minutes' => $report->worked_minutes,
-                    'minutes' => $report->worked_minutes % 60,
-                    'hours' => (int)($report->worked_minutes / 60),
+                    'minutes' => $workedMinutes,
+                    'hours' => $workedHours,
+                    'formatted_time' => sprintf('%02d:%02d', $workedHours, $workedMinutes),
                 ];
             }
 

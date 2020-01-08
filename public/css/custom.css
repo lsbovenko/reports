@@ -157,6 +157,7 @@ footer {
 }
 #progress {
     position: relative;
+    width: 264px;
 }
 #progress_time {
     position: absolute;
