@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Report Ikantam'),
+    'name' => env('APP_NAME', 'Velmie reports'),
 
     'version' => '20200108',// used as stamp for asset files
 

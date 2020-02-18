@@ -203,10 +203,10 @@
                 <table class="table table-bordered" id="report-table">
                     <tbody>
                     <tr rv-show="totalTime | != ''">
-                        <th colspan="3">Total time: { totalTime }</th>
+                        <th colspan="3">{{ trans('reports.total_time') }}: { totalTime }</th>
                     </tr>
                     <tr rv-show="tableTracked | length != null">
-                        <th colspan="3">Fixed time</th>
+                        <th colspan="3">{{ trans('reports.billable_time') }}</th>
                     </tr>
                     <tr class="success" rv-each-record-tracked="tableTracked">
                         <td rv-text="record-tracked.project_name"></td>
@@ -214,7 +214,7 @@
                         <td rv-text="record-tracked.formatted_time"></td>
                     </tr>
                     <tr rv-show="tableUntracked | length != null">
-                        <th colspan="3">Other activity</th>
+                        <th colspan="3">{{ trans('reports.other_activity') }}</th>
                     </tr>
                     <tr class="info" rv-each-record-untracked="tableUntracked">
                         <td rv-text="record-untracked.task"></td>
