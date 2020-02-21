@@ -2,6 +2,8 @@
 
 ;(function ($, rv, G) {
 
+    $('#widgets').show();
+
     rv.formatters.not = function (value) {
         return !value;
     };
@@ -213,7 +215,7 @@
                     data: sendData,
                     success: function success() {
                         formData.reports.tracked.forEach(function (report) {
-                            report.time = { hours: 0, minutes: 0 };
+                            report.workedTime = { hours: 0, minutes: 0 };
                             report._time = '';
                             report.description = '';
                         });
@@ -227,6 +229,10 @@
 
                         var datepickerDate = datepicker.selectedDates;
                         datepicker.selectDate(datepickerDate[0]);
+
+                        $('.tracked-label').each(function() {
+                            $(this).text('Time (HHMM)').removeClass('font-red');
+                        });
                     },
                     error: function error(xhr) {
                         var data = JSON.parse(xhr.responseText);

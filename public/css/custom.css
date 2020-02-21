@@ -165,3 +165,7 @@ footer {
     width: 100%;
     color: black;
 }
+
+#widgets {
+    display: none;
+}
