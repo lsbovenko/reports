@@ -82,7 +82,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="col-sm-2 control-label">{{ trans('reports.time') }}</label>
+                            <label class="col-sm-2 control-label tracked-label">{{ trans('reports.time') }}</label>
                             <div class="col-md-3">
                                 <input rv-parsley-required="report.deleted | not" class="form-control"
                                        rv-on-change="controller.updateTime"
@@ -182,7 +182,7 @@
             </form>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" id="widgets">
             <div class="m-t80">
                 <label>{{ trans('reports.choose_month') }}</label>
                 <div class="form-group choose-month">
