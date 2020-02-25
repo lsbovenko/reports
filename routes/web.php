@@ -67,6 +67,8 @@ Route::group(['middleware' => ['jwt']], function () {
                 ->middleware('check_year');
             Route::post('/planned-hours/edit/{year}', 'PlannedHours@update')->where('year', '[0-9]+')->name('planned-hours.update')
                 ->middleware('check_year');
+            Route::get('/pm', 'ProjectManager@index')->name('pm.index');
+            Route::get('/pm/filter', 'ProjectManager@filter')->name('pm.filter');
         });
     });
 });

@@ -34,7 +34,8 @@ class Navbar
                         ->route('projects.index', trans('reports.projects'))
                         ->route('hours.index', trans('reports.hours'))
                         ->route('revenues.index', trans('reports.revenue'))
-                        ->route('planned-hours.index', trans('reports.planned_hours'));
+                        ->route('planned-hours.index', trans('reports.planned_hours'))
+                        ->route('pm.index', trans('reports.pm'));
                 }
             }
 
