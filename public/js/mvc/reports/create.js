@@ -38,6 +38,7 @@
                         tableData.tableTracked = datas.statistics.tracked;
                         tableData.tableUntracked = datas.statistics.untracked;
                     } else {
+                        totalLoggedMinutes = 0;
                         tableData.totalTime = '';
                         tableData.tableTracked = [];
                         tableData.tableUntracked = [];
