@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'employee' => 'Employee',
+    'pm' => 'PM',
+    'time_pm' => 'Time (H:MM)',
+    'time_dec' => 'Time (dec)',
     'hours' => 'Hours',
     'select_date_range' => 'select date range',
     'holidays_and_sick_days_not_excluded' => 'The time of holidays and sick days, as well as holidays, are not excluded by the system.',
