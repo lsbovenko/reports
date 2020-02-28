@@ -51,6 +51,17 @@
             </div>
             @verbatim
                 <div id="app" v-cloak>
+                    <div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><?php echo trans('reports.date_pm'); ?></label>
+                                <div class="col-md-6">
+                                    <span>{{startDate}}</span>
+                                    <span v-if="endDate"> - {{endDate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="form-group">

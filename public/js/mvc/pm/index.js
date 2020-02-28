@@ -44,6 +44,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         el: '#app',
         data: {
             pmStatistics: G.pmStatistics,
+            startDate: G.startDate,
+            endDate: G.endDate,
             filterParams: {
                 project_id: '',
                 dates: ['']
@@ -93,6 +95,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                         data: sendData,
                         success(response) {
                             that.pmStatistics = response.pmStatistics;
+                            that.startDate = response.startDate;
+                            that.endDate = response.endDate;
                         }
                     });
                 }

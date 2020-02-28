@@ -24,8 +24,7 @@ class ProjectManagerStatistics
         Carbon $date = null,
         Carbon $endDate = null,
         Project $project = null
-    )
-    {
+    ) {
         if (!isset($project)) {
             return [];
         }
@@ -33,8 +32,13 @@ class ProjectManagerStatistics
             ->join('reports', 'reports.user_id', '=', 'users.id')
             ->select(DB::raw('users.name, users.last_name, SUM(reports.worked_minutes) as time'))
             ->where('reports.is_tracked', '=', 1)
-            ->where('reports.project_id', '=', $project->id)
             ->groupBy('users.id');
+
+        if ($project->children->count()) {
+            $query->whereIn('reports.project_id', $this->getIds($project->children));
+        } else {
+            $query->where('reports.project_id', '=', $project->id);
+        }
 
         $format = 'Y-m-d';
         if ($endDate !== null) {
@@ -57,14 +61,28 @@ class ProjectManagerStatistics
         if ($collection->count()) {
             $minutesPerHour = Carbon::MINUTES_PER_HOUR;
             foreach ($collection as $item) {
-                $employee = $item->name." ".$item->last_name;
+                $employee = $item->name . " " . $item->last_name;
                 $hours = intval($item->time / $minutesPerHour);
-                $minutes = date('i',mktime(0, $item->time % $minutesPerHour));    //output in mm format
+                $minutes = date('i', mktime(0, $item->time % $minutesPerHour));    //output in mm format
                 $timeDec = round($item->time / $minutesPerHour, 2);
                 $statistics[] = new ProjectManagerData($employee, $hours, $minutes, $timeDec);
             }
         }
 
         return $statistics;
+    }
+
+    /**
+     * @param $projects
+     * @return array
+     */
+    private function getIds($projects)
+    {
+        $result = [];
+        foreach ($projects as $project) {
+            $result[] = $project->id;
+        }
+
+        return $result;
     }
 }
