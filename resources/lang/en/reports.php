@@ -55,6 +55,7 @@ return [
     'paid_time_description' => 'Paid time - hours of work on the project, which are paid by the customer. It can be either time on the tracker or hours in Jira, which are included in the assessment of the task. If you have doubts about how to classify your time, please contact the manager.',
     'rest_of_the_time_description' => 'The rest of the time is the time spent on self-education, internal projects, or the time spent on a task beyond assessment and not payable by the client.',
     'date' => 'Date',
+    'date_pm' => 'Date(s)',
     'total_time' => 'Total time',
     'billable_time' => 'Billable time',
     'time' => 'Time (HHMM)',

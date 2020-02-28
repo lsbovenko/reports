@@ -39,6 +39,7 @@ class ProjectManager extends Controller
                     'selectedDate' => $date->toIso8601String(),
                     'minDate' => $firstReport ? Carbon::parse($firstReport->date)->toIso8601String() : '',
                     'pmStatistics' => $service->getProjectManagerStatistics($date, null, null),
+                    'startDate' => $date->toFormattedDateString(),
                 ]
             ]
         );
@@ -56,6 +57,8 @@ class ProjectManager extends Controller
 
         return response()->json([
             'pmStatistics' => $service->getProjectManagerStatistics($date, $endDate, $project),
+            'startDate' => $date->toFormattedDateString(),
+            'endDate' => isset($endDate) ? $endDate->toFormattedDateString() : '',
         ]);
     }
 
