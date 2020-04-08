@@ -82,6 +82,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <span class="label label-warning">{{item.date}}</span>
+                                    <span class="label label-info">{{getDayOfWeek(item.date)}}</span>
                                     <span class="label label-warning">{{fullName(item.user)}}</span>
                                     <span class="label label-primary">{{item.total_logged_minutes | formatMinutes}}</span>
                                 </h4>
