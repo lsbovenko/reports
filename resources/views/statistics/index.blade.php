@@ -73,7 +73,6 @@
                             <span class="label label-primary"><?php echo trans('reports.in_total'); ?> {{totalInRange.total}}</span>
                             <span class="label label-success"><?php echo trans('reports.fixed_time_low'); ?> {{totalInRange.tracked}}</span>
                             <span class="label label-info"><?php echo trans('reports.other_activity_low'); ?> {{totalInRange.untracked}}</span>
-                            <span class="label label-warning"><?php echo trans('reports.overtime_low'); ?> {{totalInRange.total_overtime}}</span>
                             <span title="<?php echo trans('reports.time_working_day'); ?>" class="label label-default"><?php echo trans('reports.as_planned'); ?> {{totalInRange.planned}}</span>
                         </div>
                     </div>
