@@ -25,6 +25,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         inline: true,
         language: 'en',
         onSelect: function onSelect(dateStr, datesArray, inst) {
+            app.$data.selectedProject = '';
             if (inst.opts._ignoreOnSelect) {
                 return;
             }
@@ -49,6 +50,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         data: {
             users: G.users || [],
             statistics: stats = G.statistics || [],
+            selectedProject: '',
             filterParams: {
                 user_id: null,
                 dates: ['']
@@ -74,6 +76,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 return weekday[d.getDay()];
             },
             filterByUser: function filterByUser(user, event) {
+                this.clearProjectFilter();
                 if (this.previousActiveUser) {
                     this.previousActiveUser.isActive = false;
                 }
@@ -81,6 +84,34 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 user.isActive = true;
                 this.previousActiveUser = user;
                 this.filterParams.user_id = user.id;
+            },
+            clearProjectFilter: function clearProjectFilter() {
+                this.selectedProject = '';
+            },
+            filterByProject: function filterByProject(project) {
+                this.selectedProject = project;
+            },
+            reportContainsSelectedProject(projects) {
+                if (this.selectedProject == '') {
+                    return true;
+                }
+                for (var i = 0; i < projects.length; i++ ) {
+                    if (projects[i].project_name == this.selectedProject) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            selectedProjectDailyTime: function selectedProjectDailyTime(projects) {
+                var projectDailyTime = 0;
+                var selectedProject = this.selectedProject;
+                projects.forEach(function(project) {
+                    if (project.project_name == selectedProject) {
+                        projectDailyTime += project.total_minutes;
+                    }
+                });
+
+                return projectDailyTime;
             },
             deleteReport: function deleteReport(report) {
                 $.ajax({
@@ -107,6 +138,41 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             }
         },
         computed: {
+            filterProjects: function filterProjects() {
+                var trackedProjects = [];
+                var untrackedProjects = [];
+                this.statistics.forEach(function(statistic) {
+                    statistic.forEach(function(dailyReport) {
+                        dailyReport.tracked.forEach(function(project) {
+                            if (!trackedProjects.includes(project.project_name)) {
+                                trackedProjects.push(project.project_name);
+                            }
+                        });
+                        dailyReport.untracked.forEach(function(project) {
+                            if (!untrackedProjects.includes(project.task)) {
+                                untrackedProjects.push(project.task);
+                            }
+                        });
+                    });
+                });
+
+                return (trackedProjects.length == 1 && untrackedProjects.length == 0) ? [] : trackedProjects;
+            },
+            selectedProjectTotalTime: function selectedProjectTotalTime() {
+                var projectTime = 0;
+                var selectedProject = this.selectedProject;
+                this.statistics.forEach(function(statistic) {
+                    statistic.forEach(function(dailyReport) {
+                        dailyReport.tracked.forEach(function(project) {
+                            if (project.project_name == selectedProject) {
+                                projectTime += project.total_minutes;
+                            }
+                        });
+                    });
+                });
+
+                return Utils.formatMinutes(projectTime, true);
+            },
             selectedDates: function selectedDates() {
                 return this.filterParams.dates.map(function (d) {
                     return d.toString();

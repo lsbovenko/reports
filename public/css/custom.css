@@ -169,3 +169,13 @@ footer {
 #widgets {
     display: none;
 }
+
+.project-filter {
+    display: inline;
+}
+
+.project-filter button {
+    outline: none;
+    border-width: 0;
+    margin: 0 3px;
+}
