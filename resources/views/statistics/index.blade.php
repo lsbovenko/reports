@@ -67,7 +67,28 @@
                 </div>
 
                 <div class="col-md-9">
-                    <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1">
+                    <div class="panel panel-info" v-if="filterParams.user_id && filterProjects.length > 0">
+                        <div class="panel-heading">
+                            <small><?php echo trans('reports.filter_by_project'); ?></small>
+                            <div class="project-filter" v-for="project in filterProjects">
+                                <button v-on:click="filterByProject(project)"
+                                        class="label"
+                                        v-bind:class="{'label-primary': selectedProject != project, 'label-danger': selectedProject == project}">
+                                    {{project}}
+                                </button>
+                            </div>
+                            <i v-on:click="clearProjectFilter" v-if="selectedProject"
+                               title="<?php echo trans('reports.clear_project_filter'); ?>"
+                               class="fa fa-window-close cur-pointer pull-right font-red" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1 && selectedProject">
+                        <div class="panel-heading">
+                            <small><?php echo trans('reports.total_current_range'); ?></small>
+                            <span class="label label-success"><?php echo trans('reports.fixed_time_low'); ?> {{selectedProjectTotalTime}}</span>
+                        </div>
+                    </div>
+                    <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1 && !selectedProject">
                         <div class="panel-heading">
                             <small><?php echo trans('reports.total_current_range'); ?></small>
                             <span class="label label-primary"><?php echo trans('reports.in_total'); ?> {{totalInRange.total}}</span>
@@ -77,13 +98,16 @@
                         </div>
                     </div>
                     <div v-for="userStatistics in statistics">
-                        <div class="panel panel-info" v-for="item in userStatistics">
+                        <div class="panel panel-info" v-for="item in userStatistics" v-if="reportContainsSelectedProject(item.tracked)">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <span class="label label-warning">{{item.date}}</span>
                                     <span class="label label-info">{{getDayOfWeek(item.date)}}</span>
                                     <span class="label label-warning">{{fullName(item.user)}}</span>
-                                    <span class="label label-primary">{{item.total_logged_minutes | formatMinutes}}</span>
+                                    <span v-if="selectedProject" class="label label-primary">
+                                        {{selectedProjectDailyTime(item.tracked) | formatMinutes}}
+                                    </span>
+                                    <span v-else class="label label-primary">{{item.total_logged_minutes | formatMinutes}}</span>
                                 </h4>
                             </div>
                             <div class="panel-body">
@@ -104,7 +128,10 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-bind:title="tracked.overtime && '<?php echo trans('reports.marked_as_overtime'); ?>'"  v-bind:class="{'bg-highlight': tracked.overtime}" v-if="!tracked.deleted" v-for="tracked in item.tracked">
+                                            <tr v-bind:title="tracked.overtime && '<?php echo trans('reports.marked_as_overtime'); ?>'"
+                                                v-bind:class="{'bg-highlight': tracked.overtime}"
+                                                v-if="!tracked.deleted && (!selectedProject || selectedProject == tracked.project_name)"
+                                                v-for="tracked in item.tracked">
                                                 <td>{{tracked.project_name}}</td>
                                                 <td>{{tracked.created}}</td>
                                                 <td><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
@@ -118,7 +145,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row" v-if="item.untracked.length">
+                                <div class="row" v-if="item.untracked.length && !selectedProject">
                                     <div class="col-md-4">
                                         <h4 class="text-muted"><?php echo trans('reports.other_activity'); ?></h4>
                                     </div>
