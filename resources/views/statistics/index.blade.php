@@ -77,9 +77,6 @@
                                     {{project}}
                                 </button>
                             </div>
-                            <i v-on:click="clearProjectFilter" v-if="selectedProject"
-                               title="<?php echo trans('reports.clear_project_filter'); ?>"
-                               class="fa fa-window-close cur-pointer pull-right font-red" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1 && selectedProject">

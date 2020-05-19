@@ -20,7 +20,6 @@ return [
     'total_revenue' => 'Total approximate revenue',
     'projects' => 'Projects',
     'filter_by_project' => 'Filter by project',
-    'clear_project_filter' => 'Clear filter',
     'add' => 'Add',
     'apply' => 'Apply',
     'name' => 'Name',
