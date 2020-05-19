@@ -89,7 +89,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 this.selectedProject = '';
             },
             filterByProject: function filterByProject(project) {
-                this.selectedProject = project;
+                this.selectedProject = (this.selectedProject == project) ? '' : project;
             },
             reportContainsSelectedProject(projects) {
                 if (this.selectedProject == '') {
