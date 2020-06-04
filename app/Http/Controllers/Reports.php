@@ -127,6 +127,7 @@ class Reports extends Controller
                     'task' => !isset($project) ? $taskName : null,
                     'date' => $date->format('Y-m-d'),
                     'worked_minutes' => $hours * 60 + $minutes,
+                    'is_meeting' => $item['isMeeting'],
                     'description' => $item['description'],
                     'is_tracked' => $item['isTracked'],
                     'is_overtime' => $item['isOvertime'],

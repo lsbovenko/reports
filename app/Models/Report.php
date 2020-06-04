@@ -11,6 +11,7 @@ use Illuminate\Database\Query\Builder;
  * @property int $user_id
  * @property int $project_id
  * @property int $is_tracked
+ * @property int $is_meeting
  * * @property int $is_overtime
  * @property string $created_at
  * @property string $updated_at
@@ -32,6 +33,7 @@ class Report extends Model
         'task',
         'date',
         'worked_minutes',
+        'is_meeting',
         'description',
         'is_tracked',
         'is_overtime',

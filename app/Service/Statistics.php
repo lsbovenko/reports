@@ -31,15 +31,20 @@ class Statistics
      * @param User|null $user - filter reports by user
      * @param Carbon $date - filter reports by this date (may be used as start date if 3rd parameter is passed) today by default
      * @param Carbon|null $endDate - retrieve reports for period between $date and $endDate if passed
+     * @param int $isMeeting - filter reports by meeting
      *
      * @return array
      */
-    public function getReportsSummary(User $user = null, Carbon $date = null, Carbon $endDate = null)
+    public function getReportsSummary(User $user = null, Carbon $date = null, Carbon $endDate = null, int $isMeeting = 0)
     {
         $query = Report::query();
 
         if (null !== $user) {
             $query->where('user_id', $user->id);
+        }
+
+        if ($isMeeting) {
+            $query->where('is_meeting', $isMeeting);
         }
 
         if (null === $date) {
@@ -158,6 +163,7 @@ class Statistics
                     'id' => $report->id,
                     'created' => $report->created_at->format('Y-m-d H:i:s'),
                     'project_name' => $report->project()->first()->getFullName(),
+                    'is_meeting' => $report->is_meeting,
                     'descirption' => $report->description,
                     'overtime' => $report->is_overtime,
                     'total_minutes' => $report->worked_minutes,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auth\User;
+use App\Models\Project;
 use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -41,9 +42,10 @@ class Statistics extends Controller
     {
         $user = $this->findUser($request);
         list($date, $endDate) = $this->retrieveDates($request);
+        $isMeeting = $request->get('is_meeting');
 
         return response()
-            ->json($service->getReportsSummary($user, $date, $endDate));
+            ->json($service->getReportsSummary($user, $date, $endDate, $isMeeting));
     }
 
     public function chartData(Request $request, \App\Service\Statistics $service)
@@ -84,5 +86,18 @@ class Statistics extends Controller
     private function findUser(Request $request)
     {
         return $user = User::find($request->get('user_id'));
+    }
+
+    public function timeAllPeriod(Request $request)
+    {
+        $projectId = Project::where('name', $request->get('project'))->pluck('id')->first();
+        $reports = Report::where('user_id', $request->get('user_id'))
+            ->where('project_id', $projectId);
+        if ($isMeeting = $request->get('is_meeting')) {
+            $reports = $reports->where('is_meeting', $isMeeting);
+        }
+        $workedMinutes = $reports->sum('worked_minutes');
+
+        return response()->json(['workedMinutes' => $workedMinutes]);
     }
 }
