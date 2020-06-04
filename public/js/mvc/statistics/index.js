@@ -51,9 +51,11 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             users: G.users || [],
             statistics: stats = G.statistics || [],
             selectedProject: '',
+            isAllPeriodChecked: false,
             filterParams: {
                 user_id: null,
-                dates: ['']
+                dates: [''],
+                isMeeting: false,
             }
         },
         methods: {
@@ -90,6 +92,29 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             },
             filterByProject: function filterByProject(project) {
                 this.selectedProject = (this.selectedProject == project) ? '' : project;
+                this.filterParams.isMeeting = false;
+                this.isAllPeriodChecked = false;
+            },
+            filterByMeeting: function filterByMeeting(isMeeting) {
+                this.filterParams.isMeeting = !isMeeting;
+                this.isAllPeriodChecked = false;
+            },
+            getTimeAllPeriod: function getTimeAllPeriod() {
+                var isMeeting = +this.filterParams.isMeeting;
+                this.isAllPeriodChecked = true;
+                $.ajax({
+                    url: '/statistics/time-all-period',
+                    type: 'get',
+                    data: 'user_id=' + this.filterParams.user_id
+                        + '&project=' + this.selectedProject
+                        + '&is_meeting=' + isMeeting,
+                    success: function success(result) {
+                        $('#time-all-period').text(Utils.formatMinutes(result.workedMinutes, true));
+                    },
+                    complete: function() {
+                        $('.loader-small').hide();
+                    }
+                });
             },
             reportContainsSelectedProject(projects) {
                 if (this.selectedProject == '') {
@@ -156,7 +181,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     });
                 });
 
-                return (trackedProjects.length == 1 && untrackedProjects.length == 0) ? [] : trackedProjects;
+                return (trackedProjects.length == 0 && untrackedProjects.length == 0) ? [] : trackedProjects;
             },
             selectedProjectTotalTime: function selectedProjectTotalTime() {
                 var projectTime = 0;
@@ -239,7 +264,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                         user_id: this.filterParams.user_id,
                         dates: this.filterParams.dates.map(function (d) {
                             return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-                        })
+                        }),
+                        is_meeting: +this.filterParams.isMeeting,
                     };
                     H.pushState(sendData, $(document).prop('title'), '?' + $.param(sendData));
 

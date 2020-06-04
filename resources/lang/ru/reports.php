@@ -100,4 +100,8 @@ return [
     'changes_planned_hours_success' => 'Изменения производственного календаря :year сохранены успешно',
     'choose_month' => 'Выберите месяц',
     'time_array' => ['ч', 'м'],
+    'get_time_all_period' => 'Получить время за весь период',
+    'total_all_period' => 'Общее за весь период',
+    'meeting' => 'Заседание',
+    'filter_by_meeting' => 'Фильтр по заседаниям',
 ];

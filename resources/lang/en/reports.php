@@ -101,4 +101,8 @@ return [
     'changes_planned_hours_success' => 'Changes of production calendar :year saved successfully',
     'choose_month' => 'Choose month',
     'time_array' => ['h', 'm'],
+    'get_time_all_period' => 'Get time for all period',
+    'total_all_period' => 'Total for all period',
+    'meeting' => 'Meeting',
+    'filter_by_meeting' => 'Filter by meeting',
 ];

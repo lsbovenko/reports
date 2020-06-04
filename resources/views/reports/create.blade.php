@@ -96,7 +96,12 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ trans('reports.meeting') }}</label>
+                        <div class="col-md-1">
+                            <input type="checkbox" rv-value="report.isMeeting" class="form-control">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.notes') }}</label>
                         <div class="col-md-8">
@@ -105,6 +110,7 @@
                         </div>
 
                     </div>
+                    <br>
                 </div>
 
                 <div class="form-group">

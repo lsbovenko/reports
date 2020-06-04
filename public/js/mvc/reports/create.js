@@ -19,7 +19,7 @@
         emptyRecord = function emptyRecord() {
         var isTracked = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-        return { name: '', description: '', workedTime: { hours: 0, minutes: 0 }, isTracked: isTracked, overtime: false };
+        return { name: '', isMeeting: false, description: '', workedTime: { hours: 0, minutes: 0 }, isTracked: isTracked, overtime: false };
     },
         datepicker = $date.datepicker({
         maxDate: new Date(),
@@ -192,6 +192,7 @@
                     sendData.reports.push({
                         name: r.name,
                         time: r.workedTime,
+                        isMeeting: +r.isMeeting,
                         description: r.description,
                         isOvertime: +r.overtime,
                         isTracked: 1

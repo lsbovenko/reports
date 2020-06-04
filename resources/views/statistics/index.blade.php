@@ -81,8 +81,24 @@
                     </div>
                     <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1 && selectedProject">
                         <div class="panel-heading">
+                            <small><?php echo trans('reports.filter_by_meeting'); ?></small>
+                            <input type="checkbox" v-on:click="filterByMeeting(filterParams.isMeeting)" v-model="filterParams.isMeeting">
+                        </div>
+                    </div>
+                    <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1 && selectedProject">
+                        <div class="panel-heading">
                             <small><?php echo trans('reports.total_current_range'); ?></small>
                             <span class="label label-success"><?php echo trans('reports.fixed_time_low'); ?> {{selectedProjectTotalTime}}</span>
+                            <div class="project-filter" v-if="!isAllPeriodChecked">
+                                <button v-on:click="getTimeAllPeriod()" class="label label-primary">
+                                    <?php echo trans('reports.get_time_all_period'); ?>
+                                </button>
+                            </div>
+                            <div class="project-filter" v-if="isAllPeriodChecked">
+                                <small><?php echo trans('reports.total_all_period'); ?></small>
+                                <img src="<?php echo asset('assets/images/loader.gif'); ?>" class='loader-small'>
+                                <span class="label label-success" id="time-all-period"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="panel panel-info" v-if="filterParams.user_id && filterParams.dates.length > 1 && !selectedProject">
@@ -118,6 +134,7 @@
                                             <thead>
                                             <tr>
                                                 <th><?php echo trans('reports.project'); ?></th>
+                                                <th><?php echo trans('reports.meeting'); ?></th>
                                                 <th><?php echo trans('reports.date_added'); ?></th>
                                                 <th><?php echo trans('reports.duration'); ?></th>
                                                 <th style="width: 30%"><?php echo trans('reports.notes'); ?></th>
@@ -130,6 +147,7 @@
                                                 v-if="!tracked.deleted && (!selectedProject || selectedProject == tracked.project_name)"
                                                 v-for="tracked in item.tracked">
                                                 <td>{{tracked.project_name}}</td>
+                                                <td><i v-if="tracked.is_meeting" class="font-red fa fa-check"></i></td>
                                                 <td>{{tracked.created}}</td>
                                                 <td><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
                                                 <td><small class="font-extra-small">{{tracked.descirption}}</small></td>
