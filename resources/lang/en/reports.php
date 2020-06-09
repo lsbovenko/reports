@@ -105,4 +105,9 @@ return [
     'total_all_period' => 'Total for all period',
     'meeting' => 'Meeting',
     'filter_by_meeting' => 'Filter by meeting',
+    'change_date' => 'Change date',
+    'save_date' => 'Save date',
+    'cancel' => 'Cancel',
+    'maximum_time_for_day' => 'The maximum time for the reporting day has been exceeded',
+    'maximum_time_for_report' => 'The maximum time for the report has been exceeded',
 ];

@@ -4,15 +4,21 @@
 
 @section('page_css')
     <link rel="stylesheet" href="{{URL::asset('css/datepicker.min.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/amaran.min.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/animate.min.css')}}">
 @endsection
 
 @section('page_js')
+    <script src="{{ asset('js/rivets.bundled.min.js') }}"></script>
     <script src="{{asset('js/vue' . (config('app.env') !== 'local' ? '.min' : '') . '.js' )}}"></script>
     <script src="{{URL::asset('js/jquery.history.js')}}"></script>
     <script src="{{URL::asset('js/jquery-deparam.js')}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
     <script src="{{ asset('js/i18n/datepicker.en.js') }}"></script>
+    <script src="{{URL::asset('js/duration.picker.js')}}"></script>
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
+    <script src="{{URL::asset('js/rivets.binders.js')}}"></script>
+    <script src="{{ asset('js/jquery.amaran.js') }}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
     <script src="{{asset('js/utils.js?v=' . Config::get('app.version'))}}"></script>
@@ -121,8 +127,17 @@
                                         {{selectedProjectDailyTime(item.tracked) | formatMinutes}}
                                     </span>
                                     <span v-else class="label label-primary">{{item.total_logged_minutes | formatMinutes}}</span>
+                                    <span class="project-filter pull-right">
+                                        <button v-on:click="editDate(item.date, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && item.date != editDateStr" title="<?php echo trans('reports.change_date'); ?>">
+                                            <?php echo trans('reports.change_date'); ?>
+                                        </button>
+                                        <button v-on:click="saveDate(item.date)" class="label label-success" v-if="item.date == editDateStr" title="<?php echo trans('reports.save_date'); ?>">
+                                            <?php echo trans('reports.save_date'); ?>
+                                        </button>
+                                    </span>
                                 </h4>
                             </div>
+                            <span class="date-datepicker" v-bind:id="item.date"></span>
                             <div class="panel-body">
 
                                 <div class="row"  v-if="item.tracked.length">
@@ -133,26 +148,47 @@
                                         <table class="table table-striped table-fixed">
                                             <thead>
                                             <tr>
-                                                <th><?php echo trans('reports.project'); ?></th>
-                                                <th><?php echo trans('reports.meeting'); ?></th>
-                                                <th><?php echo trans('reports.date_added'); ?></th>
-                                                <th><?php echo trans('reports.duration'); ?></th>
-                                                <th style="width: 30%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 10%"></th>
+                                                <th style="width: 10%"><?php echo trans('reports.project'); ?></th>
+                                                <th style="width: 10%"><?php echo trans('reports.meeting'); ?></th>
+                                                <th style="width: 20%"><?php echo trans('reports.date_added'); ?></th>
+                                                <th style="width: 20%"><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
+                                                <th style="width: 15%"></th>
+                                                <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-bind:title="tracked.overtime && '<?php echo trans('reports.marked_as_overtime'); ?>'"
-                                                v-bind:class="{'bg-highlight': tracked.overtime}"
+                                            <tr v-bind:class="{'bg-highlight': tracked.overtime}"
                                                 v-if="!tracked.deleted && (!selectedProject || selectedProject == tracked.project_name)"
                                                 v-for="tracked in item.tracked">
                                                 <td>{{tracked.project_name}}</td>
                                                 <td><i v-if="tracked.is_meeting" class="font-red fa fa-check"></i></td>
                                                 <td>{{tracked.created}}</td>
-                                                <td><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
-                                                <td><small class="font-extra-small">{{tracked.descirption}}</small></td>
+                                                <td v-if="tracked.id != editReportId"><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
+                                                <td v-if="tracked.id == editReportId">
+                                                    <small class="font-extra-small">
+                                                        <input class="report-duration" type="text" v-on:mouseover="editDuration()"
+                                                               v-bind:value="tracked.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(tracked.id)"
+                                                               rv-jquery-plugin-tooltip="durationTooltip"
+                                                               rv-jquery-plugin-duration="durationPickerOptions">
+                                                    </small>
+                                                </td>
+                                                <td v-if="tracked.id != editReportId"><small class="font-extra-small">{{tracked.descirption}}</small></td>
+                                                <td v-if="tracked.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="tracked.descirption" v-bind:id="editDescription(tracked.id)"></textarea></small></td>
+                                                <td><div class="project-filter">
+                                                        <button v-on:click="editReport(tracked, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && tracked.id != editReportId" title="<?php echo trans('reports.edit'); ?>">
+                                                            <?php echo trans('reports.edit'); ?>
+                                                        </button>
+                                                        <button v-on:click="saveReport(tracked)" class="label label-success" v-if="tracked.id == editReportId" title="<?php echo trans('reports.save'); ?>">
+                                                            <?php echo trans('reports.save'); ?>
+                                                        </button>
+                                                        <button v-on:click="cancelReport()" class="label label-danger" v-if="tracked.id == editReportId" title="<?php echo trans('reports.cancel'); ?>">
+                                                            <?php echo trans('reports.cancel'); ?>
+                                                        </button>
+                                                    </div>
+                                                </td>
                                                 <td class="font-red">
-                                                    <i v-if="item.editable" v-on:click="deleteReport(tracked)" title="<?php echo trans('reports.remove'); ?>" class="fa fa-window-close cur-pointer pull-right"
+                                                    <i v-if="item.editable" v-on:click="deleteReport(tracked)" title="<?php echo trans('reports.remove'); ?>" class="fa fa-window-close cur-pointer"
                                                        aria-hidden="true"></i></td>
                                             </tr>
                                             </tbody>
@@ -168,15 +204,16 @@
                                         <table class="table table-striped table-fixed">
                                             <thead>
                                             <tr>
-                                                <th><?php echo trans('reports.task'); ?></th>
-                                                <th><?php echo trans('reports.date_added'); ?></th>
-                                                <th><?php echo trans('reports.duration'); ?></th>
-                                                <th style="width: 30%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 10%"></th>
+                                                <th style="width: 20%"><?php echo trans('reports.task'); ?></th>
+                                                <th style="width: 20%"><?php echo trans('reports.date_added'); ?></th>
+                                                <th style="width: 20%"><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
+                                                <th style="width: 15%"></th>
+                                                <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-bind:title="activity.overtime && '<?php echo trans('reports.marked_as_overtime'); ?>'" v-bind:class="{'bg-highlight': activity.overtime}" v-if="!activity.deleted" v-for="activity in item.untracked">
+                                            <tr v-bind:class="{'bg-highlight': activity.overtime}" v-if="!activity.deleted" v-for="activity in item.untracked">
                                                 <td>
                                                     <span v-if="activity.project_name">
                                                         {{activity.project_name}}
@@ -186,10 +223,31 @@
                                                     </span>
                                                 </td>
                                                 <td>{{activity.created}}</td>
-                                                <td><span class="label label-info">{{activity.total_minutes | formatMinutes}}</span></td>
-                                                <td><small class="font-extra-small">{{activity.descirption}}</small></td>
+                                                <td v-if="activity.id != editReportId"><span class="label label-info">{{activity.total_minutes | formatMinutes}}</span></td>
+                                                <td v-if="activity.id == editReportId">
+                                                    <small class="font-extra-small">
+                                                        <input class="report-duration" type="text" v-on:mouseover="editDuration()"
+                                                               v-bind:value="activity.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(activity.id)"
+                                                               rv-jquery-plugin-tooltip="durationTooltip"
+                                                               rv-jquery-plugin-duration="durationPickerOptions">
+                                                    </small>
+                                                </td>
+                                                <td v-if="activity.id != editReportId"><small class="font-extra-small">{{activity.descirption}}</small></td>
+                                                <td v-if="activity.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="activity.descirption" v-bind:id="editDescription(activity.id)"></textarea></small></td>
+                                                <td><div class="project-filter">
+                                                        <button v-on:click="editReport(activity, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && activity.id != editReportId" title="<?php echo trans('reports.edit'); ?>">
+                                                            <?php echo trans('reports.edit'); ?>
+                                                        </button>
+                                                        <button v-on:click="saveReport(activity)" class="label label-success" v-if="activity.id == editReportId" title="<?php echo trans('reports.save'); ?>">
+                                                            <?php echo trans('reports.save'); ?>
+                                                        </button>
+                                                        <button v-on:click="cancelReport()" class="label label-danger" v-if="activity.id == editReportId" title="<?php echo trans('reports.cancel'); ?>">
+                                                            <?php echo trans('reports.cancel'); ?>
+                                                        </button>
+                                                    </div>
+                                                </td>
                                                 <td class="font-red">
-                                                    <i v-if="item.editable" v-on:click="deleteReport(activity)" title="<?php echo trans('reports.remove'); ?>" class="fa fa-window-close cur-pointer pull-right"
+                                                    <i v-if="item.editable" v-on:click="deleteReport(activity)" title="<?php echo trans('reports.remove'); ?>" class="fa fa-window-close cur-pointer"
                                                                         aria-hidden="true"></i></td>
                                             </tr>
                                             </tbody>

@@ -62,7 +62,11 @@
         } else {
           this.config.content = {};
           this.config.content.message = this.config.message;
-          this.config.content.color = "#27ae60";
+          if (this.config.color) {
+              this.config.content.color = this.config.color;
+          } else {
+              this.config.content.color = "#27ae60";
+          }
           message = themes["defaultTheme"](this.config.content);
         }
         amaranObject = {

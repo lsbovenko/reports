@@ -2,7 +2,39 @@
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-;(function ($, Vue, Utils, H, W, G) {
+;(function ($, Vue, Utils, H, W, rv, G) {
+    var reportDurationData = {
+        previousDuration: 0,
+        duration: 0,
+        totalDateDuration: 0,
+        isDurationMoreThan8Hours: 0,
+        isDateDurationMoreThan15Hours: 0,
+        isDateDurationMoreThan15HoursForDate: 0,
+        durationTooltip: {
+            placement: 'top',
+            html: true,
+            title: '<ul class="list-unstyled text-justify">\n' +
+                '<li><b>1 5</b> = 1 \u0447\u0430\u0441 5 \u043C\u0438\u043D\u0443\u0442</li>\n' +
+                '<li><b>0105</b> = 1 \u0447\u0430\u0441 5 \u043C\u0438\u043D\u0443\u0442</li>\n' +
+                '<li><b>1h5m</b> = 1 \u0447\u0430\u0441 5 \u043C\u0438\u043D\u0443\u0442</li>\n' +
+                '<li><b>5m</b> = 5 \u043C\u0438\u043D\u0443\u0442</li>\n' +
+                '<li><b>0 5</b> = 5 \u043C\u0438\u043D\u0443\u0442</li>\n' +
+                '</ul>',
+        },
+        durationPickerOptions: {
+            onUpdate: function onUpdate(duration) {
+                reportDurationData.duration = duration.hours * 60 + duration.minutes;
+
+                reportDurationData.isDurationMoreThan8Hours = reportDurationData.duration > 480;
+                reportDurationData.isDateDurationMoreThan15Hours =
+                    reportDurationData.totalDateDuration - reportDurationData.previousDuration + reportDurationData.duration > 900;
+
+                $(this).toggleClass('font-red',
+                    reportDurationData.isDurationMoreThan8Hours || reportDurationData.isDateDurationMoreThan15Hours
+                );
+            }
+        },
+    };
 
     var $date = $('#date'),
         strToDate = function strToDate(str) {
@@ -56,7 +88,12 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 user_id: null,
                 dates: [''],
                 isMeeting: false,
-            }
+                isEditReport: false,
+            },
+            editReportId: 0,
+            editDateStr: 0,
+            datapickerDateObj: 0,
+            datapickerDateNew: 0,
         },
         methods: {
             fullName: function fullName(user) {
@@ -139,6 +176,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 return projectDailyTime;
             },
             deleteReport: function deleteReport(report) {
+                var vm = this;
                 $.ajax({
                     url: '/reports/' + report.id,
                     method: 'DELETE',
@@ -158,8 +196,129 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                                 }
                             });
                         });
+                        vm.filterParams.isEditReport = !vm.filterParams.isEditReport;
                     }
                 });
+            },
+            editReport: function editReport(report, totalLoggedMinutes) {
+                reportDurationData.previousDuration = report.total_minutes;
+                reportDurationData.duration = report.total_minutes;
+                reportDurationData.totalDateDuration = totalLoggedMinutes;
+                this.editReportId = report.id;
+            },
+            saveReport: function saveReport(report) {
+                var idDescription = $('#' + report.id + '_description').val();
+                var vm = this;
+                if (!(report.total_minutes == reportDurationData.duration && report.descirption == idDescription)
+                    && reportDurationData.duration
+                    && !reportDurationData.isDurationMoreThan8Hours
+                    && !reportDurationData.isDateDurationMoreThan15Hours
+                ) {
+                    var sendData = {
+                        worked_minutes: reportDurationData.duration,
+                        description: idDescription,
+                    };
+                    $.ajax({
+                        url: '/reports/' + report.id + '/update',
+                        type: 'put',
+                        data: sendData,
+                        success: function success(result) {
+                            vm.filterParams.isEditReport = !vm.filterParams.isEditReport;
+                        },
+                        error: function error(result) {
+                            window.alert(result.responseJSON.error);
+                        }
+                    });
+                } else {
+                    $.amaran({
+                        'message': 'Report time not updated',
+                        'position': 'bottom right',
+                        'color': 'red'
+                    });
+                }
+                this.editReportId = 0;
+            },
+            cancelReport: function cancelReport() {
+                this.editReportId = 0;
+            },
+            editTotalMinutes: function editTotalMinutes(reportId) {
+                return reportId + '_total_minutes';
+            },
+            editDescription: function editDescription(reportId) {
+                return reportId + '_description';
+            },
+            editDate: function editDate(date, totalDateDuration) {
+                var $date = $('#' + date);
+                if (this.datapickerDateObj) {
+                    this.datapickerDateObj.$el.hide();
+                }
+                var vm = this;
+                var totalNewDateDuration = 0;
+                this.datapickerDateObj = $date.datepicker({
+                    maxDate: new Date(),
+                    minDate: new Date(G.minDate),
+                    language: 'en',
+                    dateFormat: 'yyyy-mm-dd',
+                    onSelect: function onSelect(formattedDate, dateObj, inst) {
+                        vm.datapickerDateNew = formattedDate;
+                        if (vm.datapickerDateNew != date && vm.datapickerDateNew) {
+                            var sendData = {
+                                date: vm.datapickerDateNew
+                            };
+                            $.ajax({
+                                url: '/statistics/logged-minutes',
+                                type: 'get',
+                                data: sendData,
+                                success: function success(result) {
+                                    if (result.statistics) {
+                                        totalNewDateDuration = result.statistics.total_logged_minutes;
+                                    }
+                                    reportDurationData.isDateDurationMoreThan15HoursForDate =
+                                        totalDateDuration + totalNewDateDuration > 900;
+                                }
+                            });
+                        }
+                    }
+                }).data('datepicker');
+                this.datapickerDateObj.$el.show();
+                this.datapickerDateObj.selectDate(strToDate(date));
+                this.editDateStr = date;
+            },
+            saveDate: function saveDate(date) {
+                var vm = this;
+                if (this.datapickerDateNew != date
+                    && this.datapickerDateNew
+                    && !reportDurationData.isDateDurationMoreThan15HoursForDate
+                ) {
+                    var sendData = {
+                        user_id: vm.filterParams.user_id,
+                        old_date: date,
+                        new_date: this.datapickerDateNew,
+                    };
+                    $.ajax({
+                        url: '/reports/update-dates',
+                        type: 'put',
+                        data: sendData,
+                        success: function success(result) {
+                            vm.filterParams.isEditReport = !vm.filterParams.isEditReport;
+                        },
+                        error: function error(result) {
+                            window.alert(result.responseJSON.error);
+                        }
+                    });
+                } else {
+                    $.amaran({
+                        'message': 'Reports date not updated',
+                        'position': 'bottom right',
+                        'color': 'red'
+                    });
+                }
+                this.editDateStr = 0;
+                this.datapickerDateObj.$el.hide();
+            },
+            editDuration: function editDuration() {
+                var $reportDuration = $('.report-duration');
+                rv.bind($reportDuration, reportDurationData);
             }
         },
         computed: {
@@ -295,7 +454,13 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         filters: {
             formatMinutes: function formatMinutes(value) {
                 return Utils.formatMinutes(value);
-            }
+            },
+            formatMinutesShort: function formatMinutesShort(value) {
+                var hours = parseInt(value / 60).toString();
+                var minutes = (value % 60).toString();
+
+                return hours + 'h' + minutes + 'm';
+            },
         }
     }),
         chart = new Chart($('#chart'), {
@@ -338,9 +503,21 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         }
     });
 
+    $(document).mouseup(function (e) {
+        var containerDatapicker = $(app.datapickerDateObj.$el);
+        var containerSaveButton = containerDatapicker.parent().find($('.label-success'));
+
+        if ((!containerDatapicker.is(e.target) && containerDatapicker.has(e.target).length === 0)
+            && (!containerSaveButton.is(e.target) && containerSaveButton.has(e.target).length === 0)
+        ) {
+            containerDatapicker.hide();
+            app.editDateStr = 0;
+        }
+    });
+
     datepicker.selectDate(new Date(G.selectedDate)); //select current date by default
 
     $datepickerRange.on('change', function () {
         datepicker.update('range', $(this).is(':checked'));
     });
-})(jQuery, Vue, Utils, History, window, window._globals || {});
+})(jQuery, Vue, Utils, History, window, rivets, window._globals || {});

@@ -12,6 +12,7 @@ use App\Service\Reports as ReportsService;
 
 class Reports extends Controller
 {
+    const MAX_ALLOWED_MINUTES_FOR_REPORT = 480; //8 hours
     const MAX_ALLOWED_MINUTES = 900; //15 hours
     private $stats;
 
@@ -127,7 +128,7 @@ class Reports extends Controller
                     'task' => !isset($project) ? $taskName : null,
                     'date' => $date->format('Y-m-d'),
                     'worked_minutes' => $hours * 60 + $minutes,
-                    'is_meeting' => $item['isMeeting'],
+                    'is_meeting' => isset($item['isMeeting']) ? $item['isMeeting'] : 0,
                     'description' => $item['description'],
                     'is_tracked' => $item['isTracked'],
                     'is_overtime' => $item['isOvertime'],
@@ -164,15 +165,68 @@ class Reports extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update information of report
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Report $report
-     * @return \Illuminate\Http\Response
+     * @param  int $reportId
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Report $report)
+    public function update(Request $request, int $reportId)
     {
-        //
+        $report = Report::where('id', $reportId)->first();
+        if (!($report && $report->user_id == Auth::id())) {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
+        $newWorkedMinutes = (int)$request->get('worked_minutes');
+        if ($newWorkedMinutes > self::MAX_ALLOWED_MINUTES_FOR_REPORT) {
+            return response()->json(['error' => trans('reports.maximum_time_for_report')], 400);
+        }
+
+        $totalMinutes = $this->stats->getTotalLoggedMinutes(Auth::user(), Carbon::parse($report->date));
+        $newTotalMinutes = $totalMinutes - $report->worked_minutes + $newWorkedMinutes;
+
+        if ($newTotalMinutes > self::MAX_ALLOWED_MINUTES) {
+            return response()->json(['error' => trans('reports.maximum_time_for_day')], 400);
+        }
+
+        $isReportUpdated = Report::where('id', $reportId) ->update([
+            'worked_minutes' => $newWorkedMinutes,
+            'description' => $request->get('description')
+        ]);
+
+        return $isReportUpdated
+            ? response()->json(['success' => 'Report has been updated'], 200)
+            : response()->json(['error' => 'Report not found'], 404);
+    }
+
+    /**
+     * Update dates of reports
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateDates(Request $request)
+    {
+        if ($request->get('user_id') != Auth::id()) {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
+        $oldDate = $request->get('old_date');
+        $newDate = $request->get('new_date');
+        $totalMinutes = $this->stats->getTotalLoggedMinutes(Auth::user(), Carbon::parse($oldDate));
+        $newTotalMinutes = $this->stats->getTotalLoggedMinutes(Auth::user(), Carbon::parse($newDate));
+
+        if ($totalMinutes + $newTotalMinutes > self::MAX_ALLOWED_MINUTES) {
+            return response()->json(['error' => trans('reports.maximum_time_for_day')], 400);
+        }
+
+        $isReportsUpdated = Report::where('user_id', $request->get('user_id'))
+            ->where('date', $oldDate)->update(['date' => $newDate]);
+
+        return $isReportsUpdated
+            ? response()->json(['success' => 'Reports dates has been updated'], 200)
+            : response()->json(['error' => 'Reports not found'], 404);
     }
 
     /**

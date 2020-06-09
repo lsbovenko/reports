@@ -33,6 +33,8 @@ Route::group(['middleware' => ['jwt']], function () {
         Route::post('/reports/store', 'Reports@store')->name('reports.store');
         Route::delete('reports/{report}', 'Reports@destroy')->name('reports.delete');
         Route::get('/reports/month-stats', 'Reports@getMonthStats')->name('reports.month-stats');
+        Route::put('/reports/{reportId}/update', 'Reports@update')->name('reports.update');
+        Route::put('/reports/update-dates', 'Reports@updateDates')->name('reports.update-dates');
 
         /* Statistics */
         Route::get('/statistics', 'Statistics@index')->name('statistics.index');
