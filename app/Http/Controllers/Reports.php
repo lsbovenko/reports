@@ -12,7 +12,6 @@ use App\Service\Reports as ReportsService;
 
 class Reports extends Controller
 {
-    const MAX_ALLOWED_MINUTES_FOR_REPORT = 480; //8 hours
     const MAX_ALLOWED_MINUTES = 900; //15 hours
     private $stats;
 
@@ -179,10 +178,6 @@ class Reports extends Controller
         }
 
         $newWorkedMinutes = (int)$request->get('worked_minutes');
-        if ($newWorkedMinutes > self::MAX_ALLOWED_MINUTES_FOR_REPORT) {
-            return response()->json(['error' => trans('reports.maximum_time_for_report')], 400);
-        }
-
         $totalMinutes = $this->stats->getTotalLoggedMinutes(Auth::user(), Carbon::parse($report->date));
         $newTotalMinutes = $totalMinutes - $report->worked_minutes + $newWorkedMinutes;
 

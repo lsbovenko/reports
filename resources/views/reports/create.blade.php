@@ -99,7 +99,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.meeting') }}</label>
                         <div class="col-md-1">
-                            <input type="checkbox" rv-value="report.isMeeting" class="form-control">
+                            <input type="checkbox" rv-value="report.isMeeting" class="checkbox">
                         </div>
                     </div>
                     <div class="form-group">
