@@ -7,7 +7,6 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         previousDuration: 0,
         duration: 0,
         totalDateDuration: 0,
-        isDurationMoreThan8Hours: 0,
         isDateDurationMoreThan15Hours: 0,
         isDateDurationMoreThan15HoursForDate: 0,
         durationTooltip: {
@@ -25,13 +24,10 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             onUpdate: function onUpdate(duration) {
                 reportDurationData.duration = duration.hours * 60 + duration.minutes;
 
-                reportDurationData.isDurationMoreThan8Hours = reportDurationData.duration > 480;
                 reportDurationData.isDateDurationMoreThan15Hours =
                     reportDurationData.totalDateDuration - reportDurationData.previousDuration + reportDurationData.duration > 900;
 
-                $(this).toggleClass('font-red',
-                    reportDurationData.isDurationMoreThan8Hours || reportDurationData.isDateDurationMoreThan15Hours
-                );
+                $(this).toggleClass('font-red', reportDurationData.isDateDurationMoreThan15Hours);
             }
         },
     };
@@ -133,7 +129,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 this.isAllPeriodChecked = false;
             },
             filterByMeeting: function filterByMeeting(isMeeting) {
-                this.filterParams.isMeeting = !isMeeting;
+                this.filterParams.isMeeting = isMeeting;
                 this.isAllPeriodChecked = false;
             },
             getTimeAllPeriod: function getTimeAllPeriod() {
@@ -211,7 +207,6 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 var vm = this;
                 if (!(report.total_minutes == reportDurationData.duration && report.descirption == idDescription)
                     && reportDurationData.duration
-                    && !reportDurationData.isDurationMoreThan8Hours
                     && !reportDurationData.isDateDurationMoreThan15Hours
                 ) {
                     var sendData = {
@@ -231,7 +226,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     });
                 } else {
                     $.amaran({
-                        'message': 'Report time not updated',
+                        'message': 'Report time not updated - duration more than 15 hours, or duration not new, or duration not selected',
                         'position': 'bottom right',
                         'color': 'red'
                     });
@@ -308,7 +303,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     });
                 } else {
                     $.amaran({
-                        'message': 'Reports date not updated',
+                        'message': 'Reports date not updated - duration more than 15 hours, or date not new, or date not selected',
                         'position': 'bottom right',
                         'color': 'red'
                     });
