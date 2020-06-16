@@ -62,6 +62,29 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             } else if (!inst.opts.range) {
                 app.filterParams.dates = inst.selectedDates;
             }
+        },
+        onChangeView: function onChangeView(view) {
+            if (view == 'days') {
+                var $dates = $date.find('.datepicker--cell-day:not(.-other-month-)');
+                var $firstDate = $dates[0];
+                var $lastDate = $dates[$dates.length - 1];
+                var year = $firstDate.getAttribute('data-year');
+                var month = parseInt($firstDate.getAttribute('data-month')) + 1;
+                var lastDay = $lastDate.getAttribute('data-date');
+                var firstDate = strToDate(year + '-' + month + '-' + '01');
+                var lastDate = strToDate(year + '-' + month + '-' + lastDay);
+                var currentDate = new Date(G.selectedDate);
+
+                datepicker.clear();
+                datepicker.update('range', true);
+                datepicker.selectDate(firstDate);
+                if (lastDate < currentDate) {
+                    datepicker.selectDate(lastDate);
+                } else {
+                    datepicker.selectDate(currentDate);
+                }
+                $datepickerRange.prop('checked', 'checked');
+            }
         }
     }).data('datepicker');
 
