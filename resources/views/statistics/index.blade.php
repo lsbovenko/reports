@@ -150,12 +150,12 @@
                                         <table class="table table-striped table-fixed">
                                             <thead>
                                             <tr>
-                                                <th style="width: 10%"><?php echo trans('reports.project'); ?></th>
-                                                <th style="width: 10%"><?php echo trans('reports.meeting'); ?></th>
+                                                <th style="width: 15%"><?php echo trans('reports.project'); ?></th>
+                                                <th style="width: 8%"><?php echo trans('reports.meeting'); ?></th>
                                                 <th style="width: 15%"><?php echo trans('reports.date_added'); ?></th>
-                                                <th style="width: 20%"><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 15%"><?php echo trans('reports.duration'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 20%"></th>
+                                                <th style="width: 22%"></th>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
@@ -166,7 +166,7 @@
                                                 <td>{{tracked.project_name}}</td>
                                                 <td><i v-if="tracked.is_meeting" class="font-red fa fa-check"></i></td>
                                                 <td>{{tracked.created}}</td>
-                                                <td v-if="tracked.id != editReportId"><span class="label label-success">{{tracked.total_minutes | formatMinutes}}</span></td>
+                                                <td v-if="tracked.id != editReportId"><span class="label label-success report-width">{{tracked.total_minutes | formatMinutes}}</span></td>
                                                 <td v-if="tracked.id == editReportId">
                                                     <small class="font-extra-small">
                                                         <input class="report-duration" type="text" v-on:mouseover="editDuration()"
@@ -178,8 +178,8 @@
                                                 <td v-if="tracked.id != editReportId"><small class="font-extra-small">{{tracked.descirption}}</small></td>
                                                 <td v-if="tracked.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="tracked.descirption" v-bind:id="editDescription(tracked.id)"></textarea></small></td>
                                                 <td><div class="project-filter">
-                                                        <button v-on:click="editReportToUnbillable(tracked.id)" class="label label-primary" v-if="item.editable && tracked.id != editReportId" title="<?php echo trans('reports.edit_to_unbillable'); ?>">
-                                                            <?php echo trans('reports.edit_to_unbillable'); ?>
+                                                        <button v-on:click="editReportToUnbillable(tracked.id)" class="label label-primary" v-if="item.editable && tracked.id != editReportId" title="<?php echo trans('reports.move_to_unbillable'); ?>">
+                                                            <?php echo trans('reports.move_to_unbillable'); ?>
                                                         </button>
                                                         <button v-on:click="editReport(tracked, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && tracked.id != editReportId" title="<?php echo trans('reports.edit'); ?>">
                                                             <?php echo trans('reports.edit'); ?>
@@ -209,11 +209,11 @@
                                         <table class="table table-striped table-fixed">
                                             <thead>
                                             <tr>
-                                                <th style="width: 20%"><?php echo trans('reports.task'); ?></th>
+                                                <th style="width: 23%"><?php echo trans('reports.task'); ?></th>
                                                 <th style="width: 15%"><?php echo trans('reports.date_added'); ?></th>
-                                                <th style="width: 20%"><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 15%"><?php echo trans('reports.duration'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 20%"></th>
+                                                <th style="width: 22%"></th>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
@@ -228,7 +228,7 @@
                                                     </span>
                                                 </td>
                                                 <td>{{activity.created}}</td>
-                                                <td v-if="activity.id != editReportId"><span class="label label-info">{{activity.total_minutes | formatMinutes}}</span></td>
+                                                <td v-if="activity.id != editReportId"><span class="label label-info report-width">{{activity.total_minutes | formatMinutes}}</span></td>
                                                 <td v-if="activity.id == editReportId">
                                                     <small class="font-extra-small">
                                                         <input class="report-duration" type="text" v-on:mouseover="editDuration()"
@@ -240,8 +240,8 @@
                                                 <td v-if="activity.id != editReportId"><small class="font-extra-small">{{activity.descirption}}</small></td>
                                                 <td v-if="activity.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="activity.descirption" v-bind:id="editDescription(activity.id)"></textarea></small></td>
                                                 <td><div class="project-filter">
-                                                        <button v-on:click="editReportToBillable(activity.id)" class="label label-primary" v-if="item.editable && activity.id != editReportId" title="<?php echo trans('reports.edit_to_billable'); ?>">
-                                                            <?php echo trans('reports.edit_to_billable'); ?>
+                                                        <button v-on:click="editReportToBillable(activity.id)" class="label label-primary" v-if="item.editable && activity.id != editReportId" title="<?php echo trans('reports.move_to_billable'); ?>">
+                                                            <?php echo trans('reports.move_to_billable'); ?>
                                                         </button>
                                                         <button v-on:click="editReport(activity, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && activity.id != editReportId" title="<?php echo trans('reports.edit'); ?>">
                                                             <?php echo trans('reports.edit'); ?>
@@ -269,7 +269,7 @@
                                                         </div>
                                                         <div class="project-filter">
                                                             <button v-on:click="saveModal(activity.id)" class="label label-success" title="<?php echo trans('reports.save_project'); ?>">
-                                                                <?php echo trans('reports.save_project'); ?>
+                                                                <?php echo trans('reports.save'); ?>
                                                             </button>
                                                             <button v-on:click="cancelModal()" class="label label-danger" title="<?php echo trans('reports.cancel'); ?>">
                                                                 <?php echo trans('reports.cancel'); ?>
