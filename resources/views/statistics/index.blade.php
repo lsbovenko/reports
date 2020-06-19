@@ -4,6 +4,7 @@
 
 @section('page_css')
     <link rel="stylesheet" href="{{URL::asset('css/datepicker.min.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/select2.min.css')}}">
     <link rel="stylesheet" href="{{URL::asset('css/amaran.min.css')}}">
     <link rel="stylesheet" href="{{URL::asset('css/animate.min.css')}}">
 @endsection
@@ -15,6 +16,7 @@
     <script src="{{URL::asset('js/jquery-deparam.js')}}"></script>
     <script src="{{URL::asset('js/datepicker.min.js')}}"></script>
     <script src="{{ asset('js/i18n/datepicker.en.js') }}"></script>
+    <script src="{{URL::asset('js/select2.min.js')}}"></script>
     <script src="{{URL::asset('js/duration.picker.js')}}"></script>
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
     <script src="{{URL::asset('js/rivets.binders.js')}}"></script>
@@ -150,10 +152,10 @@
                                             <tr>
                                                 <th style="width: 10%"><?php echo trans('reports.project'); ?></th>
                                                 <th style="width: 10%"><?php echo trans('reports.meeting'); ?></th>
-                                                <th style="width: 20%"><?php echo trans('reports.date_added'); ?></th>
+                                                <th style="width: 15%"><?php echo trans('reports.date_added'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.duration'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 15%"></th>
+                                                <th style="width: 20%"></th>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
@@ -176,6 +178,9 @@
                                                 <td v-if="tracked.id != editReportId"><small class="font-extra-small">{{tracked.descirption}}</small></td>
                                                 <td v-if="tracked.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="tracked.descirption" v-bind:id="editDescription(tracked.id)"></textarea></small></td>
                                                 <td><div class="project-filter">
+                                                        <button v-on:click="editReportToUnbillable(tracked.id)" class="label label-primary" v-if="item.editable && tracked.id != editReportId" title="<?php echo trans('reports.edit_to_unbillable'); ?>">
+                                                            <?php echo trans('reports.edit_to_unbillable'); ?>
+                                                        </button>
                                                         <button v-on:click="editReport(tracked, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && tracked.id != editReportId" title="<?php echo trans('reports.edit'); ?>">
                                                             <?php echo trans('reports.edit'); ?>
                                                         </button>
@@ -205,10 +210,10 @@
                                             <thead>
                                             <tr>
                                                 <th style="width: 20%"><?php echo trans('reports.task'); ?></th>
-                                                <th style="width: 20%"><?php echo trans('reports.date_added'); ?></th>
+                                                <th style="width: 15%"><?php echo trans('reports.date_added'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.duration'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 15%"></th>
+                                                <th style="width: 20%"></th>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
@@ -235,6 +240,9 @@
                                                 <td v-if="activity.id != editReportId"><small class="font-extra-small">{{activity.descirption}}</small></td>
                                                 <td v-if="activity.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="activity.descirption" v-bind:id="editDescription(activity.id)"></textarea></small></td>
                                                 <td><div class="project-filter">
+                                                        <button v-on:click="editReportToBillable(activity.id)" class="label label-primary" v-if="item.editable && activity.id != editReportId" title="<?php echo trans('reports.edit_to_billable'); ?>">
+                                                            <?php echo trans('reports.edit_to_billable'); ?>
+                                                        </button>
                                                         <button v-on:click="editReport(activity, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && activity.id != editReportId" title="<?php echo trans('reports.edit'); ?>">
                                                             <?php echo trans('reports.edit'); ?>
                                                         </button>
@@ -244,6 +252,29 @@
                                                         <button v-on:click="cancelReport()" class="label label-danger" v-if="activity.id == editReportId" title="<?php echo trans('reports.cancel'); ?>">
                                                             <?php echo trans('reports.cancel'); ?>
                                                         </button>
+                                                    </div>
+                                                    <div v-bind:id="getModal(activity.id)" class="modal-content" hidden="hidden">
+                                                        <div class="form-group">
+                                                            <label class="control-label"><?php echo trans('reports.project'); ?></label>
+                                                            <select v-bind:jquery-plugin-select2="select2Options()" class="form-control select-project">
+                                                                <option></option>
+                                                                <?php foreach ($activeProjects as $activeProject) {
+                                                                    echo '<option value="' . $activeProject['id'] . '">' . $activeProject['fullName'] . '</option>';
+                                                                } ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label"><?php echo trans('reports.meeting'); ?></label>
+                                                            <input type="checkbox" class="checkbox">
+                                                        </div>
+                                                        <div class="project-filter">
+                                                            <button v-on:click="saveModal(activity.id)" class="label label-success" title="<?php echo trans('reports.save_project'); ?>">
+                                                                <?php echo trans('reports.save_project'); ?>
+                                                            </button>
+                                                            <button v-on:click="cancelModal()" class="label label-danger" title="<?php echo trans('reports.cancel'); ?>">
+                                                                <?php echo trans('reports.cancel'); ?>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td class="font-red">

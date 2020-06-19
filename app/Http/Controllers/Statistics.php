@@ -8,10 +8,11 @@ use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Transformers\Project as ProjectTransformer;
 
 class Statistics extends Controller
 {
-    public function index(\App\Service\Statistics $service)
+    public function index(\App\Service\Statistics $service, ProjectTransformer $projectTransformer)
     {
         $date = Carbon::today();
         if ($date->isSaturday() || $date->isSunday()) {
@@ -19,9 +20,16 @@ class Statistics extends Controller
         }
 
         $firstReport = Report::orderBy('date', 'asc')->first();
+
+        $activeProjects = Project::select()
+            ->where('is_active', '=', 1)
+            ->get();
+        $activeProjects = $projectTransformer->transformCollection($activeProjects);
+
         return view(
             'statistics.index',
             [
+                'activeProjects' => $activeProjects,
                 'js' => [
                     'users' => User::select(['id', 'name', 'last_name', 'is_active'])
                         ->where('is_report_required', 1)
