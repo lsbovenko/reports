@@ -191,3 +191,14 @@ footer {
     z-index: 1;
     display: block;
 }
+
+.modal-content {
+    position: absolute;
+    right: 15px;
+    z-index: 1;
+    background-color: #fefefe;
+    margin-top: 10px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 25%;
+}

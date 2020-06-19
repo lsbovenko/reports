@@ -24,6 +24,9 @@ use Illuminate\Database\Query\Builder;
  */
 class Report extends Model
 {
+    const REPORT_TRACKED = 1;
+    const REPORT_UNTRACKED = 0;
+
     /**
      * @var array
      */

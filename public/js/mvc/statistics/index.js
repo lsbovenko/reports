@@ -113,6 +113,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             editDateStr: 0,
             datapickerDateObj: 0,
             datapickerDateNew: 0,
+            $previousModal: 0,
         },
         methods: {
             fullName: function fullName(user) {
@@ -337,7 +338,87 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             editDuration: function editDuration() {
                 var $reportDuration = $('.report-duration');
                 rv.bind($reportDuration, reportDurationData);
-            }
+            },
+            editReportToUnbillable: function editReportToUnbillable(reportId) {
+                this.editReportId = 0;
+                var vm = this;
+                $.ajax({
+                    url: '/reports/' + reportId + '/update-to-unbillable',
+                    type: 'put',
+                    success: function success(result) {
+                        vm.filterParams.isEditReport = !vm.filterParams.isEditReport;
+                    }
+                });
+            },
+            editReportToBillable: function editReportToBillable(reportId) {
+                this.editReportId = 0;
+                var $currentModal = $('#' + reportId + '_modal');
+                if (this.$previousModal != $currentModal) {
+                    if (this.$previousModal) {
+                        this.$previousModal.hide();
+                    }
+                    this.$previousModal = $currentModal;
+                }
+                $currentModal.show();
+                this.select2Options();
+                var vm = this;
+                $.ajax({
+                    url: '/reports/' + reportId,
+                    type: 'get',
+                    success: function success(result) {
+                        if (result.report.project_id) {
+                            vm.$previousModal.find('.select-project option[value="' + result.report.project_id + '"]')
+                                .prop('selected', 'selected').trigger('change');
+                            vm.$previousModal.find('.checkbox').prop('checked', result.report.is_meeting);
+                        } else {
+                            vm.$previousModal.find('.select-project').val(null).trigger('change');
+                            vm.$previousModal.find('.checkbox').prop('checked', false);
+                        }
+                    }
+                });
+            },
+            getModal: function getModal(reportId) {
+                return reportId + '_modal';
+            },
+            saveModal: function saveModal(reportId) {
+                var projectId = this.$previousModal.find('select option:selected').val();
+                var isMeeting = this.$previousModal.find('input[type="checkbox"]:checked').length;
+                var vm = this;
+                if (projectId) {
+                    var sendData = {
+                        project_id: +projectId,
+                        is_meeting: +isMeeting,
+                    };
+                    $.ajax({
+                        url: '/reports/' + reportId + '/update-to-billable',
+                        type: 'put',
+                        data: sendData,
+                        success: function success(result) {
+                            vm.filterParams.isEditReport = !vm.filterParams.isEditReport;
+                        },
+                        error: function error(result) {
+                            window.alert(result.responseJSON.error);
+                        }
+                    });
+                } else {
+                    $.amaran({
+                        'message': 'Report type not updated - project not selected',
+                        'position': 'bottom right',
+                        'color': 'red'
+                    });
+                }
+                this.$previousModal.hide();
+            },
+            cancelModal: function cancelModal() {
+                this.$previousModal.hide();
+            },
+            select2Options: function select2Options() {
+                $('.select-project').select2({
+                    width: '100%',
+                    placeholder: 'Choose',
+                    allowClear: true
+                });
+            },
         },
         computed: {
             filterProjects: function filterProjects() {

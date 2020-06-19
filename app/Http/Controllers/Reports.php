@@ -142,14 +142,18 @@ class Reports extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get information of report
      *
-     * @param  \App\Models\Report $report
-     * @return \Illuminate\Http\Response
+     * @param  int $reportId
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Report $report)
+    public function show(int $reportId)
     {
-        //
+        $report = Report::where('id', $reportId)->first();
+
+        return $report
+            ? response()->json(['report' => $report], 200)
+            : response()->json(['error' => 'Report not found'], 404);
     }
 
     /**
@@ -222,6 +226,52 @@ class Reports extends Controller
         return $isReportsUpdated
             ? response()->json(['success' => 'Reports dates has been updated'], 200)
             : response()->json(['error' => 'Reports not found'], 404);
+    }
+
+    /**
+     * Update report to unbillable
+     *
+     * @param  int $reportId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateToUnbillable(int $reportId)
+    {
+        $report = Report::where('id', $reportId)->first();
+        if (!($report && $report->user_id == Auth::id())) {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
+        $isReportUpdated = Report::where('id', $reportId) ->update([
+            'is_tracked' => Report::REPORT_UNTRACKED
+        ]);
+
+        return $isReportUpdated
+            ? response()->json(['success' => 'Report type has been updated'], 200)
+            : response()->json(['error' => 'Report not found'], 404);
+    }
+
+    /**
+     * Update report to billable
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $reportId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateToBillable(Request $request, int $reportId)
+    {
+        $report = Report::where('id', $reportId)->first();
+        if (!($report && $report->user_id == Auth::id())) {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
+        $isReportUpdated = Report::where('id', $reportId) ->update([
+            'project_id' => $request->get('project_id'),
+            'is_meeting' => $request->get('is_meeting'),
+            'is_tracked' => Report::REPORT_TRACKED
+        ]);
+
+        return $isReportUpdated
+            ? response()->json(['success' => 'Report type has been updated'], 200)
+            : response()->json(['error' => 'Report not found'], 404);
     }
 
     /**

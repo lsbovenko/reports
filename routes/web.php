@@ -35,6 +35,9 @@ Route::group(['middleware' => ['jwt']], function () {
         Route::get('/reports/month-stats', 'Reports@getMonthStats')->name('reports.month-stats');
         Route::put('/reports/{reportId}/update', 'Reports@update')->name('reports.update');
         Route::put('/reports/update-dates', 'Reports@updateDates')->name('reports.update-dates');
+        Route::put('/reports/{reportId}/update-to-unbillable', 'Reports@updateToUnbillable')->name('reports.update-to-unbillable');
+        Route::put('/reports/{reportId}/update-to-billable', 'Reports@updateToBillable')->name('reports.update-to-billable');
+        Route::get('/reports/{reportId}', 'Reports@show')->name('reports.show');
 
         /* Statistics */
         Route::get('/statistics', 'Statistics@index')->name('statistics.index');

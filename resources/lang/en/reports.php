@@ -110,4 +110,7 @@ return [
     'cancel' => 'Cancel',
     'maximum_time_for_day' => 'The maximum time for the reporting day has been exceeded',
     'maximum_time_for_report' => 'The maximum time for the report has been exceeded',
+    'edit_to_unbillable' => 'Edit to unbillable',
+    'edit_to_billable' => 'Edit to billable',
+    'save_project' => 'Save project',
 ];
