@@ -202,3 +202,14 @@ footer {
     border: 1px solid #888;
     width: 25%;
 }
+
+.report-width {
+    width: 100%;
+    white-space: unset;
+    display: block;
+    margin-top: 4%;
+}
+
+.report-duration {
+    width: 100%;
+}
