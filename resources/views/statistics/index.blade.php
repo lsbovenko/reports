@@ -153,9 +153,9 @@
                                                 <th style="width: 15%"><?php echo trans('reports.project'); ?></th>
                                                 <th style="width: 8%"><?php echo trans('reports.meeting'); ?></th>
                                                 <th style="width: 15%"><?php echo trans('reports.date_added'); ?></th>
-                                                <th style="width: 15%"><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 19%"><?php echo trans('reports.duration'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 22%"></th>
+                                                <th style="width: 18%"></th>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
@@ -211,9 +211,9 @@
                                             <tr>
                                                 <th style="width: 23%"><?php echo trans('reports.task'); ?></th>
                                                 <th style="width: 15%"><?php echo trans('reports.date_added'); ?></th>
-                                                <th style="width: 15%"><?php echo trans('reports.duration'); ?></th>
+                                                <th style="width: 19%"><?php echo trans('reports.duration'); ?></th>
                                                 <th style="width: 20%"><?php echo trans('reports.notes'); ?></th>
-                                                <th style="width: 22%"></th>
+                                                <th style="width: 18%"></th>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                             </thead>
