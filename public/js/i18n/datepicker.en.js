@@ -8,5 +8,5 @@
     clear: 'Clear',
     dateFormat: 'mm/dd/yyyy',
     timeFormat: 'hh:ii aa',
-    firstDay: 0
+    firstDay: 1
 }; })(jQuery);
