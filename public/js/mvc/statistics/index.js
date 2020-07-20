@@ -113,7 +113,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             editDateStr: 0,
             datapickerDateObj: 0,
             datapickerDateNew: 0,
-            $previousModal: 0,
+            $currentModal: 0,
+            editReportIdToBillable: 0,
         },
         methods: {
             fullName: function fullName(user) {
@@ -337,7 +338,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             },
             editDuration: function editDuration() {
                 var $reportDuration = $('.report-duration');
-                rv.bind($reportDuration, reportDurationData);
+                $reportDuration.tooltip(reportDurationData.durationTooltip);
+                $reportDuration.duration(reportDurationData.durationPickerOptions);
             },
             editReportToUnbillable: function editReportToUnbillable(reportId) {
                 this.editReportId = 0;
@@ -351,38 +353,15 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 });
             },
             editReportToBillable: function editReportToBillable(reportId) {
+                this.editReportIdToBillable = reportId;
                 this.editReportId = 0;
-                var $currentModal = $('#' + reportId + '_modal');
-                if (this.$previousModal != $currentModal) {
-                    if (this.$previousModal) {
-                        this.$previousModal.hide();
-                    }
-                    this.$previousModal = $currentModal;
-                }
-                $currentModal.show();
-                this.select2Options();
-                var vm = this;
-                $.ajax({
-                    url: '/reports/' + reportId,
-                    type: 'get',
-                    success: function success(result) {
-                        if (result.report.project_id) {
-                            vm.$previousModal.find('.select-project option[value="' + result.report.project_id + '"]')
-                                .prop('selected', 'selected').trigger('change');
-                            vm.$previousModal.find('.checkbox').prop('checked', result.report.is_meeting);
-                        } else {
-                            vm.$previousModal.find('.select-project').val(null).trigger('change');
-                            vm.$previousModal.find('.checkbox').prop('checked', false);
-                        }
-                    }
-                });
             },
             getModal: function getModal(reportId) {
                 return reportId + '_modal';
             },
             saveModal: function saveModal(reportId) {
-                var projectId = this.$previousModal.find('select option:selected').val();
-                var isMeeting = this.$previousModal.find('input[type="checkbox"]:checked').length;
+                var projectId = this.$currentModal.find('select option:selected').val();
+                var isMeeting = this.$currentModal.find('input[type="checkbox"]:checked').length;
                 var vm = this;
                 if (projectId) {
                     var sendData = {
@@ -407,10 +386,10 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                         'color': 'red'
                     });
                 }
-                this.$previousModal.hide();
+                this.editReportIdToBillable = 0;
             },
             cancelModal: function cancelModal() {
-                this.$previousModal.hide();
+                this.editReportIdToBillable = 0;
             },
             select2Options: function select2Options() {
                 $('.select-project').select2({
@@ -480,6 +459,29 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     planned: Utils.formatMinutes(result.tracked + result.untracked - result.overtime, true)
                 };
             }
+        },
+        updated: function () {
+            this.$nextTick(function () {
+                if (this.editReportIdToBillable) {
+                    this.$currentModal = $('#' + this.editReportIdToBillable + '_modal');
+                    this.select2Options();
+                    var vm = this;
+                    $.ajax({
+                        url: '/reports/' + this.editReportIdToBillable,
+                        type: 'get',
+                        success: function success(result) {
+                            if (result.report.project_id) {
+                                vm.$currentModal.find('.select-project option[value="' + result.report.project_id + '"]')
+                                    .prop('selected', 'selected').trigger('change');
+                                vm.$currentModal.find('.checkbox').prop('checked', result.report.is_meeting);
+                            } else {
+                                vm.$currentModal.find('.select-project').val(null).trigger('change');
+                                vm.$currentModal.find('.checkbox').prop('checked', false);
+                            }
+                        }
+                    });
+                }
+            });
         },
         watch: {
             filterParams: {

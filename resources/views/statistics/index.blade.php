@@ -19,7 +19,6 @@
     <script src="{{URL::asset('js/select2.min.js')}}"></script>
     <script src="{{URL::asset('js/duration.picker.js')}}"></script>
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
-    <script src="{{URL::asset('js/rivets.binders.js')}}"></script>
     <script src="{{ asset('js/jquery.amaran.js') }}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
@@ -170,9 +169,7 @@
                                                 <td v-if="tracked.id == editReportId">
                                                     <small class="font-extra-small">
                                                         <input class="report-duration" type="text" v-on:mouseover="editDuration()"
-                                                               v-bind:value="tracked.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(tracked.id)"
-                                                               rv-jquery-plugin-tooltip="durationTooltip"
-                                                               rv-jquery-plugin-duration="durationPickerOptions">
+                                                               v-bind:value="tracked.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(tracked.id)">
                                                     </small>
                                                 </td>
                                                 <td v-if="tracked.id != editReportId"><small class="font-extra-small">{{tracked.descirption}}</small></td>
@@ -232,9 +229,7 @@
                                                 <td v-if="activity.id == editReportId">
                                                     <small class="font-extra-small">
                                                         <input class="report-duration" type="text" v-on:mouseover="editDuration()"
-                                                               v-bind:value="activity.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(activity.id)"
-                                                               rv-jquery-plugin-tooltip="durationTooltip"
-                                                               rv-jquery-plugin-duration="durationPickerOptions">
+                                                               v-bind:value="activity.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(activity.id)">
                                                     </small>
                                                 </td>
                                                 <td v-if="activity.id != editReportId"><small class="font-extra-small">{{activity.descirption}}</small></td>
@@ -253,10 +248,11 @@
                                                             <?php echo trans('reports.cancel'); ?>
                                                         </button>
                                                     </div>
-                                                    <div v-bind:id="getModal(activity.id)" class="modal-content" hidden="hidden">
+                                                    <div v-bind:id="getModal(activity.id)" class="modal-content"
+                                                        v-if="activity.id == editReportIdToBillable">
                                                         <div class="form-group">
                                                             <label class="control-label"><?php echo trans('reports.project'); ?></label>
-                                                            <select v-bind:jquery-plugin-select2="select2Options()" class="form-control select-project">
+                                                            <select class="form-control select-project">
                                                                 <option></option>
                                                                 <?php foreach ($activeProjects as $activeProject) {
                                                                     echo '<option value="' . $activeProject['id'] . '">' . $activeProject['fullName'] . '</option>';
