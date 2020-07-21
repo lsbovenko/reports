@@ -172,7 +172,7 @@
                                                                v-bind:value="tracked.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(tracked.id)">
                                                     </small>
                                                 </td>
-                                                <td v-if="tracked.id != editReportId"><small class="font-extra-small">{{tracked.descirption}}</small></td>
+                                                <td v-if="tracked.id != editReportId"><small class="font-extra-small break-word">{{tracked.descirption}}</small></td>
                                                 <td v-if="tracked.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="tracked.descirption" v-bind:id="editDescription(tracked.id)"></textarea></small></td>
                                                 <td><div class="project-filter">
                                                         <button v-on:click="editReportToUnbillable(tracked.id)" class="label label-primary" v-if="item.editable && tracked.id != editReportId" title="<?php echo trans('reports.move_to_unbillable'); ?>">
@@ -232,7 +232,7 @@
                                                                v-bind:value="activity.total_minutes | formatMinutesShort" v-bind:id="editTotalMinutes(activity.id)">
                                                     </small>
                                                 </td>
-                                                <td v-if="activity.id != editReportId"><small class="font-extra-small">{{activity.descirption}}</small></td>
+                                                <td v-if="activity.id != editReportId"><small class="font-extra-small break-word">{{activity.descirption}}</small></td>
                                                 <td v-if="activity.id == editReportId"><small class="font-extra-small"><textarea style="resize:none;width:100%;" v-bind:value="activity.descirption" v-bind:id="editDescription(activity.id)"></textarea></small></td>
                                                 <td><div class="project-filter">
                                                         <button v-on:click="editReportToBillable(activity.id)" class="label label-primary" v-if="item.editable && activity.id != editReportId" title="<?php echo trans('reports.move_to_billable'); ?>">
