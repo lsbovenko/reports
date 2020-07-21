@@ -129,16 +129,16 @@
                                     </span>
                                     <span v-else class="label label-primary">{{item.total_logged_minutes | formatMinutes}}</span>
                                     <span class="project-filter pull-right">
-                                        <button v-on:click="editDate(item.date, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && item.date != editDateStr" title="<?php echo trans('reports.change_date'); ?>">
+                                        <button v-on:click="editDate(item.date, item.user.id, item.total_logged_minutes)" class="label label-primary" v-if="item.editable && item.date != editDateStr" title="<?php echo trans('reports.change_date'); ?>">
                                             <?php echo trans('reports.change_date'); ?>
                                         </button>
-                                        <button v-on:click="saveDate(item.date)" class="label label-success" v-if="item.date == editDateStr" title="<?php echo trans('reports.save_date'); ?>">
+                                        <button v-on:click="saveDate(item.date, item.user.id)" class="label label-success" v-if="item.date == editDateStr" title="<?php echo trans('reports.save_date'); ?>">
                                             <?php echo trans('reports.save_date'); ?>
                                         </button>
                                     </span>
                                 </h4>
                             </div>
-                            <span class="date-datepicker" v-bind:id="item.date"></span>
+                            <span class="date-datepicker" v-bind:id="getDate(item.date, item.user.id)"></span>
                             <div class="panel-body">
 
                                 <div class="row"  v-if="item.tracked.length">

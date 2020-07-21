@@ -267,8 +267,11 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
             editDescription: function editDescription(reportId) {
                 return reportId + '_description';
             },
-            editDate: function editDate(date, totalDateDuration) {
-                var $date = $('#' + date);
+            getDate: function getDate(date, userId) {
+                return date + '_' + userId;
+            },
+            editDate: function editDate(date, userId, totalDateDuration) {
+                var $date = $('#' + date + '_' + userId);
                 if (this.datapickerDateObj) {
                     this.datapickerDateObj.$el.hide();
                 }
@@ -304,14 +307,14 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 this.datapickerDateObj.selectDate(strToDate(date));
                 this.editDateStr = date;
             },
-            saveDate: function saveDate(date) {
+            saveDate: function saveDate(date, userId) {
                 var vm = this;
                 if (this.datapickerDateNew != date
                     && this.datapickerDateNew
                     && !reportDurationData.isDateDurationMoreThan15HoursForDate
                 ) {
                     var sendData = {
-                        user_id: vm.filterParams.user_id,
+                        user_id: userId,
                         old_date: date,
                         new_date: this.datapickerDateNew,
                     };
