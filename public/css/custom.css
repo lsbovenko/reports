@@ -213,3 +213,7 @@ footer {
 .report-duration {
     width: 100%;
 }
+
+.break-word {
+    word-wrap: break-word;
+}
