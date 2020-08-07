@@ -19,6 +19,7 @@
     <script src="{{URL::asset('js/select2.min.js')}}"></script>
     <script src="{{URL::asset('js/duration.picker.js')}}"></script>
     <script src="{{URL::asset('js/Chart.bundle.min.js')}}"></script>
+    <script src="{{URL::asset('js/chartjs-plugin-annotation.min.js')}}"></script>
     <script src="{{ asset('js/jquery.amaran.js') }}"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 
