@@ -586,6 +586,17 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     barPercentage: 0.7
                 }]
             },
+            annotation: {
+                annotations: [{
+                    type: 'line',
+                    mode: 'horizontal',
+                    borderDash: [6, 3],
+                    scaleID: 'y-axis-0',
+                    value: 8,
+                    borderColor: '#337ab7',
+                    borderWidth: 1,
+                }]
+            },
             tooltips: {
                 callbacks: {
                     label: function label(descriptor) {
