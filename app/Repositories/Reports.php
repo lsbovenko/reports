@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Auth\User;
 use App\Models\Report as ReportModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Reports
 {
@@ -25,12 +26,16 @@ class Reports
      */
     public function getLatestTaskNames(User $user)
     {
-        $latestTaskNames = ReportModel::select('task')
+        $subQuery = ReportModel::select(DB::raw('task, MAX(date) AS max_date'))
             ->where('user_id', $user->id)
             ->where('is_tracked', ReportModel::REPORT_UNTRACKED)
-            ->distinct()
+            ->groupBy('task')
+            ->orderBy('max_date', 'desc')
+            ->limit(50);
+
+        $latestTaskNames = DB::table(DB::raw("({$subQuery->toSql()}) as sub"))
+            ->mergeBindings($subQuery->getQuery())
             ->orderBy('task', 'asc')
-            ->limit(50)
             ->pluck('task')
             ->toArray();
 
