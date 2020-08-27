@@ -130,7 +130,14 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.project_or_task') }}</label>
                         <div class="col-md-3">
-                            <input class="form-control" type="text" rv-parsley-required="report.deleted | not" rv-value="report.name">
+                            <select rv-parsley-required="report.deleted | not" rv-value="report.name"
+                                    rv-jquery-plugin-select2="select2OptionsUntracked"
+                                    class="form-control chosen-rtl select-project untracked">
+                                <option></option>
+                                @foreach($latestTaskNames as $latestTaskName)
+                                    <option>{{$latestTaskName}}</option>
+                                @endforeach
+                            </select>
                             {{--<select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
                                     class="form-control chosen-rtl select-project">
