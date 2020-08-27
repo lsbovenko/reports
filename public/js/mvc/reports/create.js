@@ -147,6 +147,12 @@
                 delay: 450
             }
         },
+        select2OptionsUntracked: {
+            width: '100%',
+            placeholder: 'Choose',
+            allowClear: true,
+            tags: true,
+        },
         totalTime: Utils.formatMinutes(totalLoggedMinutes,true),
         countTotalTime: function (){
             var time = totalLoggedMinutes;

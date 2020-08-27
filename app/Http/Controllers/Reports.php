@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Transformers\Project as ProjectTransformer;
 use App\Service\Reports as ReportsService;
+use App\Repositories\Reports as ReportsRepository;
 
 class Reports extends Controller
 {
@@ -34,9 +35,10 @@ class Reports extends Controller
      * Show the form for creating a new resource.
      *
      * @param ProjectTransformer $projectTransformer
+     * @param ReportsRepository $reportsRepository
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(ProjectTransformer $projectTransformer)
+    public function create(ProjectTransformer $projectTransformer,  ReportsRepository $reportsRepository)
     {
         $latestProjects = Project::select()
             ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->get())
@@ -44,11 +46,13 @@ class Reports extends Controller
             ->get();
 
         $latestProjects = $projectTransformer->transformCollection($latestProjects);
+        $latestTaskNames = $reportsRepository->getLatestTaskNames(Auth::user());
 
         return view(
             'reports.create',
             [
                 'latestProjects' => $latestProjects,
+                'latestTaskNames' => $latestTaskNames,
                 'js' => [
                     'searchProjectUrl' => route('projects.search'),
                     'latestProjects' => $latestProjects,
