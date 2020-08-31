@@ -85,6 +85,7 @@ class Statistics
         $summary = $this->getReportsSummary($user, $startDate, $endDate);
 
         $labels = [];
+        $dates = [];
         $datasets = [
             [
                 'label' => trans('reports.fixed_time'),
@@ -99,16 +100,18 @@ class Statistics
         ];
 
         // we have to show all dates for concrete period
-        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate->copy()->modify('+1 day'));
+        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate);
         foreach ($period as $date) {
             $key = $date->format('m/d');
 
             $labels[] = $key;
+            $dates[$key] = $date->format('Y-m-d');
             //first of all fill this with 0
             $datasets[0]['data'][$key] = 0;
             $datasets[1]['data'][$key] = 0;
 
         }
+        $title = 'Date range from ' . array_first($dates) . ' to ' . array_last($dates);
 
         $maxTime = 0;
         foreach ((array)array_shift($summary) as $reportItem) {
@@ -128,7 +131,7 @@ class Statistics
         $datasets[0]['data'] = array_values($datasets[0]['data']);
         $datasets[1]['data'] = array_values($datasets[1]['data']);
 
-        return compact('labels', 'datasets', 'maxTime');
+        return compact('labels', 'datasets', 'maxTime', 'dates', 'title');
     }
 
     private function composeReports(Report ...$reports)

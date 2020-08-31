@@ -67,8 +67,10 @@ class Statistics extends Controller
         }
 
         if (null === $endDate) {
-            $startDate = Carbon::parse('first day of this month');
-            $endDate = Carbon::parse('last day of this month');
+            $endDate = clone $startDate;
+
+            $startDate = $startDate->startOfMonth();
+            $endDate = $endDate->endOfMonth();
         }
 
         return response()
@@ -88,7 +90,7 @@ class Statistics extends Controller
     private function retrieveDates(Request $request)
     {
         $dates = $request->get('dates');
-        return [Carbon::parse($dates[0]), isset($dates[1]) ? Carbon::parse($dates[1]) : null];
+        return [Carbon::parse($dates[0]), isset($dates[1]) ? Carbon::parse($dates[1])->endOfDay() : null];
     }
 
     private function findUser(Request $request)
