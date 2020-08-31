@@ -7,6 +7,7 @@ use App\Console\Commands\SendReportReminder;
 use App\Console\Commands\StatisticsCalculator;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\SetStamp;
 
 class Kernel extends ConsoleKernel
 {
@@ -18,7 +19,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         SendReportReminder::class,
         SendReportOvertime::class,
-        StatisticsCalculator::class
+        StatisticsCalculator::class,
+        SetStamp::class,
     ];
 
     /**

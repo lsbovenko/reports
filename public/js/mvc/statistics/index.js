@@ -547,6 +547,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                             url: '/statistics/chart-data',
                             data: sendData,
                             success: function success(chartData) {
+                                chart.options.scales.yAxes[0].ticks.max = chartData.maxTime;
                                 chart.data = chartData;
                                 chart.update();
                             }

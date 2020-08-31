@@ -49,3 +49,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+# Команды:
+
+- php artisan stamp:generate - команда меняет значение переменной окружения APP_VERSION(используется для версионирования assets файлов) в .env файле
