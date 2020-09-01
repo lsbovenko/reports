@@ -39,6 +39,13 @@ host('reports.velmie.com')
 
 after('deploy:vendors', 'artisan:migrate');
 
+// Generate stamp
+task('stamp:generate', function() {
+    run('cd {{release_path}} && php artisan stamp:generate');
+});
+
+after('deploy:vendors', 'stamp:generate');
+
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
 

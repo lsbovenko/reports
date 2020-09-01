@@ -14,7 +14,7 @@ return [
 
     'name' => env('APP_NAME', 'Velmie reports'),
 
-    'version' => '20200807',// used as stamp for asset files
+    'version' => env('APP_VERSION', '1.0.0'),// used as stamp for asset files
 
     /*
     |--------------------------------------------------------------------------

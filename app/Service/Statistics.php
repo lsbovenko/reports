@@ -22,8 +22,10 @@ use Illuminate\Support\Facades\DB;
 class Statistics
 {
     const TRACKED_COLOR = 'rgb(92, 184, 92)';
-
     const UNTRACKED_COLOR = 'rgb(91, 192, 222)';
+
+    const GRAPH_MIN_TIME = 9;
+    const GRAPH_MAX_TIME = 15;
 
     /**
      * Compose summary report
@@ -108,18 +110,25 @@ class Statistics
 
         }
 
+        $maxTime = 0;
         foreach ((array)array_shift($summary) as $reportItem) {
             $key = Carbon::parse($reportItem['date'])->format('m/d');
 
             $datasets[0]['data'][$key] = $reportItem['tracked_logged_minutes'] / 60;
             $datasets[1]['data'][$key] = $reportItem['untracked_logged_minutes'] / 60;
+
+            $currentTime = ($reportItem['tracked_logged_minutes'] + $reportItem['untracked_logged_minutes']) / 60;
+            $maxTime = $maxTime < $currentTime ? $currentTime : $maxTime;
         }
+        $maxTime = ceil($maxTime) + 1;
+        $maxTime = $maxTime > self::GRAPH_MIN_TIME ? $maxTime : self::GRAPH_MIN_TIME;
+        $maxTime = $maxTime < self::GRAPH_MAX_TIME ? $maxTime : self::GRAPH_MAX_TIME;
 
         //reset keys
         $datasets[0]['data'] = array_values($datasets[0]['data']);
         $datasets[1]['data'] = array_values($datasets[1]['data']);
 
-        return compact('labels', 'datasets');
+        return compact('labels', 'datasets', 'maxTime');
     }
 
     private function composeReports(Report ...$reports)
