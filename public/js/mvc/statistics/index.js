@@ -548,6 +548,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                             data: sendData,
                             success: function success(chartData) {
                                 chart.options.scales.yAxes[0].ticks.max = chartData.maxTime;
+                                chart.options.title.text = chartData.title;
                                 chart.data = chartData;
                                 chart.update();
                             }
@@ -598,6 +599,10 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                     borderWidth: 1,
                 }]
             },
+            title: {
+                display: true,
+                text : '',
+            },
             tooltips: {
                 callbacks: {
                     label: function label(descriptor) {
@@ -609,7 +614,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
                 if (!chart.getElementAtEvent(evt).length) return;
 
                 var label = chart.getElementAtEvent(evt)[0]._model.label,
-                    clickedDate = new Date(label + '/' + new Date().getFullYear());
+                    clickedDate = new Date(chart.data.dates[label]);
 
                 // disable range mode and select clicked date
                 datepicker.update('range', false);
