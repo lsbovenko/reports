@@ -158,6 +158,7 @@ footer {
 #progress {
     position: relative;
     width: 264px;
+    display: inline-block;
 }
 #progress_time {
     position: absolute;
@@ -183,6 +184,48 @@ footer {
 .loader-small {
     width: 22px;
     height: 22px;
+}
+
+
+#salary_calculator a.close-modal {
+    top: 1px;
+    right: 1px;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    line-height: 1.25;
+    text-align: center;
+    -webkit-border-radius:  26px;
+    -moz-border-radius:     26px;
+    -o-border-radius:       26px;
+    -ms-border-radius:      26px;
+    -moz-box-shadow:    1px 1px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    box-shadow:         1px 1px 5px rgba(0,0,0,0.5);
+}
+
+#salary_button {
+    cursor: pointer;
+    color: #FF0000;
+}
+
+#salary_error {
+    display: none;
+    color: #FF0000;
+}
+
+.salary_block {
+    display: inline-block;
+    position: absolute;
+    padding-left: 5px;
+}
+
+.row-padding {
+    padding: 15px 0;
+}
+
+#salary_label {
+    padding-top: 4px;
 }
 
 .date-datepicker {
