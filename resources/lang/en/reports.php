@@ -113,4 +113,9 @@ return [
     'move_to_unbillable' => 'Move to unbillable',
     'move_to_billable' => 'Move to billable',
     'save_project' => 'Save project',
+    'сalculate_earnings' => 'Calculate earnings',
+    'input_salary' => 'Input your salary',
+    'earned_money' => 'Money you earned this month',
+    'salary_validation_message' => 'You must input integer',
+    'calculate' => 'Calculate'
 ];

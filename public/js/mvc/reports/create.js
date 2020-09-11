@@ -8,6 +8,9 @@
         return !value;
     };
 
+    var workedMinutes;
+    var plannedMinutes;
+
     var time = ['Time', 'h', 'm'];
     var readMore = ['Show', 'Hide'];
 
@@ -78,6 +81,8 @@
                     method: 'GET',
                     data: {date: date.getFullYear() + '-' + (date.getMonth() + 1)},
                     success: function success(result) {
+                        workedMinutes = result.workedMinutes;
+                        plannedMinutes = result.plannedMinutes;
                         $('#progress_time').text(result.formattedWorkedTime + ' / ' + result.formattedPlannedTime);
                         $('#progress_bar_left').attr('style', 'width:' + result.percent + '%');
                         if (result.isExistsOvertime) {
@@ -108,6 +113,23 @@
         datepickerMonth.selectDate(currentDate);
         if (currentDate.getFullYear() == defaultDate.getFullYear() && currentDate.getMonth() == defaultDate.getMonth()) {
             $buttonNext.hide();
+        }
+    });
+
+    $('#salary_button').on('click', function() {
+        $('#salary_calculator').modal('show');
+    });
+
+    $('#calculate_salary').on('click', function() {
+        var salary = $('#month_salary').val();
+        var regExp = /^\d+$/;
+
+        if (regExp.test(salary)) {
+            $('#salary_error').hide();
+            $('#earned_money').text((salary * workedMinutes / plannedMinutes).toFixed(2) + ' $');
+        } else {
+            $('#salary_error').show();
+            $('#earned_money').text('');
         }
     });
 

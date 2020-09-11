@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{URL::asset('css/select2.min.css')}}">
     <link rel="stylesheet" href="{{URL::asset('css/amaran.min.css')}}">
     <link rel="stylesheet" href="{{URL::asset('css/animate.min.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/jquery.modal.min.css')}}">
 @endsection
 
 @section('page_js')
@@ -22,6 +23,7 @@
     <script src="{{URL::asset('js/readmore.js')}}"></script>
     <script src="{{asset('js/utils.js?v=' . Config::get('app.version'))}}"></script>
     <script src="{{URL::asset('js/mvc/reports/create.js?v=' . Config::get('app.version'))}}"></script>
+    <script src="{{URL::asset('js/jquery.modal.min.js')}}"></script>
 @endsection
 
 @section('content')
@@ -211,7 +213,35 @@
                 <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:0" id="progress_bar_right">
                 </div>
             </div>
+            <div class="salary_block">
+                <i id="salary_button" class="fa fa-dollar"></i>
+            </div>
             <div id="remain_time"></div>
+
+            <div id="salary_calculator" class="modal container">
+                <h3 class="text-center">{{ trans('reports.сalculate_earnings') }}</h3>
+                <div class="row">
+                    <div class="form-group row-padding">
+                        <label class="control-label col-sm-2" for="month_salary" id="salary_label">Salary($):</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control input-sm" id="month_salary" placeholder="{{ trans('reports.input_salary') }}" name="month_salary">
+                        </div>
+                        <label class="col-sm-12" id="salary_error">{{ trans('reports.salary_validation_message') }}</label>
+                    </div>
+                    <div class="form-group row-padding">
+                        <div class="col-sm-12">
+                            <label>{{ trans('reports.earned_money') }}: </label>
+                            <label id="earned_money"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row-padding">
+                        <div class="col-sm-12 text-center">
+                            <input type="button" class="btn btn-primary" value="{{ trans('reports.calculate') }}" id="calculate_salary">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="m-t80">
                 <table class="table table-bordered" id="report-table">
                     <tbody>
