@@ -229,15 +229,8 @@
                         <label class="col-sm-12" id="salary_error">{{ trans('reports.salary_validation_message') }}</label>
                     </div>
                     <div class="form-group row-padding">
-                        <div class="col-sm-12">
-                            <label>{{ trans('reports.earned_money') }}: </label>
-                            <label id="earned_money"></label>
-                        </div>
-                    </div>
-                    <div class="form-group row-padding">
-                        <div class="col-sm-12 text-center">
-                            <input type="button" class="btn btn-primary" value="{{ trans('reports.calculate') }}" id="calculate_salary">
-                        </div>
+                        <label for="earned_money" class="col-sm-2">{{ trans('reports.earned_money') }}: </label>
+                        <div class="col-sm-10" id="earned_money"></div>
                     </div>
                 </div>
             </div>
