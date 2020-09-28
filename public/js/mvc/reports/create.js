@@ -118,9 +118,11 @@
 
     $('#salary_button').on('click', function() {
         $('#salary_calculator').modal('show');
+        $('#month_salary').val('');
+        $('#earned_money').text('');
     });
 
-    $('#calculate_salary').on('click', function() {
+    $('#month_salary').on('keyup', function() {
         var salary = $('#month_salary').val();
         var regExp = /^\d+$/;
 

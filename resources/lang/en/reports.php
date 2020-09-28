@@ -115,7 +115,6 @@ return [
     'save_project' => 'Save project',
     'сalculate_earnings' => 'Calculate earnings',
     'input_salary' => 'Input your salary',
-    'earned_money' => 'Money you earned this month',
+    'earned_money' => 'Earned',
     'salary_validation_message' => 'You must input integer',
-    'calculate' => 'Calculate'
 ];
