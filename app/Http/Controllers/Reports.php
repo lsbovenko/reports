@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Report;
+use App\Models\TasksHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Transformers\Project as ProjectTransformer;
 use App\Service\Reports as ReportsService;
-use App\Repositories\Reports as ReportsRepository;
+use App\Repositories\TasksHistory as TasksHistoryRepository;
 
 class Reports extends Controller
 {
@@ -35,10 +36,10 @@ class Reports extends Controller
      * Show the form for creating a new resource.
      *
      * @param ProjectTransformer $projectTransformer
-     * @param ReportsRepository $reportsRepository
+     * @param TasksHistoryRepository $tasksHistoryRepository
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(ProjectTransformer $projectTransformer,  ReportsRepository $reportsRepository)
+    public function create(ProjectTransformer $projectTransformer,  TasksHistoryRepository $tasksHistoryRepository)
     {
         $latestProjects = Project::select()
             ->whereIn('id', Report::findLatestTracked(Auth::user())->select('project_id')->get())
@@ -46,16 +47,18 @@ class Reports extends Controller
             ->get();
 
         $latestProjects = $projectTransformer->transformCollection($latestProjects);
-        $latestTaskNames = $reportsRepository->getLatestTaskNames(Auth::user());
+        $latestTaskNames = $tasksHistoryRepository->getLatestTaskNames(Auth::user());
+        $taskNames = $tasksHistoryRepository->getTaskNames(Auth::user());
 
         return view(
             'reports.create',
             [
                 'latestProjects' => $latestProjects,
-                'latestTaskNames' => $latestTaskNames,
                 'js' => [
                     'searchProjectUrl' => route('projects.search'),
                     'latestProjects' => $latestProjects,
+                    'latestTaskNames' => $latestTaskNames,
+                    'taskNames' => $taskNames,
                 ]
             ]
         );
@@ -121,6 +124,7 @@ class Reports extends Controller
             $delayed[] = compact('hours', 'minutes', 'project', 'taskName', 'item', 'date');
         }
 
+        $tasksHistory = [];
         foreach ($delayed as $payload) {
             extract($payload);
 
@@ -136,10 +140,25 @@ class Reports extends Controller
                     'is_tracked' => $item['isTracked'],
                     'is_overtime' => $item['isOvertime'],
                 ]);
+                if (!isset($project)) {
+                    $task = TasksHistory::where('user_id', Auth::id())->where('task', $taskName);
+                    if ($task->exists()) {
+                        $task->update(['max_date' => $date->format('Y-m-d')]);
+                    } else {
+                        $tasksHistory[] = [
+                            'user_id' => Auth::id(),
+                            'task' => $taskName,
+                            'max_date' => $date->format('Y-m-d'),
+                        ];
+                    }
+                }
                 if ($report->is_tracked && $report->user->is_revenue_required) {
                     $skillsService->addProjectToSkillsService($report);
                 }
             }
+        }
+        if (!empty($tasksHistory)) {
+            TasksHistory::insert($tasksHistory);
         }
 
         return response(null, 201);
