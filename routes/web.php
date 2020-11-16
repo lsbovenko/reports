@@ -39,6 +39,8 @@ Route::group(['middleware' => ['jwt']], function () {
         Route::put('/reports/{reportId}/update-to-billable', 'Reports@updateToBillable')->name('reports.update-to-billable');
         Route::get('/reports/{reportId}', 'Reports@show')->name('reports.show');
 
+        Route::delete('/tasks-history/{id}', 'TasksHistory@remove')->name('tasks-history.remove');
+
         /* Statistics */
         Route::get('/statistics', 'Statistics@index')->name('statistics.index');
         Route::get('/my-stats', 'Statistics@index')->name('my-stats');

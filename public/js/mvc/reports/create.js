@@ -1,5 +1,54 @@
 'use strict';
 
+function removeTask(event, element) {
+    event.preventDefault();
+    let id = element.closest('.list-group-item').val();
+    if (id) {
+        $.ajax({
+            url: '/tasks-history/' + id,
+            method: 'DELETE',
+            success: function success(data) {
+                _globals.latestTaskNames = $.grep(_globals.latestTaskNames, function (task) {
+                    return task['id'] != id;
+                });
+                _globals.taskNames = $.grep(_globals.taskNames, function (task) {
+                    return task['id'] != id;
+                });
+                if (_globals.taskNames.length == 0) {
+                    $('.icon-edit').each(function () {
+                        $(this).hide();
+                    });
+                    element.closest('.modal-tasks').hide();
+                }
+                $.amaran({
+                    'message': data.success,
+                    'position': 'bottom right'
+                });
+                $('.untracked').each(function () {
+                    $(this).find('option').each(function () {
+                        if ($(this).val() == id) {
+                            $(this).remove();
+                        }
+                    });
+                });
+                $('.tasks').each(function () {
+                    $(this).find('li').each(function () {
+                        if ($(this).val() == id) {
+                            $(this).remove();
+                        }
+                    });
+                });
+            },
+            error: function error(xhr) {
+                let data = JSON.parse(xhr.responseText);
+                if (data && data.error) {
+                    window.alert(data.error);
+                }
+            }
+        });
+    }
+}
+
 ;(function ($, rv, G) {
 
     $('#widgets').show();
@@ -197,6 +246,28 @@
             },
             addMoreUntracked: function addMoreUntracked() {
                 formData.reports.untracked.push(emptyRecord());
+                formData.controller.updateUntracked($(this));
+                formData.controller.updateTasks($(this));
+            },
+            updateUntracked: function updateUntracked(element) {
+                if (G.latestTaskNames && G.latestTaskNames.length) {
+                    let $untracked = element.closest('.form-group').prev('.root').find('.untracked');
+                    $untracked.append('<option></option>');
+                    G.latestTaskNames.forEach(function (task) {
+                        $untracked.append('<option value="' + task['id'] + '">' + task['task'] + '</option>');
+                    });
+                }
+            },
+            updateTasks: function updateTasks(element) {
+                if (G.taskNames && G.taskNames.length) {
+                    let $tasks = element.closest('.form-group').prev('.root').find('.tasks');
+                    G.taskNames.forEach(function (task) {
+                        $tasks.append('<li class="list-group-item" value="' + task['id'] + '">' + task['task'] +
+                            '<button onclick="removeTask(event, $(this))" class="fa fa-window-close font-red btn-link cur-pointer float-right" title="Remove"></button></li>');
+                    });
+                } else {
+                    element.closest('.form-group').prev('.root').find('.icon-edit').hide();
+                }
             },
             updateTime: function updateTime(e, scope) {
                 scope.report.workedTime = $(this).duration('getFormatted', true);
@@ -273,9 +344,30 @@
                         }
                     }
                 });
-            }
-        }
+            },
+            showTasksModal: function showTasksModal(event) {
+                event.preventDefault();
+                formData.controller.hideTasksModals();
+                $(this).closest('.form-group').find('.modal-tasks').show();
+            },
+            hideTasksModal: function hideTasksModal(event) {
+                event.preventDefault();
+                formData.controller.hideTasksModals();
+            },
+            hideTasksModals: function hideTasksModals() {
+                $('.modal-tasks').each(function () {
+                    $(this).hide();
+                });
+            },
+        },
     };
+
+    /* Hide tasks modals when press 'Esc' button */
+    $(document).keydown(function (event) {
+        if (event.which == 27) {
+            formData.controller.hideTasksModal(event);
+        }
+    });
 
     var tableData = {
         totalTime: '',

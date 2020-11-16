@@ -131,14 +131,10 @@
                 <div rv-each-report="reports.untracked" rv-class-hidden="report.deleted" class="root">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.project_or_task') }}</label>
-                        <div class="col-md-3">
+                        <div class="col-md-3 padding-right-0">
                             <select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2OptionsUntracked"
                                     class="form-control chosen-rtl select-project untracked">
-                                <option></option>
-                                @foreach($latestTaskNames as $latestTaskName)
-                                    <option>{{$latestTaskName}}</option>
-                                @endforeach
                             </select>
                             {{--<select rv-parsley-required="report.deleted | not" rv-value="report.name"
                                     rv-jquery-plugin-select2="select2Options"
@@ -149,8 +145,11 @@
                                 @endforeach
                             </select>--}}
                         </div>
+                        <div class="col-sm-1 padding-left-0">
+                            <button rv-on-click="controller.showTasksModal" title="<?php echo trans('reports.remove_tasks_history'); ?>" class="btn btn-link icon-edit"><span class="glyphicon glyphicon-edit"></span></button>
+                        </div>
                         <div>
-                            <label class="col-sm-2 control-label">{{ trans('reports.time') }}</label>
+                            <label class="col-sm-1 control-label">{{ trans('reports.time') }}</label>
                             <div class="col-md-3">
                                 <input rv-parsley-required="report.deleted | not" rv-jquery-plugin-duration="durationPickerOptions"
                                        rv-on-change="controller.updateTime"
@@ -163,8 +162,18 @@
                                    aria-hidden="true"></i>
                             </div>
                         </div>
+                        <div class="modal-dialog">
+                            <div class="modal-content modal-tasks">
+                                <div class="modal-header">
+                                    <label class="modal-title"><?php echo trans('reports.task'); ?></label>
+                                    <button rv-on-click="controller.hideTasksModal" class="close" title="<?php echo trans('reports.close'); ?>"><span>&times;</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="list-group tasks"></ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ trans('reports.notes') }}</label>
                         <div class="col-md-8">

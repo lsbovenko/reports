@@ -117,4 +117,6 @@ return [
     'input_salary' => 'Input your salary',
     'earned_money' => 'Earned',
     'salary_validation_message' => 'You must input integer',
+    'remove_tasks_history' => 'Remove tasks from history',
+    'close' => 'Close',
 ];

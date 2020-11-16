@@ -112,4 +112,6 @@ return [
     'move_to_unbillable' => 'Переместить в неоплачиваемое',
     'move_to_billable' => 'Переместить в оплачиваемое',
     'save_project' => 'Сохранить проект',
+    'remove_tasks_history' => 'Удалить задачи из истории',
+    'close' => 'Закрыть',
 ];
