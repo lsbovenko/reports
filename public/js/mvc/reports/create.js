@@ -382,6 +382,15 @@ function getHeight() {
         }
     });
 
+    /* Hide tasks modals when click outside the modals */
+    $(document).on('click', function (event) {
+        $('.modal-tasks').each(function () {
+            if ($(this).is(':visible') && $(event.target).closest($(this)).length === 0 && $(event.target).closest('.icon-edit').length === 0) {
+                formData.controller.hideTasksModal(event);
+            }
+        });
+    });
+
     var tableData = {
         totalTime: '',
         tableTracked: [],
