@@ -37,6 +37,9 @@ function removeTask(event, element) {
                             $(this).remove();
                         }
                     });
+                    $(this).closest('.modal-body').each(function () {
+                        $(this).css('height', getHeight() + 'px');
+                    });
                 });
             },
             error: function error(xhr) {
@@ -47,6 +50,15 @@ function removeTask(event, element) {
             }
         });
     }
+}
+
+function getHeight() {
+    let height = 256;
+    if (_globals.taskNames.length < 5) {
+        height = 51 + 41 * _globals.taskNames.length;
+    }
+
+    return height;
 }
 
 ;(function ($, rv, G) {
@@ -261,6 +273,7 @@ function removeTask(event, element) {
             updateTasks: function updateTasks(element) {
                 if (G.taskNames && G.taskNames.length) {
                     let $tasks = element.closest('.form-group').prev('.root').find('.tasks');
+                    $tasks.closest('.modal-body').css('height', getHeight() + 'px');
                     G.taskNames.forEach(function (task) {
                         $tasks.append('<li class="list-group-item" value="' + task['id'] + '">' + task['task'] +
                             '<button onclick="removeTask(event, $(this))" class="fa fa-window-close font-red btn-link cur-pointer float-right" title="Remove"></button></li>');
