@@ -146,7 +146,7 @@
                             </select>--}}
                         </div>
                         <div class="col-sm-1 padding-left-0">
-                            <button rv-on-click="controller.showTasksModal" title="<?php echo trans('reports.remove_tasks_history'); ?>" class="btn btn-link icon-edit"><span class="glyphicon glyphicon-edit"></span></button>
+                            <span rv-on-click="controller.showTasksModal" title="<?php echo trans('reports.remove_tasks_history'); ?>" class="btn btn-link icon-edit"><span class="glyphicon glyphicon-edit"></span></span>
                         </div>
                         <div>
                             <label class="col-sm-1 control-label">{{ trans('reports.time') }}</label>
